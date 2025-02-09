@@ -1,4 +1,5 @@
 import React from 'react';
+import { ProgressHeader } from '@/app/components/layouts/ProgressHeader';
 
 interface Props {
   children: React.ReactNode;
@@ -7,13 +8,9 @@ interface Props {
 export const OnboardingLayout: React.FC<Props> = ({ children }) => {
   return (
     <div>
-      <header>
+      <ProgressHeader />
 
-      </header>
-
-      <main>
-        {children}
-      </main>
+      <main>{children}</main>
     </div>
   );
 };

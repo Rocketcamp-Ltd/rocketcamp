@@ -15,7 +15,7 @@ export enum AppRoutes {
   LOGIN = 'login',
   REGISTER = 'register',
   AUTH_ONBOARDING = 'auth-onboarding',
-};
+}
 
 const HomePageWithLayout = withLayout(HomePage, MainLayout);
 const LoginPageWithLayout = withLayout(LoginPage, AuthLayout);
@@ -46,4 +46,4 @@ export const routeConfig: Record<AppRoutes, RouteObject> = {
     path: RoutePath[AppRoutes.AUTH_ONBOARDING],
     element: <AuthOnboardingPageWithLayout />,
   },
-}
+};

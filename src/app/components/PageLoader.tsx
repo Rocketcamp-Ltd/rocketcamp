@@ -1,5 +1,3 @@
 export const PageLoader = () => {
-  return (
-    <div>loader...</div>
-  );
+  return <div>loader...</div>;
 };

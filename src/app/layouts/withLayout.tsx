@@ -2,7 +2,7 @@ import { ComponentType, ReactElement } from 'react';
 
 export function withLayout<P extends object>(
   WrappedComponent: ComponentType<P>,
-  Layout: ComponentType<{ children: ReactElement }>
+  Layout: ComponentType<{ children: ReactElement }>,
 ) {
   return function WithLayoutComponent(props: P) {
     return (

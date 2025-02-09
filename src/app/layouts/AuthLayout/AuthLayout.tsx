@@ -7,17 +7,15 @@ interface Props {
 
 export const AuthLayout: React.FC<Props> = ({ children }) => {
   return (
-    <div className='grid grid-cols-3 w-full h-screen'>
-      <aside className='w-full h-full'>
+    <div className="grid h-screen w-full grid-cols-3">
+      <aside className="h-full w-full">
         <img
           src={asideImg}
           alt=""
-          className='w-full h-full max-w-screen max-h-screen object-cover'
+          className="h-full max-h-screen w-full max-w-screen object-cover"
         />
       </aside>
-      <main className='col-span-2 flex items-center justify-center'>
-        {children}
-      </main>
+      <main className="col-span-2 flex items-center justify-center">{children}</main>
     </div>
   );
 };
