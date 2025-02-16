@@ -1,16 +1,23 @@
 import { RouteObject } from 'react-router-dom';
+import { CoursePage } from '@/pages/Course';
+import { LessonPage } from '@/pages/Lesson';
+
 import { RegisterPage } from '@/pages/Register';
 import { AuthOnboardingPage } from '@/pages/AuthOnboarding';
 import { CoursesPage } from '@/pages/Courses';
 import { LibraryPage } from '@/pages/Library';
+import { HomePage } from '@/pages/Home';
+import { LoginPage } from '@/pages/Login';
+import { ProfileSettingsPage } from '@/pages/ProfileSettings';
+import { FAQPage } from '@/pages/FAQ';
 
 import { withLayout } from '../layouts/withLayout';
 
-import { HomePage } from '@/pages/Home';
-import { LoginPage } from '@/pages/Login';
 import { MainLayout } from '../layouts/MainLayout';
 import { AuthLayout } from '../layouts/AuthLayout';
 import { OnboardingLayout } from '../layouts/OnboardingLayout';
+import { CourseLayout } from '../layouts/CourseLayout';
+import { LessonLayout } from '../layouts/LessonLayout';
 
 export enum AppRoutes {
   HOME = 'home',
@@ -19,6 +26,10 @@ export enum AppRoutes {
   AUTH_ONBOARDING = 'auth-onboarding',
   COURSES = 'courses',
   LIBRARY = 'library',
+  FAQ = 'faq',
+  PROFILE_SETTINGS = 'profile-settings',
+  COURSE = 'course',
+  LESSON = 'lesson',
 }
 
 const HomePageWithLayout = withLayout(HomePage, MainLayout);
@@ -27,6 +38,10 @@ const RegisterPageWithLayout = withLayout(RegisterPage, AuthLayout);
 const AuthOnboardingPageWithLayout = withLayout(AuthOnboardingPage, OnboardingLayout);
 const CoursesPageWithLayout = withLayout(CoursesPage, MainLayout)
 const LibraryPageWithLayout = withLayout(LibraryPage, MainLayout)
+const ProfileSettingsPageWithLayout = withLayout(ProfileSettingsPage, MainLayout);
+const FAQPageWithLayout = withLayout(FAQPage, MainLayout);
+const CourseWithLayout = withLayout(CoursePage, CourseLayout);
+const LessonWithLayout = withLayout(LessonPage, LessonLayout);
 
 export const RoutePath: Record<AppRoutes, string> = {
   [AppRoutes.HOME]: '/',
@@ -35,6 +50,10 @@ export const RoutePath: Record<AppRoutes, string> = {
   [AppRoutes.AUTH_ONBOARDING]: '/auth-onboarding',
   [AppRoutes.COURSES]: '/courses',
   [AppRoutes.LIBRARY]: '/library',
+  [AppRoutes.FAQ]: '/faq',
+  [AppRoutes.PROFILE_SETTINGS]: '/profile-settings',
+  [AppRoutes.COURSE]: '/course/:id',
+  [AppRoutes.LESSON]: '/lesson/:id',
 };
 
 export const routeConfig: Record<AppRoutes, RouteObject> = {
@@ -61,5 +80,21 @@ export const routeConfig: Record<AppRoutes, RouteObject> = {
   [AppRoutes.LIBRARY]: {
     path: RoutePath[AppRoutes.LIBRARY],
     element: <LibraryPageWithLayout />,
+  },
+  [AppRoutes.PROFILE_SETTINGS]: {
+    path: RoutePath[AppRoutes.PROFILE_SETTINGS],
+    element: <ProfileSettingsPageWithLayout />,
+  },
+  [AppRoutes.FAQ]: {
+    path: RoutePath[AppRoutes.FAQ],
+    element: <FAQPageWithLayout />,
+  },
+  [AppRoutes.COURSE]: {
+    path: RoutePath[AppRoutes.COURSE],
+    element: <CourseWithLayout />,
+  },
+  [AppRoutes.LESSON]: {
+    path: RoutePath[AppRoutes.LESSON],
+    element: <LessonWithLayout />,
   },
 };
