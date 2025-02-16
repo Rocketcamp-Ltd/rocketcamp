@@ -1,7 +1,8 @@
 import { RouteObject } from 'react-router-dom';
+
 import { CoursePage } from '@/pages/Course';
 import { LessonPage } from '@/pages/Lesson';
-
+import { CoursesByAliasPage } from '@/pages/CoursesByAlias';
 import { RegisterPage } from '@/pages/Register';
 import { AuthOnboardingPage } from '@/pages/AuthOnboarding';
 import { CoursesPage } from '@/pages/Courses';
@@ -30,6 +31,7 @@ export enum AppRoutes {
   PROFILE_SETTINGS = 'profile-settings',
   COURSE = 'course',
   LESSON = 'lesson',
+  COURSES_BY_ALIAS = 'courses-by-alias',
 }
 
 const HomePageWithLayout = withLayout(HomePage, MainLayout);
@@ -40,6 +42,7 @@ const CoursesPageWithLayout = withLayout(CoursesPage, MainLayout)
 const LibraryPageWithLayout = withLayout(LibraryPage, MainLayout)
 const ProfileSettingsPageWithLayout = withLayout(ProfileSettingsPage, MainLayout);
 const FAQPageWithLayout = withLayout(FAQPage, MainLayout);
+const CourseByAliasWithLayout = withLayout(CoursesByAliasPage, MainLayout);
 const CourseWithLayout = withLayout(CoursePage, CourseLayout);
 const LessonWithLayout = withLayout(LessonPage, LessonLayout);
 
@@ -54,6 +57,7 @@ export const RoutePath: Record<AppRoutes, string> = {
   [AppRoutes.PROFILE_SETTINGS]: '/profile-settings',
   [AppRoutes.COURSE]: '/course/:id',
   [AppRoutes.LESSON]: '/lesson/:id',
+  [AppRoutes.COURSES_BY_ALIAS]: '/courses/:alias',
 };
 
 export const routeConfig: Record<AppRoutes, RouteObject> = {
@@ -96,5 +100,9 @@ export const routeConfig: Record<AppRoutes, RouteObject> = {
   [AppRoutes.LESSON]: {
     path: RoutePath[AppRoutes.LESSON],
     element: <LessonWithLayout />,
+  },
+  [AppRoutes.COURSES_BY_ALIAS]: {
+    path: RoutePath[AppRoutes.COURSES_BY_ALIAS],
+    element: <CourseByAliasWithLayout />,
   },
 };
