@@ -1,6 +1,8 @@
 import { RouteObject } from 'react-router-dom';
 import { RegisterPage } from '@/pages/Register';
 import { AuthOnboardingPage } from '@/pages/AuthOnboarding';
+import { CoursesPage } from '@/pages/Courses';
+import { LibraryPage } from '@/pages/Library';
 
 import { withLayout } from '../layouts/withLayout';
 
@@ -15,18 +17,24 @@ export enum AppRoutes {
   LOGIN = 'login',
   REGISTER = 'register',
   AUTH_ONBOARDING = 'auth-onboarding',
+  COURSES = 'courses',
+  LIBRARY = 'library',
 }
 
 const HomePageWithLayout = withLayout(HomePage, MainLayout);
 const LoginPageWithLayout = withLayout(LoginPage, AuthLayout);
 const RegisterPageWithLayout = withLayout(RegisterPage, AuthLayout);
 const AuthOnboardingPageWithLayout = withLayout(AuthOnboardingPage, OnboardingLayout);
+const CoursesPageWithLayout = withLayout(CoursesPage, MainLayout)
+const LibraryPageWithLayout = withLayout(LibraryPage, MainLayout)
 
 export const RoutePath: Record<AppRoutes, string> = {
   [AppRoutes.HOME]: '/',
   [AppRoutes.LOGIN]: '/login',
   [AppRoutes.REGISTER]: '/register',
   [AppRoutes.AUTH_ONBOARDING]: '/auth-onboarding',
+  [AppRoutes.COURSES]: '/courses',
+  [AppRoutes.LIBRARY]: '/library',
 };
 
 export const routeConfig: Record<AppRoutes, RouteObject> = {
@@ -45,5 +53,13 @@ export const routeConfig: Record<AppRoutes, RouteObject> = {
   [AppRoutes.AUTH_ONBOARDING]: {
     path: RoutePath[AppRoutes.AUTH_ONBOARDING],
     element: <AuthOnboardingPageWithLayout />,
+  },
+  [AppRoutes.COURSES]: {
+    path: RoutePath[AppRoutes.COURSES],
+    element: <CoursesPageWithLayout />,
+  },
+  [AppRoutes.LIBRARY]: {
+    path: RoutePath[AppRoutes.LIBRARY],
+    element: <LibraryPageWithLayout />,
   },
 };
