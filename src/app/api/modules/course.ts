@@ -9,7 +9,7 @@ export const courseModule = (client: AxiosInstance) => ({
     let url = '/continue-learning';
 
     if (query) {
-      url = `${url}?${getQueryParams(query)}`
+      url = `${url}?${getQueryParams(query)}`;
     }
 
     return client.get(url);
@@ -19,7 +19,7 @@ export const courseModule = (client: AxiosInstance) => ({
     let url = '/recommended';
 
     if (query) {
-      url = `${url}?${getQueryParams(query)}`
+      url = `${url}?${getQueryParams(query)}`;
     }
 
     return client.get(url);
@@ -29,7 +29,7 @@ export const courseModule = (client: AxiosInstance) => ({
     let url = `/courses/${alias}`;
 
     if (query) {
-      url = `${url}?${getQueryParams(query)}`
+      url = `${url}?${getQueryParams(query)}`;
     }
 
     return client.get(url);
@@ -37,5 +37,5 @@ export const courseModule = (client: AxiosInstance) => ({
 
   getCourseDetails: (alias: string, id: number): Promise<CourseDetails> => {
     return client.get(`/courses/${alias}/${id}`);
-  }
+  },
 });

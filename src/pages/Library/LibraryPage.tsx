@@ -1,11 +1,7 @@
 import React from 'react';
 
 const LibraryPage: React.FC = () => {
-  return (
-    <div>
-      LibraryPage
-    </div>
-  );
+  return <div>LibraryPage</div>;
 };
 
 export default LibraryPage;

@@ -13,7 +13,7 @@ export const ProgressHeader: React.FC<Props> = props => {
   const { hasBack = true, hasProfile = true, progress } = props;
 
   return (
-    <header className='flex items-center justify-between px-8 py-4 bg-gray-400'>
+    <header className="flex items-center justify-between bg-gray-400 px-8 py-4">
       <div>
         {hasBack && (
           <button>
@@ -21,17 +21,18 @@ export const ProgressHeader: React.FC<Props> = props => {
           </button>
         )}
       </div>
-      <div className='w-[640px]'>
-        <Progress value={progress} className='w-full' />
+      <div className="w-[640px]">
+        <Progress
+          value={progress}
+          className="w-full"
+        />
       </div>
       <div>
-        {
-          hasProfile && (
-            <div>
-              <User />
-            </div>
-          )
-        }
+        {hasProfile && (
+          <div>
+            <User />
+          </div>
+        )}
       </div>
     </header>
   );

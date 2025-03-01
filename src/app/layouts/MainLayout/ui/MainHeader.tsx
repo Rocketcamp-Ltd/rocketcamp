@@ -5,7 +5,7 @@ import { MainNavigation } from '@/app/components/layouts/Navigation/MainNavigati
 
 export const MainHeader: React.FC = () => {
   return (
-    <header className='px-14 flex items-center justify-between shadow-2xl'>
+    <header className="flex items-center justify-between px-14 shadow-2xl">
       <div>
         <Logo />
       </div>
@@ -13,7 +13,7 @@ export const MainHeader: React.FC = () => {
       <MainNavigation />
 
       <div>
-        <User className='size-10' />
+        <User className="size-10" />
       </div>
     </header>
   );

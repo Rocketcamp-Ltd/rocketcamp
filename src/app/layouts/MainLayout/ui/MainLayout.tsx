@@ -6,8 +6,10 @@ interface Props {
 }
 
 export const MainLayout: React.FC<Props> = ({ children }) => {
-  return <>
-    <MainHeader />
-    <main>{children}</main>
-  </>;
+  return (
+    <>
+      <MainHeader />
+      <main>{children}</main>
+    </>
+  );
 };

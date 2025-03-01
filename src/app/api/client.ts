@@ -1,7 +1,7 @@
 import axios, { AxiosError, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 
 const client = axios.create({
-  baseURL: 'http://localhost:3000/api/v1'
+  baseURL: 'http://localhost:3000/api/v1',
 });
 
 function requestSuccess(config: InternalAxiosRequestConfig): InternalAxiosRequestConfig {
@@ -30,7 +30,4 @@ function responseError(error: AxiosError): Promise<never> {
 client.interceptors.request.use(requestSuccess, requestError);
 client.interceptors.response.use(responseSuccess, responseError);
 
-
-export {
-  client
-};
+export { client };

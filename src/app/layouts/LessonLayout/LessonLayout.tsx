@@ -6,7 +6,7 @@ interface Props {
   children: React.ReactNode;
 }
 
-export const LessonLayout: React.FC<Props> = ({children}) => {
+export const LessonLayout: React.FC<Props> = ({ children }) => {
   const { progress } = useProgressStore();
 
   return (
