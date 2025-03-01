@@ -33,7 +33,7 @@ const formAction = async (_: RegisterData, formData: FormData) => {
     return {
       email,
       password,
-      errors: errorMessages
+      errors: errorMessages,
     };
   }
 };
@@ -42,7 +42,10 @@ const LoginPage: React.FC = () => {
   const [state, action, pending] = useActionState<RegisterData, FormData>(formAction, initialState);
 
   return (
-    <form action={action} className="border-[#D9D9D9] w-80 rounded-[2px] border p-6 shadow-md">
+    <form
+      action={action}
+      className="w-80 rounded-[2px] border border-[#D9D9D9] p-6 shadow-md"
+    >
       <label className="mb-1 flex flex-col gap-2">
         <p className="text-base text-[#1E1E1E]">Email</p>
         <Input
@@ -57,7 +60,7 @@ const LoginPage: React.FC = () => {
         <p className="mb-3 text-sm text-red-500">{state.errors[FormFieldNames.EMAIL]}</p>
       )}
 
-      <label className="mb-1 flex flex-col gap-2 mt-4">
+      <label className="mt-4 mb-1 flex flex-col gap-2">
         <p className="text-base text-[#1E1E1E]">Password</p>
         <Input
           type="password"
@@ -71,12 +74,10 @@ const LoginPage: React.FC = () => {
         <p className="mb-3 text-sm text-red-500">{state.errors[FormFieldNames.PASSWORD]}</p>
       )}
 
-      {state.errors?.general && (
-        <p className="mb-3 mt-2 text-sm text-red-500">{state.errors.general}</p>
-      )}
+      {state.errors?.general && <p className="mt-2 mb-3 text-sm text-red-500">{state.errors.general}</p>}
 
       <Button
-        className="w-full mt-4"
+        className="mt-4 w-full"
         type="submit"
         disabled={pending}
       >

@@ -8,7 +8,7 @@ interface LoginPayload {
 
 export const authModule = (client: AxiosInstance) => ({
   // @todo: return User & Tokens
-  login (payload: LoginPayload): Promise<User> {
+  login(payload: LoginPayload): Promise<User> {
     return client.post('/auth/login', payload);
   },
 
@@ -21,5 +21,5 @@ export const authModule = (client: AxiosInstance) => ({
   // @todo: return User & Tokens
   register(payload: LoginPayload): Promise<User> {
     return client.post('/auth/register', payload);
-  }
+  },
 });

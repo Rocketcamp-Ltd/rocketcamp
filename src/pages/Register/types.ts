@@ -1,6 +1,6 @@
 export enum FormFieldNames {
   EMAIL = 'email',
-  PASSWORD = 'password'
+  PASSWORD = 'password',
 }
 
 export interface RegisterData {

@@ -1,7 +1,7 @@
 import React from 'react';
-import { User } from 'lucide-react';
 import { Logo } from '@/app/components/layouts/Logo';
 import { MainNavigation } from '@/app/components/layouts/Navigation/MainNavigation';
+import { UserButton } from '@/app/components/layouts/UserButton/UserButton';
 
 export const MainHeader: React.FC = () => {
   return (
@@ -12,9 +12,7 @@ export const MainHeader: React.FC = () => {
 
       <MainNavigation />
 
-      <div>
-        <User className="size-10" />
-      </div>
+      <UserButton />
     </header>
   );
 };
