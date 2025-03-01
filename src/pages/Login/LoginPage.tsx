@@ -3,35 +3,14 @@ import React, { useActionState } from 'react';
 import { Input } from '@/app/components/ui/input';
 import { Button } from '@/app/components/ui/button';
 
-import { validateLogin, ValidationErrorCode } from './utils/validation';
-import { FormFieldNames } from './types';
-
-interface LoginData {
-  email: string;
-  password: string;
-  errors?: {
-    [key in FormFieldNames | 'general']?: string;
-  };
-}
+import { validateLogin } from './utils/validation';
+import { getErrorMessage } from './utils/getErrorMessage';
+import { FormFieldNames, type LoginData } from './types';
 
 const initialState: LoginData = {
   email: '',
   password: '',
   errors: {},
-};
-
-// Функция для перевода кодов ошибок
-// В реальном проекте здесь можно использовать i18n библиотеку
-const getErrorMessage = (code: string): string => {
-  const errorMessages: Record<string, string> = {
-    [ValidationErrorCode.REQUIRED]: 'Поле обязательно для заполнения',
-    [ValidationErrorCode.INVALID_EMAIL]: 'Неверный формат email',
-    [ValidationErrorCode.PASSWORD_TOO_SHORT]: 'Пароль должен содержать минимум 6 символов',
-    [ValidationErrorCode.PASSWORD_NO_DIGIT]: 'Пароль должен содержать хотя бы одну цифру',
-    'UNKNOWN_ERROR': 'Произошла ошибка при входе'
-  };
-
-  return errorMessages[code] || 'Неизвестная ошибка';
 };
 
 const formAction = async (_: LoginData, formData: FormData) => {
