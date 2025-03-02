@@ -34,7 +34,10 @@ export const UserButton: React.FC = () => {
   }, []);
 
   return (
-    <div className="relative" ref={dropdownRef}>
+    <div
+      className="relative"
+      ref={dropdownRef}
+    >
       <button
         onClick={toggleDropdown}
         className="flex items-center justify-center rounded-full p-2 hover:bg-gray-100 focus:outline-none"
@@ -43,19 +46,25 @@ export const UserButton: React.FC = () => {
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-0.5 w-48 origin-top-right rounded-md bg-white shadow-lg ring-opacity-5 focus:outline-none">
+        <div className="ring-opacity-5 absolute right-0 mt-0.5 w-48 origin-top-right rounded-md bg-white shadow-lg focus:outline-none">
           <div className="py-1">
-            <Link to={RoutePath['profile-settings']} className="block px-4 py-2 text-base font-normal text-[#1E1E1E] hover:bg-gray-100">
+            <Link
+              to={RoutePath['profile-settings']}
+              className="block px-4 py-2 text-base font-normal text-[#1E1E1E] hover:bg-gray-100"
+            >
               Settings
             </Link>
-            <Link to={RoutePath.faq} className="block px-4 py-2 text-base font-normal text-[#1E1E1E] hover:bg-gray-100">
+            <Link
+              to={RoutePath.faq}
+              className="block px-4 py-2 text-base font-normal text-[#1E1E1E] hover:bg-gray-100"
+            >
               Help
             </Link>
 
             <div className="my-1 h-px bg-gray-200"></div>
 
             <button
-              className="block w-full text-left px-4 py-2 text-base font-normal text-[#1E1E1E] hover:bg-gray-100"
+              className="block w-full px-4 py-2 text-left text-base font-normal text-[#1E1E1E] hover:bg-gray-100"
               onClick={handleLogout}
             >
               Log out
