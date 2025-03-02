@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/app/components/ui/accordion';
 
 const FAQPage: React.FC = () => {
-  const [faq, setFaq ] = React.useState([
+  const [faq, setFaq] = useState([
     {
       question: 'Question 1',
       answer: 'Ask 1.',
@@ -12,26 +12,27 @@ const FAQPage: React.FC = () => {
       question: 'Question 2',
       answer: 'Ask 2.',
       id: 2,
-    }
+    },
   ]);
 
   return (
-    <div className='min-h-screen flex items-center w-full'>
-      <div className='max-w-2xl mx-auto w-full'>
+    <div className="flex min-h-screen w-full items-center">
+      <div className="mx-auto w-full max-w-2xl">
         <Accordion
           type="single"
           collapsible
         >
-          {
-            faq.map((item) => {
-              return (
-                <AccordionItem key={item.id} value={`faq-${item.id}`}>
-                  <AccordionTrigger>{item.question}</AccordionTrigger>
-                  <AccordionContent>{item.answer}</AccordionContent>
-                </AccordionItem>
-              );
-            })
-          }
+          {faq.map(item => {
+            return (
+              <AccordionItem
+                key={item.id}
+                value={`faq-${item.id}`}
+              >
+                <AccordionTrigger>{item.question}</AccordionTrigger>
+                <AccordionContent>{item.answer}</AccordionContent>
+              </AccordionItem>
+            );
+          })}
         </Accordion>
       </div>
     </div>

@@ -1,46 +1,60 @@
 import { z } from 'zod';
 import { FormFieldNames } from '../types';
-import { EMAIL } from '@/app/common/regex';
+import { EMAIL, SYMBOLS_ONLY } from '@/app/common/regex';
 
 export enum ValidationErrorCode {
   REQUIRED = 'REQUIRED',
+  INVALID_NAME = 'INVALID_NAME',
+  NAME_TOO_SHORT = 'NAME_TOO_SHORT',
+  INVALID_SURNAME = 'INVALID_SURNAME',
+  SURNAME_TOO_SHORT = 'SURNAME_TOO_SHORT',
   INVALID_EMAIL = 'INVALID_EMAIL',
-  PASSWORD_TOO_SHORT = 'PASSWORD_TOO_SHORT',
-  PASSWORD_NO_DIGIT = 'PASSWORD_NO_DIGIT',
 }
 
-const loginSchema = z.object({
+const profileSchema = z.object({
+  [FormFieldNames.NAME]: z
+    .string({
+      required_error: ValidationErrorCode.REQUIRED,
+    })
+    .min(2, ValidationErrorCode.NAME_TOO_SHORT)
+    .regex(SYMBOLS_ONLY, ValidationErrorCode.INVALID_NAME),
+
+  [FormFieldNames.SURNAME]: z
+    .string()
+    .min(3, ValidationErrorCode.SURNAME_TOO_SHORT)
+    .regex(SYMBOLS_ONLY, ValidationErrorCode.INVALID_SURNAME)
+    .optional(),
+
   [FormFieldNames.EMAIL]: z
     .string({
       required_error: ValidationErrorCode.REQUIRED,
     })
     .email(ValidationErrorCode.INVALID_EMAIL)
     .regex(EMAIL, ValidationErrorCode.INVALID_EMAIL),
-  [FormFieldNames.PASSWORD]: z
-    .string({
-      required_error: ValidationErrorCode.REQUIRED,
-    })
-    .min(6, ValidationErrorCode.PASSWORD_TOO_SHORT)
-    .regex(/^(?=.*\d).{6,}$/, ValidationErrorCode.PASSWORD_NO_DIGIT),
+
+  [FormFieldNames.MESSAGE]: z
+    .string()
+    .optional(),
 });
 
-export type LoginFormData = z.infer<typeof loginSchema>;
+type ProfileFormData = z.infer<typeof profileSchema>;
 
-export interface ValidationError {
+interface ValidationError {
   fieldName: string;
   code: string;
 }
 
-export interface ValidationResult {
+interface ValidationResult {
   success: boolean;
-  data?: LoginFormData;
+  data?: ProfileFormData;
   errors?: ValidationError[];
 }
 
-export function validateLogin(data: unknown): Promise<ValidationResult> {
+export function validateProfile(data: unknown): Promise<ValidationResult> {
   return new Promise(resolve => {
     try {
-      const validatedData = loginSchema.parse(data);
+      const validatedData = profileSchema.parse(data);
+
       resolve({
         success: true,
         data: validatedData,

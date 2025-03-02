@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { FormFieldNames } from '../types';
+import { EMAIL } from '@/app/common/regex';
 
 export enum ValidationErrorCode {
   REQUIRED = 'REQUIRED',
@@ -14,7 +15,7 @@ const loginSchema = z.object({
       required_error: ValidationErrorCode.REQUIRED,
     })
     .email(ValidationErrorCode.INVALID_EMAIL)
-    .regex(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, ValidationErrorCode.INVALID_EMAIL),
+    .regex(EMAIL, ValidationErrorCode.INVALID_EMAIL),
   [FormFieldNames.PASSWORD]: z
     .string({
       required_error: ValidationErrorCode.REQUIRED,
@@ -23,14 +24,14 @@ const loginSchema = z.object({
     .regex(/^(?=.*\d).{6,}$/, ValidationErrorCode.PASSWORD_NO_DIGIT),
 });
 
-export type LoginFormData = z.infer<typeof loginSchema>;
+type LoginFormData = z.infer<typeof loginSchema>;
 
-export interface ValidationError {
+interface ValidationError {
   fieldName: string;
   code: string;
 }
 
-export interface ValidationResult {
+interface ValidationResult {
   success: boolean;
   data?: LoginFormData;
   errors?: ValidationError[];
