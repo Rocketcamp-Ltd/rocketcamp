@@ -32,9 +32,7 @@ const profileSchema = z.object({
     .email(ValidationErrorCode.INVALID_EMAIL)
     .regex(EMAIL, ValidationErrorCode.INVALID_EMAIL),
 
-  [FormFieldNames.MESSAGE]: z
-    .string()
-    .optional(),
+  [FormFieldNames.MESSAGE]: z.string().optional(),
 });
 
 type ProfileFormData = z.infer<typeof profileSchema>;

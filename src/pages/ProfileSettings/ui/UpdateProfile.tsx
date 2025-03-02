@@ -59,50 +59,47 @@ export const UpdateProfile: React.FC = () => {
   };
 
   return (
-    <form action={action} className="w-80 rounded-[2px] border border-[#D9D9D9] p-6 shadow-md">
+    <form
+      action={action}
+      className="w-80 rounded-[2px] border border-[#D9D9D9] p-6 shadow-md"
+    >
       <label className="mb-1 flex flex-col gap-2">
         <p className="text-base text-[#1E1E1E]">Name</p>
         <Input
           name={FormFieldNames.NAME}
-          type='text'
-          placeholder='Name'
+          type="text"
+          placeholder="Name"
           className="w-full"
           defaultValue={state.name}
-          autoComplete='given-name'
+          autoComplete="given-name"
         />
-        {state.errors?.name && (
-          <p className="text-sm text-red-500">{state.errors.name}</p>
-        )}
+        {state.errors?.name && <p className="text-sm text-red-500">{state.errors.name}</p>}
       </label>
 
       <label className="mb-1 flex flex-col gap-2">
         <p className="text-base text-[#1E1E1E]">Surname</p>
         <Input
           name={FormFieldNames.SURNAME}
-          type='text'
-          placeholder='Surname'
+          type="text"
+          placeholder="Surname"
           className="w-full"
           defaultValue={state.surname}
-          autoComplete='family-name'
+          autoComplete="family-name"
         />
-        {state.errors?.surname && (
-          <p className="text-sm text-red-500">{state.errors.surname}</p>
-        )}
+        {state.errors?.surname && <p className="text-sm text-red-500">{state.errors.surname}</p>}
       </label>
 
       <label className="mb-1 flex flex-col gap-2">
         <p className="text-base text-[#1E1E1E]">Email</p>
         <Input
           name={FormFieldNames.EMAIL}
-          type='email'
-          placeholder='Email'
+          type="email"
+          placeholder="Email"
           className="w-full"
           defaultValue={state.email}
-          autoComplete='email'
+          autoComplete="email"
         />
-        {state.errors?.email && (
-          <p className="text-sm text-red-500">{state.errors.email}</p>
-        )}
+        {state.errors?.email && <p className="text-sm text-red-500">{state.errors.email}</p>}
       </label>
 
       <label className="mb-1 flex flex-col gap-2">
@@ -110,27 +107,27 @@ export const UpdateProfile: React.FC = () => {
         <div className="relative">
           <Textarea
             name={FormFieldNames.MESSAGE}
-            placeholder='Message'
+            placeholder="Message"
             className="w-full"
             defaultValue={state.message}
-            autoComplete='off'
+            autoComplete="off"
             maxLength={MESSAGE_MAX_LENGTH}
             onChange={handleMessageChange}
           />
-          <div className="mt-1 text-xs text-gray-500 text-right">
+          <div className="mt-1 text-right text-xs text-gray-500">
             {messageLength}/{MESSAGE_MAX_LENGTH}
           </div>
         </div>
-        {state.errors?.message && (
-          <p className="text-sm text-red-500">{state.errors.message}</p>
-        )}
+        {state.errors?.message && <p className="text-sm text-red-500">{state.errors.message}</p>}
       </label>
 
-      {state.errors?.general && (
-        <p className="mb-4 text-sm text-red-500">{state.errors.general}</p>
-      )}
+      {state.errors?.general && <p className="mb-4 text-sm text-red-500">{state.errors.general}</p>}
 
-      <Button type='submit' className="mt-4 w-full" disabled={pending}>
+      <Button
+        type="submit"
+        className="mt-4 w-full"
+        disabled={pending}
+      >
         Submit
       </Button>
     </form>
