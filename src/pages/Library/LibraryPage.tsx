@@ -4,24 +4,24 @@ import type { Course } from '@/types/courses';
 import { RoutePath } from '@/app/router/config';
 import { CourseCarousel } from '@/app/components/business/CourseCarousel';
 
-import { other } from './mock';
-
-interface CourseMap {
-  [key: string]: Course[];
-}
+import { bookmarked, completed } from './mock';
 
 const LibraryPage: React.FC = () => {
-  const [courses, setCourses] = useState<CourseMap>(other);
+  const [bookmarkedCourses, setBookmarkedCourses] = useState<Course[]>(bookmarked);
+  const [completedCourses, setCompletedCourses] = useState<Course[]>(completed);
 
   return <div className="container mx-auto py-12">
-      {Object.entries(courses).map(([category, courseList]) => (
-        <CourseCarousel
-          key={category}
-          title={category}
-          courses={courseList}
-          seeAllLink={RoutePath['courses-by-alias'].replace(':alias', category)}
-        />
-      ))}
+      <CourseCarousel
+        title="Bookmarked courses"
+        courses={bookmarkedCourses}
+        seeAllLink={RoutePath['courses-by-alias'].replace(':alias', 'bookmarked-courses')}
+      />
+
+      <CourseCarousel
+        title="Completed courses"
+        courses={completedCourses}
+        seeAllLink={RoutePath['courses-by-alias'].replace(':alias', 'completed-courses')}
+      />
   </div>;
 };
 
