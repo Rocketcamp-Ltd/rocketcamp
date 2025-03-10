@@ -16,7 +16,7 @@ import mockOnb from './mock';
 interface StepData {
   id: number;
   data: {
-    value: string | number | string[] | number[];
+    value: string | number | string[] | number[] | (string | number)[];
   };
 }
 
