@@ -1,9 +1,15 @@
 import React, { useState } from 'react';
 import type { CourseCategory } from '@/types/courses';
-import { categoriesMock } from './mock';
+
+import { CourseCarousel } from '@/app/components/business/CourseCarousel';
 import { CourseFilters } from './ui/CourseFilters';
 
+import { RoutePath } from '@/app/router/config';
+
+import { categoriesMock, courses } from './mock';
+
 const CoursesPage: React.FC = () => {
+  const [listCourses, setListCourses] = useState(courses);
   const [categories, setCategories] = useState<CourseCategory[]>([...categoriesMock]);
   const [filters, setFilters] = useState<CourseCategory[]>([]);
 
@@ -27,6 +33,17 @@ const CoursesPage: React.FC = () => {
         filters={filters}
         changeFilters={changeFilters}
       />
+
+      <div className="mt-4">
+        {Object.entries(listCourses).map(([category, courseList]) => (
+          <CourseCarousel
+            key={category}
+            title={category}
+            courses={courseList}
+            seeAllLink={RoutePath['courses-by-alias'].replace(':alias', category)}
+          />
+        ))}
+      </div>
     </div>
   );
 };
