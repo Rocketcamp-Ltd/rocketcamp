@@ -7,11 +7,16 @@ interface CheckboxGroupComponentProps {
   error: string;
 }
 
-export const CheckboxGroupComponent: React.FC<CheckboxGroupComponentProps> = ({ component, onSelectionChange, error }) => {
-  const options = component.items?.map(item => ({
-    id: item.id.toString(),
-    label: item.name
-  })) || [];
+export const CheckboxGroupComponent: React.FC<CheckboxGroupComponentProps> = ({
+  component,
+  onSelectionChange,
+  error,
+}) => {
+  const options =
+    component.items?.map(item => ({
+      id: item.id.toString(),
+      label: item.name,
+    })) || [];
 
   return (
     <div className="w-full space-y-2">

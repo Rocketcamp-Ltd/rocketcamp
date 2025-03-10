@@ -1,6 +1,8 @@
 import React from 'react';
 import type { Course } from '@/types/courses';
 import { Progress } from '@radix-ui/react-progress';
+import { Link } from 'react-router-dom';
+import { RoutePath } from '@/app/router/config';
 
 interface Props {
   course: Course;
@@ -8,7 +10,7 @@ interface Props {
 
 export const CourseCard: React.FC<Props> = ({ course }) => {
   return (
-    <>
+    <Link to={RoutePath.course.replace(':id', course.id)}>
       <div>
         <img
           src={course.cover}
@@ -27,6 +29,6 @@ export const CourseCard: React.FC<Props> = ({ course }) => {
           <Progress value={course.progress} />
         </div>
       )}
-    </>
+    </Link>
   );
 };

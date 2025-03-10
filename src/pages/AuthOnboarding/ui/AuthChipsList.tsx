@@ -13,12 +13,13 @@ export const ChipsListComponent: React.FC<ChipsListComponentProps> = ({
   component,
   selectedValues,
   onSelectionChange,
-  error
+  error,
 }) => {
-  const options = component.items?.map(item => ({
-    id: item.id,
-    label: item.name
-  })) || [];
+  const options =
+    component.items?.map(item => ({
+      id: item.id,
+      label: item.name,
+    })) || [];
 
   return (
     <div className="w-full space-y-2">

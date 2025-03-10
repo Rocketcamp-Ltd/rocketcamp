@@ -9,16 +9,12 @@ interface RadioGroupComponentProps {
   error: string;
 }
 
-export const RadioGroupComponent: React.FC<RadioGroupComponentProps> = ({
-  component,
-  value,
-  onValueChange,
-  error
-}) => {
-  const options = component.items?.map(item => ({
-    value: item.name,
-    label: item.name
-  })) || [];
+export const RadioGroupComponent: React.FC<RadioGroupComponentProps> = ({ component, value, onValueChange, error }) => {
+  const options =
+    component.items?.map(item => ({
+      value: item.name,
+      label: item.name,
+    })) || [];
 
   return (
     <div className="w-full space-y-2">

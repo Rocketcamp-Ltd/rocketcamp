@@ -19,7 +19,7 @@ export const ChipsList: React.FC<ChipsListProps> = ({
   options,
   multiSelect = true,
   defaultSelected = [],
-  onChange
+  onChange,
 }) => {
   const [selectedChips, setSelectedChips] = useState<(string | number)[]>(defaultSelected);
 
@@ -45,18 +45,17 @@ export const ChipsList: React.FC<ChipsListProps> = ({
 
   return (
     <div className="flex flex-wrap gap-2">
-      {options.map((option) => {
+      {options.map(option => {
         const isSelected = selectedChips.includes(option.id);
 
         return (
           <div
             key={option.id}
             onClick={() => handleChipClick(option.id)}
-            className={cn(`
-              flex items-center gap-2 px-4 py-2 rounded-full cursor-pointer transition-colors`, {
-                'bg-black text-white': isSelected,
-                'bg-gray-100 text-gray-700 hover:bg-gray-200': !isSelected,
-              })}
+            className={cn(`flex cursor-pointer items-center gap-2 rounded-full px-4 py-2 transition-colors`, {
+              'bg-black text-white': isSelected,
+              'bg-gray-100 text-gray-700 hover:bg-gray-200': !isSelected,
+            })}
           >
             {isSelected && <Check size={16} />}
             {option.icon && <span>{option.icon}</span>}

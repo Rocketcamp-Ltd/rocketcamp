@@ -28,13 +28,13 @@ export const CheckboxGroup: React.FC<CheckboxGroupProps> = ({ options, onSelecti
 
   return (
     <div className="space-y-2">
-      {options.map((option) => {
+      {options.map(option => {
         const isSelected = selectedOptions.includes(option.id);
 
         return (
           <div
             key={option.id}
-            className="flex items-center p-3 rounded-md bg-gray-100 border border-gray-200 cursor-pointer"
+            className="flex cursor-pointer items-center rounded-md border border-gray-200 bg-gray-100 p-3"
             onClick={() => handleCheckboxChange(option.id)}
           >
             <div className="flex-grow font-semibold">{option.label}</div>
