@@ -94,7 +94,12 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
+  }
+
+  ul {
+    @apply mt-2 list-disc pl-8;
   }
 }
