@@ -40,9 +40,10 @@ export const CourseCarousel: React.FC<Props> = ({ title, seeAllLink, courses }) 
                 <p className="text-base text-[#757575]">{course.subtitle}</p>
               </div>
 
-              <div className="mt-4">
+          {Boolean(course.progress) && <div className="mt-4">
                 <Progress value={course.progress} />
-              </div>
+              </div>}
+
             </CarouselItem>
           ))}
 
