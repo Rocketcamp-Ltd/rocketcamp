@@ -147,7 +147,7 @@ export const recommended: Course[] = [
 ];
 
 export const other: { [key: string]: Course[] } = {
-  'title': [...continueCourses],
-  'title2': [...recommended],
-  'title3': [...continueCourses, ...recommended].slice(0, 5),
+  title: [...continueCourses],
+  title2: [...recommended],
+  title3: [...continueCourses, ...recommended].slice(0, 5),
 };

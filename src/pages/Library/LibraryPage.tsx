@@ -10,7 +10,8 @@ const LibraryPage: React.FC = () => {
   const [bookmarkedCourses, setBookmarkedCourses] = useState<Course[]>(bookmarked);
   const [completedCourses, setCompletedCourses] = useState<Course[]>(completed);
 
-  return <div className="container mx-auto py-12">
+  return (
+    <div className="container mx-auto py-12">
       <CourseCarousel
         title="Bookmarked courses"
         courses={bookmarkedCourses}
@@ -22,7 +23,8 @@ const LibraryPage: React.FC = () => {
         courses={completedCourses}
         seeAllLink={RoutePath['courses-by-alias'].replace(':alias', 'completed-courses')}
       />
-  </div>;
+    </div>
+  );
 };
 
 export default LibraryPage;

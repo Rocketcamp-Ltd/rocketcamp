@@ -145,4 +145,3 @@ export const completed: Course[] = [
     progress: 0,
   },
 ];
-
