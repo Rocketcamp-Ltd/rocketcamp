@@ -1,14 +1,27 @@
 import React, { useState } from 'react';
 import { Lock, CircleCheck } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 import { Button } from '@/app/components/ui/button';
 import { Progress } from '@/app/components/ui/progress';
 import { CircleProgress } from '@/app/components/ui/circle-progress';
 
+import { RoutePath } from '@/app/router/config';
+
 import { mock } from './mock';
 
 const CoursePage: React.FC = () => {
   const [course, setCourse] = useState(mock);
+
+  const navigate = useNavigate();
+
+  const handleStartLearning = () => {
+    const firstNotDoneLesson = course.lessons.find(lesson => !lesson.isDone);
+
+    if (firstNotDoneLesson) {
+      navigate(RoutePath.lesson.replace(':courseId', course.id.toString()).replace(':lessonId', firstNotDoneLesson.id.toString()));
+    }
+  }
 
   return (
     <div className="mx-auto max-w-[1200px] py-5">
@@ -31,7 +44,7 @@ const CoursePage: React.FC = () => {
             dangerouslySetInnerHTML={{ __html: course.description }}
           ></div>
 
-          <Button className="mt-2">Start Learning</Button>
+          <Button onClick={handleStartLearning} className="mt-2 cursor-pointer">Start Learning</Button>
         </div>
       </div>
 
