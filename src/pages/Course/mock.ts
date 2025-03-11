@@ -5,7 +5,7 @@ export const mock: CourseDetails = {
   cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
   title: 'Course 1',
   subtitle: 'Subtitle 1',
-  progress: 0,
+  progress: 20,
   category: [
     {
       id: 1,

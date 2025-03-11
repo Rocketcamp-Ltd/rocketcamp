@@ -3,6 +3,7 @@ import { Lock, CircleCheck } from 'lucide-react';
 
 import { Button } from '@/app/components/ui/button';
 import { Progress } from '@/app/components/ui/progress';
+import { CircleProgress } from '@/app/components/ui/circle-progress';
 
 import { mock } from './mock';
 
@@ -14,11 +15,13 @@ const CoursePage: React.FC = () => {
       <h1 className="mb-6 text-3xl font-medium text-black">{course.title}</h1>
 
       <div className="flex items-start gap-8">
-        <div className="max-w-[484px]">
+        <div className="max-w-[484px] relative">
           <img
             src={course.cover}
             alt=""
           />
+
+          <CircleProgress value={course.progress} className='absolute top-2 right-2' />
         </div>
 
         <div>
