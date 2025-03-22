@@ -16,9 +16,7 @@ export const ProgressHeader: React.FC<Props> = props => {
   const { hasBack = true, onBack, hasProfile = true, progress, className } = props;
 
   return (
-    <header
-      className={cn('flex items-center justify-between bg-gray-400 px-8 py-4', className)}
-    >
+    <header className={cn('flex items-center justify-between bg-gray-400 px-8 py-4', className)}>
       <div>
         {hasBack && typeof onBack === 'function' && (
           <button onClick={onBack}>

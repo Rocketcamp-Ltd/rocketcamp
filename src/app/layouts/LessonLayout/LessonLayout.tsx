@@ -22,7 +22,7 @@ export const LessonLayout: React.FC<Props> = ({ children }) => {
         hasBack
         onBack={handleBack}
         progress={progress}
-        className="fixed top-0 left-0 w-full z-30"
+        className="fixed top-0 left-0 z-30 w-full"
       />
 
       <main>{children}</main>
