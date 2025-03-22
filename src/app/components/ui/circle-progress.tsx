@@ -9,15 +9,18 @@ const CircleProgress = React.forwardRef<
 >(({ className, value, ...props }, ref) => {
   const radius = 20;
   const circumference = 2 * Math.PI * radius;
-  const strokeDashoffset = circumference - (value || 0) / 100 * circumference;
+  const strokeDashoffset = circumference - ((value || 0) / 100) * circumference;
 
   return (
-    <div className={cn('relative', className)} {...props}>
+    <div
+      className={cn('relative', className)}
+      {...props}
+    >
       <svg
         width="48"
         height="48"
         viewBox="0 0 48 48"
-        className="transform -rotate-90"
+        className="-rotate-90 transform"
       >
         <circle
           cx="24"
@@ -38,7 +41,7 @@ const CircleProgress = React.forwardRef<
           strokeDashoffset={strokeDashoffset}
           strokeLinecap="round"
           style={{
-            transition: 'stroke-dashoffset 0.2s ease-in-out'
+            transition: 'stroke-dashoffset 0.2s ease-in-out',
           }}
         />
       </svg>

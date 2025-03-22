@@ -25,13 +25,13 @@ export interface LessonStep {
   coverAnnotation: string;
   text: string;
   isDone: boolean;
-  component: LessonComponent;
+  component: LessonComponent | null;
 }
 
 export interface LessonComponent {
-  type: 'selectedButtons' | 'radioButtons',
+  type: 'selectedButtons' | 'radioButtons';
   items: {
     id: number;
     label: string;
-  }[],
+  }[];
 }

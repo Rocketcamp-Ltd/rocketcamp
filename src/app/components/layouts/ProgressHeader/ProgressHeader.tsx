@@ -1,5 +1,6 @@
 import React from 'react';
 import { User, ArrowLeft } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 import { Progress } from '@/app/components/ui/progress';
 
@@ -8,13 +9,16 @@ interface Props {
   hasProfile?: boolean;
   onBack?: () => void;
   progress: number;
+  className?: string;
 }
 
 export const ProgressHeader: React.FC<Props> = props => {
-  const { hasBack = true, onBack, hasProfile = true, progress } = props;
+  const { hasBack = true, onBack, hasProfile = true, progress, className } = props;
 
   return (
-    <header className="flex items-center justify-between bg-gray-400 px-8 py-4">
+    <header
+      className={cn('flex items-center justify-between bg-gray-400 px-8 py-4', className)}
+    >
       <div>
         {hasBack && typeof onBack === 'function' && (
           <button onClick={onBack}>
