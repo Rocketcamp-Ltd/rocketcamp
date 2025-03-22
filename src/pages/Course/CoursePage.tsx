@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Lock, CircleCheck } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { Button } from '@/app/components/ui/button';
 import { Progress } from '@/app/components/ui/progress';
@@ -21,6 +21,22 @@ const CoursePage: React.FC = () => {
     if (firstNotDoneLesson) {
       navigate(RoutePath.lesson.replace(':courseId', course.id.toString()).replace(':lessonId', firstNotDoneLesson.id.toString()));
     }
+  }
+
+  const handleGetNotified = () => {
+
+  }
+
+  const renderAction = () => {
+    if (course.progress === 0) {
+      return <Button onClick={handleStartLearning} className="mt-2 cursor-pointer">Start Learning</Button>
+    }
+
+    if (course.progress === 100) {
+      return <Button onClick={handleStartLearning} className="mt-2 cursor-pointer">Start Learning</Button>
+    }
+
+    return <button onClick={handleGetNotified} className='text-[#050038] text-base'>Get notified when course is available</button>
   }
 
   return (
@@ -44,7 +60,7 @@ const CoursePage: React.FC = () => {
             dangerouslySetInnerHTML={{ __html: course.description }}
           ></div>
 
-          <Button onClick={handleStartLearning} className="mt-2 cursor-pointer">Start Learning</Button>
+          {renderAction()}
         </div>
       </div>
 
@@ -53,41 +69,43 @@ const CoursePage: React.FC = () => {
       <section className="flex flex-col gap-4">
         {course.lessons.map(lesson => {
           return (
-            <div
-              className="relative w-full rounded-[8px] border border-[#D9D9D9] p-5 shadow-md"
-              key={lesson.id}
-            >
-              <div className='flex items-start'>
-                <div className="max-w-[308px] mr-8">
-                  <img
-                    className="object-cover"
-                    src={lesson.cover}
-                    alt=""
-                  />
-                </div>
-                <div>
-                  <h3 className="mb-3 text-2xl font-medium text-[#1E1E1E]">{lesson.title}</h3>
-                  <p className="text-sm text-[#757575]">{lesson.description}</p>
+            <Link to={RoutePath.lesson.replace(':courseId', course.id.toString()).replace(':lessonId', lesson.id.toString())}>
+              <div
+                className="relative w-full rounded-[8px] border border-[#D9D9D9] p-5 shadow-md"
+                key={lesson.id}
+              >
+                <div className='flex items-start'>
+                  <div className="max-w-[308px] mr-8">
+                    <img
+                      className="object-cover"
+                      src={lesson.cover}
+                      alt=""
+                    />
+                  </div>
+                  <div>
+                    <h3 className="mb-3 text-2xl font-medium text-[#1E1E1E]">{lesson.title}</h3>
+                    <p className="text-sm text-[#757575]">{lesson.description}</p>
+                  </div>
+
                 </div>
 
+                {lesson.isBlocked && (
+                  <div className="absolute top-5 right-5">
+                    <Lock />
+                  </div>
+                )}
+
+                {(lesson.isDone || !lesson.isBlocked) && (
+                  <div className="absolute top-5 right-5">
+                    <CircleCheck />
+                  </div>
+                )}
+
+                {(!lesson.isDone && !lesson.isBlocked) && <div className='mt-4'>
+                  <Progress className='bg-[#E8DEF8]' value={lesson.progress} />
+                </div>}
               </div>
-
-              {lesson.isBlocked && (
-                <div className="absolute top-5 right-5">
-                  <Lock />
-                </div>
-              )}
-
-              {(lesson.isDone || !lesson.isBlocked) && (
-                <div className="absolute top-5 right-5">
-                  <CircleCheck />
-                </div>
-              )}
-
-              {(!lesson.isDone && !lesson.isBlocked) && <div className='mt-4'>
-                <Progress className='bg-[#E8DEF8]' value={lesson.progress} />
-              </div>}
-            </div>
+            </Link>
           );
         })}
       </section>
