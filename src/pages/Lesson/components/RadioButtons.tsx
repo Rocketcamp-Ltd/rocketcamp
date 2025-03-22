@@ -25,12 +25,9 @@ export const RadioButtons: React.FC<RadioButtonsProps> = ({ items, onSelect }) =
         {items.map(item => (
           <label
             key={item.id}
-            className={cn(
-              "flex cursor-pointer items-center rounded-md p-2 transition-all duration-300",
-              {
-                "hover:bg-gray-200": selectedId !== item.id
-              }
-            )}
+            className={cn('flex cursor-pointer items-center rounded-md p-2 transition-all duration-300', {
+              'hover:bg-gray-200': selectedId !== item.id,
+            })}
           >
             <div className="relative mr-3 flex h-5 w-5 items-center justify-center">
               <input
@@ -45,9 +42,11 @@ export const RadioButtons: React.FC<RadioButtonsProps> = ({ items, onSelect }) =
               <div className="flex h-5 w-5 items-center justify-center rounded-full border border-gray-400 transition-all peer-checked:border-2 peer-checked:border-black"></div>
               <div className="absolute h-2.5 w-2.5 scale-0 rounded-full bg-black transition-transform peer-checked:scale-100"></div>
             </div>
-            <span className={cn("text-base", {
-              "font-medium": selectedId === item.id
-            })}>
+            <span
+              className={cn('text-base', {
+                'font-medium': selectedId === item.id,
+              })}
+            >
               {item.label}
             </span>
           </label>

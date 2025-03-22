@@ -1,5 +1,6 @@
-import React, { useRef, useCallback } from 'react';
+import React, { useRef, useCallback, useState, useEffect } from 'react';
 import type { LessonComponent } from '@/types/lessons';
+import { useLocation } from 'react-router-dom';
 
 import { useProgressStore } from '@/app/layouts/LessonLayout';
 import { Button } from '@/app/components/ui/button';
@@ -7,6 +8,7 @@ import { Button } from '@/app/components/ui/button';
 import { SelectedButtons } from './components/SelectedButtons';
 import { RadioButtons } from './components/RadioButtons';
 import { LessonIntro } from './components/LessonIntro';
+import { CompleteCourseFlow } from './components/CompleteCourseFlow';
 
 import { useLessonState } from './hooks/useLessonState';
 import { useLessonNavigation } from './hooks/useLessonNavigation';
@@ -19,8 +21,12 @@ const LessonPage: React.FC = () => {
 
   const { lesson, startedLesson, startLesson } = useLessonState(mock);
 
+  const [courseAlias, setCourseAlias] = useState<string | null>(null);
+
   const lessonContentRef = useRef<HTMLDivElement>(null);
   const stepsRefs = useRef<{ [key: number]: HTMLDivElement | null }>({});
+
+  const location = useLocation();
 
   const {
     currentStepIndex,
@@ -30,16 +36,16 @@ const LessonPage: React.FC = () => {
     setStepVisible,
     isLastStep,
     isCourseCompleted,
-    completeCourse
+    completeCourse,
   } = useLessonNavigation({
     totalSteps: lesson.steps.length,
-    onProgressChange: setProgress
+    onProgressChange: setProgress,
   });
 
   const { scrollToStep, registerStepRef } = useScrollAnimation({
     stepsRefs,
     containerRef: lessonContentRef,
-    onScrollComplete: setStepVisible
+    onScrollComplete: setStepVisible,
   });
 
   const handleContinue = useCallback(() => {
@@ -48,7 +54,6 @@ const LessonPage: React.FC = () => {
     }
 
     if (isLastStep) {
-      // Только после последнего шага завершаем курс
       completeCourse();
       return;
     }
@@ -65,28 +70,39 @@ const LessonPage: React.FC = () => {
     handleContinue();
   }, [handleContinue]);
 
-  const renderActionComponent = useCallback((component: LessonComponent | null) => {
-    if (!component) return null;
+  const renderActionComponent = useCallback(
+    (component: LessonComponent | null) => {
+      if (!component) return null;
 
-    switch (component.type) {
-      case 'selectedButtons':
-        return (
-          <SelectedButtons
-            items={component.items}
-            onSelect={handleOptionSelect}
-          />
-        );
-      case 'radioButtons':
-        return (
-          <RadioButtons
-            items={component.items}
-            onSelect={handleOptionSelect}
-          />
-        );
-      default:
-        return null;
+      switch (component.type) {
+        case 'selectedButtons':
+          return (
+            <SelectedButtons
+              items={component.items}
+              onSelect={handleOptionSelect}
+            />
+          );
+        case 'radioButtons':
+          return (
+            <RadioButtons
+              items={component.items}
+              onSelect={handleOptionSelect}
+            />
+          );
+        default:
+          return null;
+      }
+    },
+    [handleOptionSelect],
+  );
+
+  useEffect(() => {
+    const alias = location.pathname.split('/')[2];
+
+    if (alias) {
+      setCourseAlias(alias);
     }
-  }, [handleOptionSelect]);
+  }, [location.pathname, completeCourse]);
 
   return (
     <div
@@ -94,9 +110,7 @@ const LessonPage: React.FC = () => {
       ref={lessonContentRef}
     >
       {isCourseCompleted ? (
-        <div className="flex h-[60vh] items-center justify-center">
-          <h2 className="text-4xl font-bold">Course Complete</h2>
-        </div>
+        <CompleteCourseFlow lessonId={lesson.id} courseAlias={courseAlias} />
       ) : (
         <>
           <LessonIntro
@@ -120,7 +134,9 @@ const LessonPage: React.FC = () => {
                 />
 
                 {lesson.steps[stepIndex].coverAnnotation && (
-                  <div className="mb-8 text-center text-sm text-gray-500">{lesson.steps[stepIndex].coverAnnotation}</div>
+                  <div className="mb-8 text-center text-sm text-gray-500">
+                    {lesson.steps[stepIndex].coverAnnotation}
+                  </div>
                 )}
 
                 <div
@@ -132,12 +148,9 @@ const LessonPage: React.FC = () => {
                   <div className="mb-8">{renderActionComponent(lesson.steps[stepIndex].component)}</div>
                 )}
 
-                {stepIndex === currentStepIndex &&
-                  !lesson.steps[stepIndex].component && (
-                    <Button onClick={handleContinue}>
-                      {isLastStep ? "Complete Course" : "Continue"}
-                    </Button>
-                  )}
+                {stepIndex === currentStepIndex && !lesson.steps[stepIndex].component && (
+                  <Button onClick={handleContinue}>Continue</Button>
+                )}
               </div>
             ))}
         </>

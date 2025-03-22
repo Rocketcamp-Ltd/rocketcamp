@@ -11,12 +11,15 @@ export function useLessonNavigation({ totalSteps, onProgressChange }: UseLessonN
   const [stepOpacity, setStepOpacity] = useState<{ [key: number]: number }>({});
   const [isCompleted, setIsCompleted] = useState<boolean>(false);
 
-  const calculateProgress = useCallback((index: number) => {
-    const totalStepsWithIntro = totalSteps + 1;
-    const currentStep = index + 1;
+  const calculateProgress = useCallback(
+    (index: number) => {
+      const totalStepsWithIntro = totalSteps + 1;
+      const currentStep = index + 1;
 
-    return Math.round((currentStep / totalStepsWithIntro) * 100);
-  }, [totalSteps]);
+      return Math.round((currentStep / totalStepsWithIntro) * 100);
+    },
+    [totalSteps],
+  );
 
   const goToNextStep = useCallback(() => {
     if (currentStepIndex === -1) {
@@ -56,6 +59,6 @@ export function useLessonNavigation({ totalSteps, onProgressChange }: UseLessonN
     setStepVisible,
     isLastStep: currentStepIndex === totalSteps - 1,
     isCourseCompleted: isCompleted,
-    completeCourse
+    completeCourse,
   };
 }

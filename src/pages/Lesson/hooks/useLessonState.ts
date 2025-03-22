@@ -13,6 +13,6 @@ export function useLessonState(initialLessonData: LessonDetails) {
     lesson,
     setLesson,
     startedLesson,
-    startLesson
+    startLesson,
   };
 }
