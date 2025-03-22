@@ -1,106 +1,63 @@
-import React, { useState, useRef } from 'react';
-import type { LessonDetails, LessonComponent } from '@/types/lessons';
+import React, { useRef, useCallback } from 'react';
+import type { LessonComponent } from '@/types/lessons';
 
 import { useProgressStore } from '@/app/layouts/LessonLayout';
-
 import { Button } from '@/app/components/ui/button';
 
 import { SelectedButtons } from './components/SelectedButtons';
 import { RadioButtons } from './components/RadioButtons';
 import { LessonIntro } from './components/LessonIntro';
 
+import { useLessonState } from './hooks/useLessonState';
+import { useLessonNavigation } from './hooks/useLessonNavigation';
+import { useScrollAnimation } from './hooks/useScrollAnimation';
+
 import { mock } from './mock';
 
 const LessonPage: React.FC = () => {
-  const { progress, setProgress } = useProgressStore();
-  const [lesson, setLesson] = useState<LessonDetails>(mock);
-  const [startedLesson, setStartedLesson] = useState<boolean>(false);
-  const [currentStepIndex, setCurrentStepIndex] = useState<number>(-1);
-  const [visibleSteps, setVisibleSteps] = useState<number[]>([]);
-  const [stepOpacity, setStepOpacity] = useState<{ [key: number]: number }>({});
+  const { setProgress } = useProgressStore();
+
+  const { lesson, startedLesson, startLesson } = useLessonState(mock);
 
   const lessonContentRef = useRef<HTMLDivElement>(null);
   const stepsRefs = useRef<{ [key: number]: HTMLDivElement | null }>({});
 
-  const calculateProgress = (index: number) => {
-    const totalSteps = lesson.steps.length + 1;
-    const currentStep = index + 1;
-    return Math.round((currentStep / totalSteps) * 100);
-  };
+  const {
+    currentStepIndex,
+    visibleSteps,
+    stepOpacity,
+    goToNextStep,
+    setStepVisible,
+    isLastStep
+  } = useLessonNavigation({
+    totalSteps: lesson.steps.length,
+    onProgressChange: setProgress
+  });
 
-  const handleContinue = () => {
+  const { scrollToStep, registerStepRef } = useScrollAnimation({
+    stepsRefs,
+    containerRef: lessonContentRef,
+    onScrollComplete: setStepVisible
+  });
+
+  const handleContinue = useCallback(() => {
     if (currentStepIndex === -1) {
-      setStartedLesson(true);
-      const newIndex = 0;
-      setCurrentStepIndex(newIndex);
-      setVisibleSteps([...visibleSteps, newIndex]);
-      setProgress(calculateProgress(newIndex));
+      startLesson();
+    }
 
-      setStepOpacity(prev => ({ ...prev, [newIndex]: 0 }));
-
-      setTimeout(() => {
-        scrollToStep(newIndex);
-      }, 100);
-    } else if (currentStepIndex < lesson.steps.length - 1) {
-      const newIndex = currentStepIndex + 1;
-      setCurrentStepIndex(newIndex);
-      setVisibleSteps([...visibleSteps, newIndex]);
-      setProgress(calculateProgress(newIndex));
-
-      setStepOpacity(prev => ({ ...prev, [newIndex]: 0 }));
-
+    const newIndex = goToNextStep();
+    if (newIndex !== -1) {
       setTimeout(() => {
         scrollToStep(newIndex);
       }, 100);
     }
-  };
+  }, [currentStepIndex, goToNextStep, scrollToStep, startLesson]);
 
-  const scrollToStep = (stepIndex: number) => {
-    if (stepsRefs.current[stepIndex] && lessonContentRef.current) {
-      const targetElement = stepsRefs.current[stepIndex];
-      const headerHeight = 80;
-      const yOffset = targetElement.offsetTop;
-
-      const targetPosition = yOffset - headerHeight;
-
-      const startPosition = window.pageYOffset;
-      const distance = targetPosition - startPosition;
-      const duration = 800;
-      let startTime: number | null = null;
-
-      function animation(currentTime: number) {
-        if (startTime === null) startTime = currentTime;
-        const elapsedTime = currentTime - startTime;
-        const progress = Math.min(elapsedTime / duration, 1);
-
-        const easeInOut = (t: number) => {
-          return t < 0.5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1;
-        };
-
-        window.scrollTo(0, startPosition + distance * easeInOut(progress));
-
-        if (elapsedTime < duration) {
-          requestAnimationFrame(animation);
-        } else {
-          setTimeout(() => {
-            setStepOpacity(prev => ({ ...prev, [stepIndex]: 1 }));
-          }, 200);
-        }
-      }
-
-      requestAnimationFrame(animation);
-    }
-  };
-
-  const registerStepRef = (index: number, ref: HTMLDivElement | null) => {
-    stepsRefs.current[index] = ref;
-  };
-
-  const handleOptionSelect = () => {
+  const handleOptionSelect = useCallback(() => {
     handleContinue();
-  };
+  }, [handleContinue]);
 
-  const renderActionComponent = (component: LessonComponent | null) => {
+  const renderActionComponent = useCallback((component: LessonComponent | null) => {
     if (!component) return null;
 
     switch (component.type) {
@@ -121,7 +78,7 @@ const LessonPage: React.FC = () => {
       default:
         return null;
     }
-  };
+  }, [handleOptionSelect]);
 
   return (
     <div
@@ -162,8 +119,10 @@ const LessonPage: React.FC = () => {
             )}
 
             {stepIndex === currentStepIndex &&
-              stepIndex < lesson.steps.length - 1 &&
-              !lesson.steps[stepIndex].component && <Button onClick={handleContinue}>Continue</Button>}
+              !isLastStep &&
+              !lesson.steps[stepIndex].component && (
+                <Button onClick={handleContinue}>Continue</Button>
+              )}
           </div>
         ))}
     </div>
