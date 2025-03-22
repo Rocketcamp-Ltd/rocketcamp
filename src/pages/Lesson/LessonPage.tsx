@@ -28,7 +28,9 @@ const LessonPage: React.FC = () => {
     stepOpacity,
     goToNextStep,
     setStepVisible,
-    isLastStep
+    isLastStep,
+    isCourseCompleted,
+    completeCourse
   } = useLessonNavigation({
     totalSteps: lesson.steps.length,
     onProgressChange: setProgress
@@ -45,13 +47,19 @@ const LessonPage: React.FC = () => {
       startLesson();
     }
 
+    if (isLastStep) {
+      // Только после последнего шага завершаем курс
+      completeCourse();
+      return;
+    }
+
     const newIndex = goToNextStep();
     if (newIndex !== -1) {
       setTimeout(() => {
         scrollToStep(newIndex);
       }, 100);
     }
-  }, [currentStepIndex, goToNextStep, scrollToStep, startLesson]);
+  }, [currentStepIndex, goToNextStep, scrollToStep, startLesson, isLastStep, completeCourse]);
 
   const handleOptionSelect = useCallback(() => {
     handleContinue();
@@ -85,46 +93,55 @@ const LessonPage: React.FC = () => {
       className="mx-auto max-w-[640px] pt-24 pb-24"
       ref={lessonContentRef}
     >
-      <LessonIntro
-        lesson={lesson}
-        startedLesson={startedLesson}
-        handleContinue={handleContinue}
-      />
+      {isCourseCompleted ? (
+        <div className="flex h-[60vh] items-center justify-center">
+          <h2 className="text-4xl font-bold">Course Complete</h2>
+        </div>
+      ) : (
+        <>
+          <LessonIntro
+            lesson={lesson}
+            startedLesson={startedLesson}
+            handleContinue={handleContinue}
+          />
 
-      {startedLesson &&
-        visibleSteps.map(stepIndex => (
-          <div
-            key={`step-${stepIndex}`}
-            ref={ref => registerStepRef(stepIndex, ref)}
-            className="mb-16 transition-opacity duration-700"
-            style={{ opacity: stepOpacity[stepIndex] || 0 }}
-          >
-            <img
-              src={lesson.steps[stepIndex].cover}
-              alt=""
-              className="mb-2 h-[384px] w-full object-cover"
-            />
+          {startedLesson &&
+            visibleSteps.map(stepIndex => (
+              <div
+                key={`step-${stepIndex}`}
+                ref={ref => registerStepRef(stepIndex, ref)}
+                className="mb-16 transition-opacity duration-700"
+                style={{ opacity: stepOpacity[stepIndex] || 0 }}
+              >
+                <img
+                  src={lesson.steps[stepIndex].cover}
+                  alt=""
+                  className="mb-2 h-[384px] w-full object-cover"
+                />
 
-            {lesson.steps[stepIndex].coverAnnotation && (
-              <div className="mb-8 text-center text-sm text-gray-500">{lesson.steps[stepIndex].coverAnnotation}</div>
-            )}
+                {lesson.steps[stepIndex].coverAnnotation && (
+                  <div className="mb-8 text-center text-sm text-gray-500">{lesson.steps[stepIndex].coverAnnotation}</div>
+                )}
 
-            <div
-              className="mb-8"
-              dangerouslySetInnerHTML={{ __html: lesson.steps[stepIndex].text }}
-            ></div>
+                <div
+                  className="mb-8"
+                  dangerouslySetInnerHTML={{ __html: lesson.steps[stepIndex].text }}
+                ></div>
 
-            {lesson.steps[stepIndex].component && (
-              <div className="mb-8">{renderActionComponent(lesson.steps[stepIndex].component)}</div>
-            )}
+                {lesson.steps[stepIndex].component && (
+                  <div className="mb-8">{renderActionComponent(lesson.steps[stepIndex].component)}</div>
+                )}
 
-            {stepIndex === currentStepIndex &&
-              !isLastStep &&
-              !lesson.steps[stepIndex].component && (
-                <Button onClick={handleContinue}>Continue</Button>
-              )}
-          </div>
-        ))}
+                {stepIndex === currentStepIndex &&
+                  !lesson.steps[stepIndex].component && (
+                    <Button onClick={handleContinue}>
+                      {isLastStep ? "Complete Course" : "Continue"}
+                    </Button>
+                  )}
+              </div>
+            ))}
+        </>
+      )}
     </div>
   );
 };

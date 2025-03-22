@@ -64,7 +64,7 @@ export const mock: LessonDetails = {
       id: 5,
       cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
       coverAnnotation: 'cover annotation',
-      text: 'text',
+      text: 'text пропущен',
       isDone: false,
       component: {
         type: 'selectedButtons',
