@@ -9,6 +9,7 @@ import { SelectedButtons } from './components/SelectedButtons';
 import { RadioButtons } from './components/RadioButtons';
 import { LessonIntro } from './components/LessonIntro';
 import { CompleteCourseFlow } from './components/CompleteCourseFlow';
+import { Slider } from './components/Slider';
 
 import { useLessonState } from './hooks/useLessonState';
 import { useLessonNavigation } from './hooks/useLessonNavigation';
@@ -40,6 +41,7 @@ const LessonPage: React.FC = () => {
   } = useLessonNavigation({
     totalSteps: lesson.steps.length,
     onProgressChange: setProgress,
+    lessonId: lesson.id.toString(),
   });
 
   const { scrollToStep, registerStepRef } = useScrollAnimation({
@@ -89,6 +91,10 @@ const LessonPage: React.FC = () => {
               onSelect={handleOptionSelect}
             />
           );
+        case 'slider':
+          return (
+            <Slider items={component.items} />
+          );
         default:
           return null;
       }
@@ -104,13 +110,24 @@ const LessonPage: React.FC = () => {
     }
   }, [location.pathname, completeCourse]);
 
+  useEffect(() => {
+    if (startedLesson && currentStepIndex > 0 && visibleSteps.length > 0) {
+      setTimeout(() => {
+        scrollToStep(currentStepIndex);
+      }, 300);
+    }
+  }, [currentStepIndex, scrollToStep, startedLesson, visibleSteps.length]);
+
   return (
     <div
       className="mx-auto max-w-[640px] pt-24 pb-24"
       ref={lessonContentRef}
     >
       {isCourseCompleted ? (
-        <CompleteCourseFlow lessonId={lesson.id} courseAlias={courseAlias} />
+        <CompleteCourseFlow
+          lessonId={lesson.id}
+          courseAlias={courseAlias}
+        />
       ) : (
         <>
           <LessonIntro
@@ -148,7 +165,7 @@ const LessonPage: React.FC = () => {
                   <div className="mb-8">{renderActionComponent(lesson.steps[stepIndex].component)}</div>
                 )}
 
-                {stepIndex === currentStepIndex && !lesson.steps[stepIndex].component && (
+                {stepIndex === currentStepIndex && !lesson.steps[stepIndex].component || lesson.steps[stepIndex].component?.type === 'slider' && (
                   <Button onClick={handleContinue}>Continue</Button>
                 )}
               </div>
