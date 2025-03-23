@@ -40,6 +40,7 @@ const LessonPage: React.FC = () => {
   } = useLessonNavigation({
     totalSteps: lesson.steps.length,
     onProgressChange: setProgress,
+    lessonId: lesson.id.toString(),
   });
 
   const { scrollToStep, registerStepRef } = useScrollAnimation({
@@ -104,13 +105,24 @@ const LessonPage: React.FC = () => {
     }
   }, [location.pathname, completeCourse]);
 
+  useEffect(() => {
+    if (startedLesson && currentStepIndex > 0 && visibleSteps.length > 0) {
+      setTimeout(() => {
+        scrollToStep(currentStepIndex);
+      }, 300);
+    }
+  }, [currentStepIndex, scrollToStep, startedLesson, visibleSteps.length]);
+
   return (
     <div
       className="mx-auto max-w-[640px] pt-24 pb-24"
       ref={lessonContentRef}
     >
       {isCourseCompleted ? (
-        <CompleteCourseFlow lessonId={lesson.id} courseAlias={courseAlias} />
+        <CompleteCourseFlow
+          lessonId={lesson.id}
+          courseAlias={courseAlias}
+        />
       ) : (
         <>
           <LessonIntro
