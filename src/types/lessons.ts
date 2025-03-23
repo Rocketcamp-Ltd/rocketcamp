@@ -28,10 +28,38 @@ export interface LessonStep {
   component: LessonComponent | null;
 }
 
-export interface LessonComponent {
-  type: 'selectedButtons' | 'radioButtons';
+export type LessonComponent = SelectedButtonsComponent | RadioButtonsComponent | SliderComponent;
+
+interface SelectedButtonsComponent {
+  type: 'selectedButtons';
   items: {
     id: number;
     label: string;
   }[];
+}
+
+interface RadioButtonsComponent {
+  type: 'radioButtons';
+  items: {
+    id: number;
+    label: string;
+  }[];
+}
+
+interface SliderTextItem {
+  id: number;
+  componentType: 'text';
+  text: string;
+}
+
+interface SliderImageItem {
+  id: number;
+  componentType: 'image';
+  src: string;
+  annotation?: string;
+}
+
+interface SliderComponent {
+  type: 'slider';
+  items: (SliderTextItem | SliderImageItem)[];
 }

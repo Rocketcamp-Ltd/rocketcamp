@@ -9,6 +9,7 @@ import { SelectedButtons } from './components/SelectedButtons';
 import { RadioButtons } from './components/RadioButtons';
 import { LessonIntro } from './components/LessonIntro';
 import { CompleteCourseFlow } from './components/CompleteCourseFlow';
+import { Slider } from './components/Slider';
 
 import { useLessonState } from './hooks/useLessonState';
 import { useLessonNavigation } from './hooks/useLessonNavigation';
@@ -90,6 +91,10 @@ const LessonPage: React.FC = () => {
               onSelect={handleOptionSelect}
             />
           );
+        case 'slider':
+          return (
+            <Slider items={component.items} />
+          );
         default:
           return null;
       }
@@ -160,7 +165,7 @@ const LessonPage: React.FC = () => {
                   <div className="mb-8">{renderActionComponent(lesson.steps[stepIndex].component)}</div>
                 )}
 
-                {stepIndex === currentStepIndex && !lesson.steps[stepIndex].component && (
+                {stepIndex === currentStepIndex && !lesson.steps[stepIndex].component || lesson.steps[stepIndex].component?.type === 'slider' && (
                   <Button onClick={handleContinue}>Continue</Button>
                 )}
               </div>

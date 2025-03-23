@@ -33,6 +33,35 @@ export const mock: LessonDetails = {
       },
     },
     {
+      id: 236,
+      cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+      coverAnnotation: 'cover annotation',
+      text: 'Which visualization would you choose for this? Which visualization would you choose for this? Which visualization would you choose for this? Which visualization would you choose for this? Which visualization would you choose for this? Which visualization would you choose for this? Which visualization would you choose for this? Which visualization would you choose for this? Which visualization would you choose for this? Which visualization would you choose for this?Which visualization would you choose for this?Which visualization would you choose for this?Which visualization would you choose for this?Which visualization would you choose for this?Which visualization would you choose for this?Which visualization would you choose for this?Which visualization would you choose for this?Which visualization would you choose for this?Which visualization would you choose for this?',
+      isDone: false,
+      component: {
+        type: 'slider',
+        items: [
+          {
+            id: 1,
+            componentType: 'text',
+            text: 'text text texttexttexttexttexttexttext text text text',
+          },
+          {
+            id: 2,
+            componentType: 'image',
+            src: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+            annotation: 'annotation',
+          },
+          {
+            id: 3,
+            componentType: 'image',
+            src: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+            annotation: 'annotation',
+          },
+        ],
+      },
+    },
+    {
       id: 3,
       cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
       coverAnnotation: 'cover annotation',
