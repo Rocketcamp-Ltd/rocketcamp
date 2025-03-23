@@ -1,7 +1,8 @@
 import React from 'react';
-import { User, ArrowLeft } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
+import { UserButton } from '@/app/components/layouts/UserButton/UserButton';
 import { Progress } from '@/app/components/ui/progress';
 
 interface Props {
@@ -16,7 +17,7 @@ export const ProgressHeader: React.FC<Props> = props => {
   const { hasBack = true, onBack, hasProfile = true, progress, className } = props;
 
   return (
-    <header className={cn('flex items-center justify-between bg-gray-400 px-8 py-4', className)}>
+    <header className={cn('flex items-center justify-between bg-[#D9D9D9] px-8 py-3', className)}>
       <div>
         {hasBack && typeof onBack === 'function' && (
           <button onClick={onBack}>
@@ -32,9 +33,7 @@ export const ProgressHeader: React.FC<Props> = props => {
       </div>
       <div>
         {hasProfile && (
-          <div>
-            <User />
-          </div>
+          <UserButton />
         )}
       </div>
     </header>

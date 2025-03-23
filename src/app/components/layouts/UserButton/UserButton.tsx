@@ -42,11 +42,11 @@ export const UserButton: React.FC = () => {
         onClick={toggleDropdown}
         className="flex items-center justify-center rounded-full p-2 hover:bg-gray-100 focus:outline-none"
       >
-        <User className="size-10 text-gray-700" />
+        <User className="size-8 text-gray-700" />
       </button>
 
       {isOpen && (
-        <div className="ring-opacity-5 absolute right-0 mt-0.5 w-48 origin-top-right rounded-md bg-white shadow-lg focus:outline-none">
+        <div className="ring-opacity-5 z-40 absolute right-0 mt-0.5 w-48 origin-top-right rounded-md bg-white shadow-lg focus:outline-none">
           <div className="py-1">
             <Link
               to={RoutePath['profile-settings']}

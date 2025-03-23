@@ -5,7 +5,7 @@ import { UserButton } from '@/app/components/layouts/UserButton/UserButton';
 
 export const MainHeader: React.FC = () => {
   return (
-    <header className="flex items-center justify-between px-14 shadow-2xl">
+    <header className="flex items-center justify-between px-14 shadow-xl">
       <div>
         <Logo />
       </div>
