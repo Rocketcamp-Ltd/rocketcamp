@@ -1,5 +1,6 @@
 import type { AxiosInstance } from 'axios';
 import type { User } from '@/types/user';
+import type { AuthOnboarding } from '@/types/authOnboarding';
 
 interface LoginPayload {
   email: string;
@@ -22,4 +23,6 @@ export const authModule = (client: AxiosInstance) => ({
   register(payload: LoginPayload): Promise<User> {
     return client.post('/auth/register', payload);
   },
+
+  getOnboarding(): Promise<AuthOnboarding> {},
 });

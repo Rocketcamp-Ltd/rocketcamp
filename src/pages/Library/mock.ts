@@ -1,6 +1,6 @@
 import type { Course } from '@/types/courses';
 
-export const continueCourses: Course[] = [
+export const bookmarked: Course[] = [
   {
     id: 1,
     cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
@@ -73,7 +73,7 @@ export const continueCourses: Course[] = [
   },
 ];
 
-export const recommended: Course[] = [
+export const completed: Course[] = [
   {
     id: 1,
     cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
@@ -145,9 +145,3 @@ export const recommended: Course[] = [
     progress: 0,
   },
 ];
-
-export const other: { [key: string]: Course[] } = {
-  title: [...continueCourses],
-  title2: [...recommended],
-  title3: [...continueCourses, ...recommended].slice(0, 5),
-};

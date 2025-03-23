@@ -56,7 +56,7 @@ export const RoutePath: Record<AppRoutes, string> = {
   [AppRoutes.FAQ]: '/faq',
   [AppRoutes.PROFILE_SETTINGS]: '/profile-settings',
   [AppRoutes.COURSE]: '/course/:id',
-  [AppRoutes.LESSON]: '/lesson/:id',
+  [AppRoutes.LESSON]: '/lesson/:courseId/:lessonId',
   [AppRoutes.COURSES_BY_ALIAS]: '/courses/:alias',
 };
 
