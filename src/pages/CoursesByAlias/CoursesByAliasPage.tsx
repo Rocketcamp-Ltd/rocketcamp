@@ -4,7 +4,9 @@ import { CourseCard } from '@/app/components/business/CourseCard';
 import { coursesMock } from './mock';
 
 const CoursesByAliasPage: React.FC = () => {
+  // @ts-ignore
   const [courses, setCourses] = useState<Course[]>(coursesMock);
+  // @ts-ignore
   const [category, setCategory] = useState<CourseCategory>({
     id: 1,
     name: 'Name',

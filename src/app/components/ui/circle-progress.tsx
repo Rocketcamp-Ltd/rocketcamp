@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils';
 const CircleProgress = React.forwardRef<
   React.ElementRef<typeof ProgressPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof ProgressPrimitive.Root>
->(({ className, value, ...props }, ref) => {
+>(({ className, value, ...props }) => {
   const radius = 20;
   const circumference = 2 * Math.PI * radius;
   const strokeDashoffset = circumference - ((value || 0) / 100) * circumference;

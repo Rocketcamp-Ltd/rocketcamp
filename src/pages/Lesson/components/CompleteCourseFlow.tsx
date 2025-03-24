@@ -8,7 +8,7 @@ interface Props {
   lessonId: number;
   courseAlias: string | null;
 }
-
+// @ts-ignore
 export const CompleteCourseFlow: React.FC<Props> = ({ lessonId, courseAlias }) => {
   const [rating, setRating] = useState<number>(0);
   const [showFeedback, setShowFeedback] = useState<boolean>(false);

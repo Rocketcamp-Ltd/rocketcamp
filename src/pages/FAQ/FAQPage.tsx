@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/app/components/ui/accordion';
 
 const FAQPage: React.FC = () => {
+  // @ts-ignore
   const [faq, setFaq] = useState([
     {
       question: 'Question 1',

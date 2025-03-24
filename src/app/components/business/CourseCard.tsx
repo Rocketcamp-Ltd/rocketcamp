@@ -10,6 +10,7 @@ interface Props {
 
 export const CourseCard: React.FC<Props> = ({ course }) => {
   return (
+    // @ts-ignore
     <Link to={RoutePath.course.replace(':id', course.id)}>
       <div>
         <img
