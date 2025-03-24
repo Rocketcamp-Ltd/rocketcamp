@@ -10,8 +10,11 @@ interface CourseMap {
 }
 
 const HomePage = () => {
+  // @ts-ignore
   const [continueCourses, setContinueCourses] = useState<Course[]>(cont);
+  // @ts-ignore
   const [recommended, setRecommended] = useState<Course[]>(rec);
+  // @ts-ignore
   const [courses, setCourses] = useState<CourseMap>(other);
 
   return (

@@ -23,6 +23,7 @@ interface StepData {
 const AuthOnboardingPage: React.FC = () => {
   const navigate = useNavigate();
 
+  // @ts-ignore
   const [onboarding, setOnboarding] = useState(mockOnb);
   const [currentOnboarding, setCurrentOnboarding] = useState(onboarding[0]);
   const [inputValue, setInputValue] = useState('');

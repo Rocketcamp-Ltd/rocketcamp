@@ -9,7 +9,9 @@ import { RoutePath } from '@/app/router/config';
 import { categoriesMock, courses } from './mock';
 
 const CoursesPage: React.FC = () => {
+  // @ts-ignore
   const [listCourses, setListCourses] = useState(courses);
+  // @ts-ignore
   const [categories, setCategories] = useState<CourseCategory[]>([...categoriesMock]);
   const [filters, setFilters] = useState<CourseCategory[]>([]);
 

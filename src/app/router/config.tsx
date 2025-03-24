@@ -64,7 +64,11 @@ export const RoutePath: Record<AppRoutes, string> = {
 export const routeConfig: Record<AppRoutes, RouteObject> = {
   [AppRoutes.HOME]: {
     path: RoutePath[AppRoutes.HOME],
-    element: <HomePageWithLayout />,
+    element: (
+      <ProtectedRoute>
+        <HomePageWithLayout />
+      </ProtectedRoute>
+    ),
   },
   [AppRoutes.LOGIN]: {
     path: RoutePath[AppRoutes.LOGIN],

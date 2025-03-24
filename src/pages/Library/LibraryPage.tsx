@@ -7,7 +7,9 @@ import { CourseCarousel } from '@/app/components/business/CourseCarousel';
 import { bookmarked, completed } from './mock';
 
 const LibraryPage: React.FC = () => {
+  // @ts-ignore
   const [bookmarkedCourses, setBookmarkedCourses] = useState<Course[]>(bookmarked);
+  // @ts-ignore
   const [completedCourses, setCompletedCourses] = useState<Course[]>(completed);
 
   return (

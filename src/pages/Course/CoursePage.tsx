@@ -11,6 +11,7 @@ import { RoutePath } from '@/app/router/config';
 import { mock } from './mock';
 
 const CoursePage: React.FC = () => {
+  // @ts-ignore
   const [course, setCourse] = useState(mock);
 
   const navigate = useNavigate();
