@@ -9,4 +9,5 @@ export interface RegisterData {
   errors?: {
     [key in FormFieldNames | 'general']?: string;
   };
+  success?: boolean;
 }
