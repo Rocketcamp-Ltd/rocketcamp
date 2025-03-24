@@ -92,9 +92,7 @@ const LessonPage: React.FC = () => {
             />
           );
         case 'slider':
-          return (
-            <Slider items={component.items} />
-          );
+          return <Slider items={component.items} />;
         default:
           return null;
       }
@@ -165,9 +163,10 @@ const LessonPage: React.FC = () => {
                   <div className="mb-8">{renderActionComponent(lesson.steps[stepIndex].component)}</div>
                 )}
 
-                {stepIndex === currentStepIndex && !lesson.steps[stepIndex].component || lesson.steps[stepIndex].component?.type === 'slider' && (
-                  <Button onClick={handleContinue}>Continue</Button>
-                )}
+                {(stepIndex === currentStepIndex && !lesson.steps[stepIndex].component) ||
+                  (lesson.steps[stepIndex].component?.type === 'slider' && (
+                    <Button onClick={handleContinue}>Continue</Button>
+                  ))}
               </div>
             ))}
         </>

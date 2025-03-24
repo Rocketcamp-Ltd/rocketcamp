@@ -9,4 +9,5 @@ export interface LoginData {
   errors?: {
     [key in FormFieldNames | 'general']?: string;
   };
+  success?: boolean;
 }
