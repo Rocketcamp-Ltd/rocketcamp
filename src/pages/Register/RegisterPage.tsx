@@ -8,6 +8,7 @@ import { useClient } from '@/lib/useClient';
 import { validateLogin } from './utils/validation';
 import { getErrorMessage } from './utils/getErrorMessage';
 import { FormFieldNames, type RegisterData } from './types';
+import { Link } from 'react-router-dom';
 
 const initialState: RegisterData = {
   email: '',
@@ -33,6 +34,11 @@ const formAction = async (_: RegisterData, formData: FormData) => {
     }
 
     toast.success('Check email for verification ');
+
+    // @todo: переделать на что-то нормальное
+    setTimeout(() => {
+      window.location.href = '/login';
+    }, 1500);
 
     return { email, password };
   } else {
@@ -95,6 +101,9 @@ const LoginPage: React.FC = () => {
 
         {state.errors?.general && <p className="mt-2 mb-3 text-sm text-red-500">{state.errors.general}</p>}
 
+        <Link to="/login">
+          <p className="text-sm text-[#1E1E1E]">Already have an account? Sign in</p>
+        </Link>
         <Button
           className="mt-4 w-full"
           type="submit"

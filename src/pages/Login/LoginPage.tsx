@@ -1,4 +1,6 @@
 import React, { useActionState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useAuth } from '@/app/hooks/useAuth';
 
 import { Input } from '@/app/components/ui/input';
 import { Button } from '@/app/components/ui/button';
@@ -8,7 +10,6 @@ import { validateLogin } from './utils/validation';
 import { useClient } from '@/lib/useClient';
 import { getErrorMessage } from './utils/getErrorMessage';
 import { FormFieldNames, type LoginData } from './types';
-import { useNavigate } from 'react-router-dom';
 
 const initialState: LoginData = {
   email: '',
@@ -24,23 +25,22 @@ const formAction = async (_: LoginData, formData: FormData) => {
   const password = formData.get(FormFieldNames.PASSWORD) as string;
 
   const validationResult = await validateLogin({ email, password });
-  const navigate = useNavigate();
 
   if (validationResult.success) {
-    const { error } = await supabase.auth.signInWithPassword({
+    const { data } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
 
-    if (error) {
-      return { email, password, errors: { general: error.message } };
+    if (data?.session?.access_token) {
+      localStorage.setItem('Authorization', data.session.access_token);
+
+      toast.success('Login successful');
+
+      return { email, password, success: true };
+    } else {
+      return { email, password, errors: { general: 'Authentication failed' } };
     }
-
-    toast.success('Login successful');
-
-    navigate('/');
-
-    return { email, password, success: true };
   } else {
     const errorMessages: { [key: string]: string } = {};
 
@@ -61,6 +61,20 @@ const formAction = async (_: LoginData, formData: FormData) => {
 
 const LoginPage: React.FC = () => {
   const [state, action, pending] = useActionState<LoginData, FormData>(formAction, initialState);
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { login } = useAuth();
+
+  React.useEffect(() => {
+    if (state.success) {
+      const token = localStorage.getItem('Authorization');
+      if (token) {
+        login(token);
+        const from = location.state?.from?.pathname || '/';
+        navigate(from, { replace: true });
+      }
+    }
+  }, [state.success, navigate, location, login]);
 
   return (
     <>
@@ -101,6 +115,10 @@ const LoginPage: React.FC = () => {
         )}
 
         {state.errors?.general && <p className="mt-2 mb-3 text-sm text-red-500">{state.errors.general}</p>}
+
+        <Link to="/register">
+          <p className="text-sm text-[#1E1E1E]">Don't have an account? Sign up</p>
+        </Link>
 
         <Button
           className="mt-4 w-full"

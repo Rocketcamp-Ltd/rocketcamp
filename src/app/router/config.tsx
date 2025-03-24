@@ -19,6 +19,7 @@ import { AuthLayout } from '../layouts/AuthLayout';
 import { OnboardingLayout } from '../layouts/OnboardingLayout';
 import { CourseLayout } from '../layouts/CourseLayout';
 import { LessonLayout } from '../layouts/LessonLayout';
+import { ProtectedRoute } from './ProtectedRoute';
 
 export enum AppRoutes {
   HOME = 'home',
@@ -75,34 +76,66 @@ export const routeConfig: Record<AppRoutes, RouteObject> = {
   },
   [AppRoutes.AUTH_ONBOARDING]: {
     path: RoutePath[AppRoutes.AUTH_ONBOARDING],
-    element: <AuthOnboardingPageWithLayout />,
+    element: (
+      <ProtectedRoute>
+        <AuthOnboardingPageWithLayout />
+      </ProtectedRoute>
+    ),
   },
   [AppRoutes.COURSES]: {
     path: RoutePath[AppRoutes.COURSES],
-    element: <CoursesPageWithLayout />,
+    element: (
+      <ProtectedRoute>
+        <CoursesPageWithLayout />
+      </ProtectedRoute>
+    ),
   },
   [AppRoutes.LIBRARY]: {
     path: RoutePath[AppRoutes.LIBRARY],
-    element: <LibraryPageWithLayout />,
+    element: (
+      <ProtectedRoute>
+        <LibraryPageWithLayout />
+      </ProtectedRoute>
+    ),
   },
   [AppRoutes.PROFILE_SETTINGS]: {
     path: RoutePath[AppRoutes.PROFILE_SETTINGS],
-    element: <ProfileSettingsPageWithLayout />,
+    element: (
+      <ProtectedRoute>
+        <ProfileSettingsPageWithLayout />
+      </ProtectedRoute>
+    ),
   },
   [AppRoutes.FAQ]: {
     path: RoutePath[AppRoutes.FAQ],
-    element: <FAQPageWithLayout />,
+    element: (
+      <ProtectedRoute>
+        <FAQPageWithLayout />
+      </ProtectedRoute>
+    ),
   },
   [AppRoutes.COURSE]: {
     path: RoutePath[AppRoutes.COURSE],
-    element: <CourseWithLayout />,
+    element: (
+      <ProtectedRoute>
+        <CourseWithLayout />
+      </ProtectedRoute>
+    ),
   },
   [AppRoutes.LESSON]: {
     path: RoutePath[AppRoutes.LESSON],
-    element: <LessonWithLayout />,
+    element: (
+      <ProtectedRoute>
+        <LessonWithLayout />
+      </ProtectedRoute>
+    ),
   },
   [AppRoutes.COURSES_BY_ALIAS]: {
     path: RoutePath[AppRoutes.COURSES_BY_ALIAS],
-    element: <CourseByAliasWithLayout />,
+    element: (
+      <ProtectedRoute>
+        <CourseByAliasWithLayout />
+      </ProtectedRoute>
+    ),
   },
 };
