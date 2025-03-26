@@ -163,10 +163,9 @@ const LessonPage: React.FC = () => {
                   <div className="mb-8">{renderActionComponent(lesson.steps[stepIndex].component)}</div>
                 )}
 
-                {(stepIndex === currentStepIndex && !lesson.steps[stepIndex].component) ||
-                  (lesson.steps[stepIndex].component?.type === 'slider' && (
-                    <Button onClick={handleContinue}>Continue</Button>
-                  ))}
+                {stepIndex === currentStepIndex && (!lesson.steps[stepIndex].component || lesson.steps[stepIndex].component?.type === 'slider') && (
+                  <Button onClick={handleContinue}>Continue</Button>
+                )}
               </div>
             ))}
         </>
