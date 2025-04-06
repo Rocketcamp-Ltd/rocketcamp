@@ -1,0 +1,6561 @@
+This file is a merged representation of the entire codebase, combined into a single document by Repomix.
+
+<file_summary>
+This section contains a summary of this file.
+
+<purpose>
+This file contains a packed representation of the entire repository's contents.
+It is designed to be easily consumable by AI systems for analysis, code review,
+or other automated processes.
+</purpose>
+
+<file_format>
+The content is organized as follows:
+1. This summary section
+2. Repository information
+3. Directory structure
+4. Repository files, each consisting of:
+  - File path as an attribute
+  - Full contents of the file
+</file_format>
+
+<usage_guidelines>
+- This file should be treated as read-only. Any changes should be made to the
+  original repository files, not this packed version.
+- When processing this file, use the file path to distinguish
+  between different files in the repository.
+- Be aware that this file may contain sensitive information. Handle it with
+  the same level of security as you would the original repository.
+</usage_guidelines>
+
+<notes>
+- Some files may have been excluded based on .gitignore rules and Repomix's configuration
+- Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
+- Files matching patterns in .gitignore are excluded
+- Files matching default ignore patterns are excluded
+- Files are sorted by Git change count (files with more changes are at the bottom)
+</notes>
+
+<additional_info>
+
+</additional_info>
+
+</file_summary>
+
+<directory_structure>
+.editorconfig
+.gitignore
+.husky/pre-commit
+.husky/pre-push
+.prettierrc.json
+components.json
+eslint.config.js
+index.html
+package.json
+public/vite.svg
+README.md
+scripts/generators/page.js
+src/App.tsx
+src/app/api/client.ts
+src/app/api/index.ts
+src/app/api/modules/auth.ts
+src/app/api/modules/course.ts
+src/app/common/regex.ts
+src/app/components/business/CourseCard.tsx
+src/app/components/business/CourseCarousel.tsx
+src/app/components/layouts/Logo/index.ts
+src/app/components/layouts/Logo/ui/Logo.tsx
+src/app/components/layouts/Navigation/MainNavigation.tsx
+src/app/components/layouts/Navigation/NavLink.tsx
+src/app/components/layouts/ProgressHeader/index.ts
+src/app/components/layouts/ProgressHeader/ProgressHeader.tsx
+src/app/components/layouts/UserButton/index.ts
+src/app/components/layouts/UserButton/UserButton.tsx
+src/app/components/PageLoader.tsx
+src/app/components/ui/accordion.tsx
+src/app/components/ui/button.tsx
+src/app/components/ui/carousel.tsx
+src/app/components/ui/checkbox-group.tsx
+src/app/components/ui/chips-list.tsx
+src/app/components/ui/circle-progress.tsx
+src/app/components/ui/input.tsx
+src/app/components/ui/progress.tsx
+src/app/components/ui/radio-group.tsx
+src/app/components/ui/select.tsx
+src/app/components/ui/sonner.tsx
+src/app/components/ui/textarea.tsx
+src/app/hooks/useAuth.ts
+src/app/layouts/AuthLayout/AuthLayout.tsx
+src/app/layouts/AuthLayout/index.ts
+src/app/layouts/CourseLayout/CourseHeader.tsx
+src/app/layouts/CourseLayout/CourseLayout.tsx
+src/app/layouts/CourseLayout/index.ts
+src/app/layouts/LessonLayout/index.ts
+src/app/layouts/LessonLayout/LessonLayout.tsx
+src/app/layouts/LessonLayout/model/store.ts
+src/app/layouts/MainLayout/index.ts
+src/app/layouts/MainLayout/ui/MainHeader.tsx
+src/app/layouts/MainLayout/ui/MainLayout.tsx
+src/app/layouts/OnboardingLayout/index.ts
+src/app/layouts/OnboardingLayout/model/store.ts
+src/app/layouts/OnboardingLayout/ui/OnboardingLayout.tsx
+src/app/layouts/withLayout.tsx
+src/app/router/config.tsx
+src/app/router/index.tsx
+src/app/router/ProtectedRoute.tsx
+src/app/utils/auth.ts
+src/assets/index.css
+src/lib/getQueryParams.ts
+src/lib/useClient.ts
+src/lib/utils.ts
+src/main.tsx
+src/pages/AuthOnboarding/AuthOnboardingPage.tsx
+src/pages/AuthOnboarding/AuthOnboardingPageAsync.tsx
+src/pages/AuthOnboarding/hooks/useTrackProgress.ts
+src/pages/AuthOnboarding/index.ts
+src/pages/AuthOnboarding/mock.ts
+src/pages/AuthOnboarding/types.ts
+src/pages/AuthOnboarding/ui/AuthChecboxGroup.tsx
+src/pages/AuthOnboarding/ui/AuthChipsList.tsx
+src/pages/AuthOnboarding/ui/AuthInput.tsx
+src/pages/AuthOnboarding/ui/AuthRadioGroup.tsx
+src/pages/AuthOnboarding/ui/AuthSelect.tsx
+src/pages/Course/components/LessonCard.tsx
+src/pages/Course/CoursePage.tsx
+src/pages/Course/CoursePageAsync.tsx
+src/pages/Course/index.ts
+src/pages/Course/mock.ts
+src/pages/Courses/CoursesPage.tsx
+src/pages/Courses/CoursesPageAsync.tsx
+src/pages/Courses/index.ts
+src/pages/Courses/mock.ts
+src/pages/Courses/ui/CourseFilters.tsx
+src/pages/CoursesByAlias/CoursesByAliasPage.tsx
+src/pages/CoursesByAlias/CoursesByAliasPageAsync.tsx
+src/pages/CoursesByAlias/index.ts
+src/pages/CoursesByAlias/mock.ts
+src/pages/FAQ/FAQPage.tsx
+src/pages/FAQ/FAQPageAsync.tsx
+src/pages/FAQ/index.ts
+src/pages/Home/HomePage.tsx
+src/pages/Home/HomePageAsync.tsx
+src/pages/Home/index.ts
+src/pages/Home/mock.ts
+src/pages/Lesson/components/CompleteCourseFlow.tsx
+src/pages/Lesson/components/LessonIntro.tsx
+src/pages/Lesson/components/RadioButtons.tsx
+src/pages/Lesson/components/SelectedButtons.tsx
+src/pages/Lesson/components/Slider.tsx
+src/pages/Lesson/hooks/useLessonNavigation.ts
+src/pages/Lesson/hooks/useLessonProgress.ts
+src/pages/Lesson/hooks/useLessonState.ts
+src/pages/Lesson/hooks/useScrollAnimation.ts
+src/pages/Lesson/index.ts
+src/pages/Lesson/LessonPage.tsx
+src/pages/Lesson/LessonPageAsync.tsx
+src/pages/Lesson/mock.ts
+src/pages/Library/index.ts
+src/pages/Library/LibraryPage.tsx
+src/pages/Library/LibraryPageAsync.tsx
+src/pages/Library/mock.ts
+src/pages/Login/index.ts
+src/pages/Login/LoginPage.tsx
+src/pages/Login/LoginPageAsync.tsx
+src/pages/Login/types.ts
+src/pages/Login/utils/getErrorMessage.ts
+src/pages/Login/utils/validation.ts
+src/pages/ProfileSettings/index.ts
+src/pages/ProfileSettings/ProfileSettingsPage.tsx
+src/pages/ProfileSettings/ProfileSettingsPageAsync.tsx
+src/pages/ProfileSettings/types.ts
+src/pages/ProfileSettings/ui/UpdateProfile.tsx
+src/pages/ProfileSettings/utils/getErrorMessage.ts
+src/pages/ProfileSettings/utils/validation.ts
+src/pages/Register/index.ts
+src/pages/Register/RegisterPage.tsx
+src/pages/Register/RegisterPageAsync.tsx
+src/pages/Register/types.ts
+src/pages/Register/utils/getErrorMessage.ts
+src/pages/Register/utils/validation.ts
+src/types/authOnboarding.ts
+src/types/courses.ts
+src/types/lessons.ts
+src/types/pagination.ts
+src/types/query.ts
+src/types/user.ts
+src/vite-env.d.ts
+tsconfig.app.json
+tsconfig.json
+tsconfig.node.json
+vite.config.ts
+</directory_structure>
+
+<files>
+This section contains the contents of the repository's files.
+
+<file path=".editorconfig">
+root = true
+
+[*]
+indent_style = space
+indent_size = 2
+charset = utf-8
+trim_trailing_whitespace = true
+insert_final_newline = true
+end_of_line = lf
+max_line_length = off
+</file>
+
+<file path=".husky/pre-commit">
+prettier $(git diff --cached --name-only --diff-filter=ACMR | sed 's| |\\ |g') --write --ignore-unknown
+git update-index --again
+</file>
+
+<file path=".husky/pre-push">
+npm run lint:fix
+npm run lint:error
+</file>
+
+<file path=".prettierrc.json">
+{
+  "$schema": "https://json.schemastore.org/prettierrc",
+  "semi": true,
+  "tabWidth": 2,
+  "singleQuote": true,
+  "printWidth": 120,
+  "trailingComma": "all",
+  "quoteProps": "consistent",
+  "bracketSpacing": true,
+  "bracketSameLine": false,
+  "arrowParens": "avoid",
+  "endOfLine": "lf",
+  "useTabs": false,
+  "singleAttributePerLine": true,
+  "plugins": ["prettier-plugin-tailwindcss"]
+}
+</file>
+
+<file path="eslint.config.js">
+import js from '@eslint/js'
+import globals from 'globals'
+import reactHooks from 'eslint-plugin-react-hooks'
+import reactRefresh from 'eslint-plugin-react-refresh'
+import tseslint from 'typescript-eslint'
+
+export default tseslint.config(
+  { ignores: ['dist'] },
+  {
+    extends: [js.configs.recommended, ...tseslint.configs.recommended],
+    files: ['**/*.{ts,tsx}'],
+    languageOptions: {
+      ecmaVersion: 2020,
+      globals: globals.browser,
+    },
+    plugins: {
+      'react-hooks': reactHooks,
+      'react-refresh': reactRefresh,
+    },
+    rules: {
+      ...reactHooks.configs.recommended.rules,
+      'react-refresh/only-export-components': [
+        'warn',
+        { allowConstantExport: true },
+      ],
+    },
+  },
+)
+</file>
+
+<file path="index.html">
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite + React + TS</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+</file>
+
+<file path="public/vite.svg">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--logos" width="31.88" height="32" preserveAspectRatio="xMidYMid meet" viewBox="0 0 256 257"><defs><linearGradient id="IconifyId1813088fe1fbc01fb466" x1="-.828%" x2="57.636%" y1="7.652%" y2="78.411%"><stop offset="0%" stop-color="#41D1FF"></stop><stop offset="100%" stop-color="#BD34FE"></stop></linearGradient><linearGradient id="IconifyId1813088fe1fbc01fb467" x1="43.376%" x2="50.316%" y1="2.242%" y2="89.03%"><stop offset="0%" stop-color="#FFEA83"></stop><stop offset="8.333%" stop-color="#FFDD35"></stop><stop offset="100%" stop-color="#FFA800"></stop></linearGradient></defs><path fill="url(#IconifyId1813088fe1fbc01fb466)" d="M255.153 37.938L134.897 252.976c-2.483 4.44-8.862 4.466-11.382.048L.875 37.958c-2.746-4.814 1.371-10.646 6.827-9.67l120.385 21.517a6.537 6.537 0 0 0 2.322-.004l117.867-21.483c5.438-.991 9.574 4.796 6.877 9.62Z"></path><path fill="url(#IconifyId1813088fe1fbc01fb467)" d="M185.432.063L96.44 17.501a3.268 3.268 0 0 0-2.634 3.014l-5.474 92.456a3.268 3.268 0 0 0 3.997 3.378l24.777-5.718c2.318-.535 4.413 1.507 3.936 3.838l-7.361 36.047c-.495 2.426 1.782 4.5 4.151 3.78l15.304-4.649c2.372-.72 4.652 1.36 4.15 3.788l-11.698 56.621c-.732 3.542 3.979 5.473 5.943 2.437l1.313-2.028l72.516-144.72c1.215-2.423-.88-5.186-3.54-4.672l-25.505 4.922c-2.396.462-4.435-1.77-3.759-4.114l16.646-57.705c.677-2.35-1.37-4.583-3.769-4.113Z"></path></svg>
+</file>
+
+<file path="README.md">
+# React + TypeScript + Vite
+
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+
+Currently, two official plugins are available:
+
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+
+## Expanding the ESLint configuration
+
+If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+
+- Configure the top-level `parserOptions` property like this:
+
+```js
+export default tseslint.config({
+  languageOptions: {
+    // other options...
+    parserOptions: {
+      project: ['./tsconfig.node.json', './tsconfig.app.json'],
+      tsconfigRootDir: import.meta.dirname,
+    },
+  },
+})
+```
+
+- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
+- Optionally add `...tseslint.configs.stylisticTypeChecked`
+- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+
+```js
+// eslint.config.js
+import react from 'eslint-plugin-react'
+
+export default tseslint.config({
+  // Set the react version
+  settings: { react: { version: '18.3' } },
+  plugins: {
+    // Add the react plugin
+    react,
+  },
+  rules: {
+    // other rules...
+    // Enable its recommended rules
+    ...react.configs.recommended.rules,
+    ...react.configs['jsx-runtime'].rules,
+  },
+})
+```
+</file>
+
+<file path="scripts/generators/page.js">
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import readline from 'readline';
+
+const __filename = fileURLToPath(import.meta.url);
+const PAGES_DIR = path.join(path.dirname(__filename), '../../src/pages');
+
+const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+});
+
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+function formatPageName(name) {
+    const capitalizedName = capitalizeFirstLetter(name);
+    return capitalizedName.endsWith('Page') ? capitalizedName : `${capitalizedName}Page`;
+}
+
+function generateFiles(inputName) {
+    const pageName = formatPageName(inputName);
+    const folderName = inputName.endsWith('Page') ?
+        inputName.slice(0, -4) :
+        inputName;
+    const pageDir = path.join(PAGES_DIR, capitalizeFirstLetter(folderName));
+
+    if (fs.existsSync(pageDir)) {
+        throw new Error(`Страница ${pageName} уже существует`);
+    }
+
+    fs.mkdirSync(pageDir, { recursive: true });
+
+    const componentContent = `import React from 'react';
+
+const ${pageName}: React.FC = () => {
+  return (
+    <div>
+      ${pageName}
+    </div>
+  );
+};
+
+export default ${pageName};
+`;
+
+    const asyncContent = `import { lazy } from 'react';
+
+export const ${pageName}Async = lazy(() => import('./${pageName}'));
+`;
+
+    const indexContent = `export { ${pageName}Async as ${pageName} } from './${pageName}Async';`;
+
+    const configPath = path.join(path.dirname(__filename), '../../src/app/router/config.tsx');
+    const configContent = fs.readFileSync(configPath, 'utf-8');
+
+    const routeName = inputName.toUpperCase();
+    const componentImport = `import { ${pageName} } from '@/pages/${capitalizeFirstLetter(folderName)}';\n`;
+
+    // Добавляем импорт компонента
+    let newContent = configContent.includes(componentImport) ?
+        configContent :
+        configContent.replace(
+            /(import.*?;\n)\n/,
+            `$1${componentImport}\n`
+        );
+
+    // Добавляем новый маршрут в enum AppRoutes
+    newContent = newContent.replace(
+        /(export enum AppRoutes {[\s\S]*?)(})/,
+        `$1  ${routeName} = '${inputName.toLowerCase()}',\n$2`
+    );
+
+    // Добавляем путь в RoutePath
+    newContent = newContent.replace(
+        /(export const RoutePath: Record<AppRoutes, string> = {[\s\S]*?)(};)/,
+        `$1  [AppRoutes.${routeName}]: '/${inputName.toLowerCase()}',\n$2`
+    );
+
+    // Добавляем конфигурацию маршрута в routeConfig
+    const routeConfigRegex = /(export const routeConfig: Record<AppRoutes, RouteObject> = {[\s\S]*?)(}\s*$)/;
+    const routeConfigEntry = `
+  [AppRoutes.${routeName}]: {
+    path: RoutePath[AppRoutes.${routeName}],
+    element: <${pageName} />,
+  },\n`;
+
+    newContent = newContent.replace(
+        routeConfigRegex,
+        `$1${routeConfigEntry}$2`
+    );
+
+    fs.writeFileSync(configPath, newContent);
+    fs.writeFileSync(path.join(pageDir, `${pageName}.tsx`), componentContent);
+    fs.writeFileSync(path.join(pageDir, `${pageName}Async.tsx`), asyncContent);
+    fs.writeFileSync(path.join(pageDir, 'index.ts'), indexContent);
+
+    console.log(`✓ Страница ${pageName} успешно создана`);
+    process.exit(0);
+}
+
+async function init() {
+    try {
+        let pageName = process.argv[2];
+
+        if (!pageName) {
+            pageName = await new Promise((resolve) => {
+                rl.question('Введите название страницы: ', (answer) => {
+                    resolve(answer);
+                    rl.close();
+                });
+            });
+        }
+
+        generateFiles(pageName);
+    } catch (error) {
+        console.error(`✗ ${error.message}`);
+        process.exit(1);
+    }
+}
+
+init();
+</file>
+
+<file path="src/app/common/regex.ts">
+export const SYMBOLS_ONLY = /^[a-zA-Zа-яА-ЯёЁ]+$/;
+export const EMAIL = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+</file>
+
+<file path="src/app/components/layouts/Logo/index.ts">
+export { Logo } from './ui/Logo';
+</file>
+
+<file path="src/app/components/layouts/ProgressHeader/index.ts">
+export { ProgressHeader } from './ProgressHeader';
+</file>
+
+<file path="src/app/components/layouts/UserButton/index.ts">
+export { UserButton } from './UserButton';
+</file>
+
+<file path="src/app/components/ui/carousel.tsx">
+import * as React from 'react';
+import useEmblaCarousel, { type UseEmblaCarouselType } from 'embla-carousel-react';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
+
+import { cn } from '@/lib/utils';
+import { Button } from '@/app/components/ui/button';
+
+type CarouselApi = UseEmblaCarouselType[1];
+type UseCarouselParameters = Parameters<typeof useEmblaCarousel>;
+type CarouselOptions = UseCarouselParameters[0];
+type CarouselPlugin = UseCarouselParameters[1];
+
+type CarouselProps = {
+  opts?: CarouselOptions;
+  plugins?: CarouselPlugin;
+  orientation?: 'horizontal' | 'vertical';
+  setApi?: (api: CarouselApi) => void;
+};
+
+type CarouselContextProps = {
+  carouselRef: ReturnType<typeof useEmblaCarousel>[0];
+  api: ReturnType<typeof useEmblaCarousel>[1];
+  scrollPrev: () => void;
+  scrollNext: () => void;
+  canScrollPrev: boolean;
+  canScrollNext: boolean;
+} & CarouselProps;
+
+const CarouselContext = React.createContext<CarouselContextProps | null>(null);
+
+function useCarousel() {
+  const context = React.useContext(CarouselContext);
+
+  if (!context) {
+    throw new Error('useCarousel must be used within a <Carousel />');
+  }
+
+  return context;
+}
+
+function Carousel({
+  orientation = 'horizontal',
+  opts,
+  setApi,
+  plugins,
+  className,
+  children,
+  ...props
+}: React.ComponentProps<'div'> & CarouselProps) {
+  const [carouselRef, api] = useEmblaCarousel(
+    {
+      ...opts,
+      axis: orientation === 'horizontal' ? 'x' : 'y',
+    },
+    plugins,
+  );
+  const [canScrollPrev, setCanScrollPrev] = React.useState(false);
+  const [canScrollNext, setCanScrollNext] = React.useState(false);
+
+  const onSelect = React.useCallback((api: CarouselApi) => {
+    if (!api) return;
+
+    setCanScrollPrev(api.canScrollPrev());
+    setCanScrollNext(api.canScrollNext());
+  }, []);
+
+  const scrollPrev = React.useCallback(() => {
+    api?.scrollPrev();
+  }, [api]);
+
+  const scrollNext = React.useCallback(() => {
+    api?.scrollNext();
+  }, [api]);
+
+  const handleKeyDown = React.useCallback(
+    (event: React.KeyboardEvent<HTMLDivElement>) => {
+      if (event.key === 'ArrowLeft') {
+        event.preventDefault();
+        scrollPrev();
+      } else if (event.key === 'ArrowRight') {
+        event.preventDefault();
+        scrollNext();
+      }
+    },
+    [scrollPrev, scrollNext],
+  );
+
+  React.useEffect(() => {
+    if (!api || !setApi) return;
+    setApi(api);
+  }, [api, setApi]);
+
+  React.useEffect(() => {
+    if (!api) return;
+    onSelect(api);
+    api.on('reInit', onSelect);
+    api.on('select', onSelect);
+
+    return () => {
+      api?.off('select', onSelect);
+    };
+  }, [api, onSelect]);
+
+  return (
+    <CarouselContext.Provider
+      value={{
+        carouselRef,
+        api: api,
+        opts,
+        orientation: orientation || (opts?.axis === 'y' ? 'vertical' : 'horizontal'),
+        scrollPrev,
+        scrollNext,
+        canScrollPrev,
+        canScrollNext,
+      }}
+    >
+      <div
+        onKeyDownCapture={handleKeyDown}
+        className={cn('relative', className)}
+        role="region"
+        aria-roledescription="carousel"
+        data-slot="carousel"
+        {...props}
+      >
+        {children}
+      </div>
+    </CarouselContext.Provider>
+  );
+}
+
+function CarouselContent({ className, ...props }: React.ComponentProps<'div'>) {
+  const { carouselRef, orientation } = useCarousel();
+
+  return (
+    <div
+      ref={carouselRef}
+      className="overflow-hidden"
+      data-slot="carousel-content"
+    >
+      <div
+        className={cn('flex', orientation === 'horizontal' ? '-ml-4' : '-mt-4 flex-col', className)}
+        {...props}
+      />
+    </div>
+  );
+}
+
+function CarouselItem({ className, ...props }: React.ComponentProps<'div'>) {
+  const { orientation } = useCarousel();
+
+  return (
+    <div
+      role="group"
+      aria-roledescription="slide"
+      data-slot="carousel-item"
+      className={cn('min-w-0 shrink-0 grow-0 basis-full', orientation === 'horizontal' ? 'pl-4' : 'pt-4', className)}
+      {...props}
+    />
+  );
+}
+
+function CarouselPrevious({
+  className,
+  variant = 'outline',
+  size = 'icon',
+  ...props
+}: React.ComponentProps<typeof Button>) {
+  const { orientation, scrollPrev, canScrollPrev } = useCarousel();
+
+  return (
+    <Button
+      data-slot="carousel-previous"
+      variant={variant}
+      size={size}
+      className={cn(
+        'absolute size-8 rounded-full',
+        canScrollPrev ? '' : 'hidden',
+        orientation === 'horizontal'
+          ? 'top-1/2 -left-12 -translate-y-1/2'
+          : '-top-12 left-1/2 -translate-x-1/2 rotate-90',
+        className,
+      )}
+      disabled={!canScrollPrev}
+      onClick={scrollPrev}
+      {...props}
+    >
+      <ArrowLeft className="size-8" />
+      <span className="sr-only">Previous slide</span>
+    </Button>
+  );
+}
+
+function CarouselNext({
+  className,
+  variant = 'outline',
+  size = 'icon',
+  ...props
+}: React.ComponentProps<typeof Button>) {
+  const { orientation, scrollNext, canScrollNext } = useCarousel();
+
+  return (
+    <Button
+      data-slot="carousel-next"
+      variant={variant}
+      size={size}
+      className={cn(
+        'absolute size-8 rounded-full',
+        canScrollNext ? '' : 'hidden',
+        orientation === 'horizontal'
+          ? 'top-1/2 -right-12 -translate-y-1/2'
+          : '-bottom-12 left-1/2 -translate-x-1/2 rotate-90',
+        className,
+      )}
+      disabled={!canScrollNext}
+      onClick={scrollNext}
+      {...props}
+    >
+      <ArrowRight className="size-8" />
+      <span className="sr-only">Next slide</span>
+    </Button>
+  );
+}
+
+export { type CarouselApi, Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext };
+</file>
+
+<file path="src/app/components/ui/input.tsx">
+import * as React from 'react';
+
+import { cn } from '@/lib/utils';
+
+function Input({ className, type, ...props }: React.ComponentProps<'input'>) {
+  return (
+    <input
+      type={type}
+      data-slot="input"
+      className={cn(
+        'border-input file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground flex h-9 w-full min-w-0 rounded-md border bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm',
+        'focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]',
+        'aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive',
+        className,
+      )}
+      {...props}
+    />
+  );
+}
+
+export { Input };
+</file>
+
+<file path="src/app/components/ui/select.tsx">
+import * as React from 'react';
+import * as SelectPrimitive from '@radix-ui/react-select';
+import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from 'lucide-react';
+
+import { cn } from '@/lib/utils';
+
+function Select({ ...props }: React.ComponentProps<typeof SelectPrimitive.Root>) {
+  return (
+    <SelectPrimitive.Root
+      data-slot="select"
+      {...props}
+    />
+  );
+}
+
+function SelectGroup({ ...props }: React.ComponentProps<typeof SelectPrimitive.Group>) {
+  return (
+    <SelectPrimitive.Group
+      data-slot="select-group"
+      {...props}
+    />
+  );
+}
+
+function SelectValue({ ...props }: React.ComponentProps<typeof SelectPrimitive.Value>) {
+  return (
+    <SelectPrimitive.Value
+      data-slot="select-value"
+      {...props}
+    />
+  );
+}
+
+function SelectTrigger({ className, children, ...props }: React.ComponentProps<typeof SelectPrimitive.Trigger>) {
+  return (
+    <SelectPrimitive.Trigger
+      data-slot="select-trigger"
+      className={cn(
+        "border-input data-[placeholder]:text-muted-foreground [&_svg:not([class*='text-'])]:text-muted-foreground focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive flex h-9 w-fit items-center justify-between gap-2 rounded-md border bg-transparent px-3 py-2 text-sm whitespace-nowrap shadow-xs transition-[color,box-shadow] outline-none focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50 *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-2 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+        className,
+      )}
+      {...props}
+    >
+      {children}
+      <SelectPrimitive.Icon asChild>
+        <ChevronDownIcon className="size-4 opacity-50" />
+      </SelectPrimitive.Icon>
+    </SelectPrimitive.Trigger>
+  );
+}
+
+function SelectContent({
+  className,
+  children,
+  position = 'popper',
+  ...props
+}: React.ComponentProps<typeof SelectPrimitive.Content>) {
+  return (
+    <SelectPrimitive.Portal>
+      <SelectPrimitive.Content
+        data-slot="select-content"
+        className={cn(
+          'bg-popover text-popover-foreground data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 relative z-50 max-h-96 min-w-[8rem] overflow-hidden rounded-md border shadow-md',
+          position === 'popper' &&
+            'data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1',
+          className,
+        )}
+        position={position}
+        {...props}
+      >
+        <SelectScrollUpButton />
+        <SelectPrimitive.Viewport
+          className={cn(
+            'p-1',
+            position === 'popper' &&
+              'h-[var(--radix-select-trigger-height)] w-full min-w-[var(--radix-select-trigger-width)] scroll-my-1',
+          )}
+        >
+          {children}
+        </SelectPrimitive.Viewport>
+        <SelectScrollDownButton />
+      </SelectPrimitive.Content>
+    </SelectPrimitive.Portal>
+  );
+}
+
+function SelectLabel({ className, ...props }: React.ComponentProps<typeof SelectPrimitive.Label>) {
+  return (
+    <SelectPrimitive.Label
+      data-slot="select-label"
+      className={cn('px-2 py-1.5 text-sm font-medium', className)}
+      {...props}
+    />
+  );
+}
+
+function SelectItem({ className, children, ...props }: React.ComponentProps<typeof SelectPrimitive.Item>) {
+  return (
+    <SelectPrimitive.Item
+      data-slot="select-item"
+      className={cn(
+        "focus:bg-accent focus:text-accent-foreground [&_svg:not([class*='text-'])]:text-muted-foreground relative flex w-full cursor-default items-center gap-2 rounded-sm py-1.5 pr-8 pl-2 text-sm outline-hidden select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2",
+        className,
+      )}
+      {...props}
+    >
+      <span className="absolute right-2 flex size-3.5 items-center justify-center">
+        <SelectPrimitive.ItemIndicator>
+          <CheckIcon className="size-4" />
+        </SelectPrimitive.ItemIndicator>
+      </span>
+      <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
+    </SelectPrimitive.Item>
+  );
+}
+
+function SelectSeparator({ className, ...props }: React.ComponentProps<typeof SelectPrimitive.Separator>) {
+  return (
+    <SelectPrimitive.Separator
+      data-slot="select-separator"
+      className={cn('bg-border pointer-events-none -mx-1 my-1 h-px', className)}
+      {...props}
+    />
+  );
+}
+
+function SelectScrollUpButton({ className, ...props }: React.ComponentProps<typeof SelectPrimitive.ScrollUpButton>) {
+  return (
+    <SelectPrimitive.ScrollUpButton
+      data-slot="select-scroll-up-button"
+      className={cn('flex cursor-default items-center justify-center py-1', className)}
+      {...props}
+    >
+      <ChevronUpIcon className="size-4" />
+    </SelectPrimitive.ScrollUpButton>
+  );
+}
+
+function SelectScrollDownButton({
+  className,
+  ...props
+}: React.ComponentProps<typeof SelectPrimitive.ScrollDownButton>) {
+  return (
+    <SelectPrimitive.ScrollDownButton
+      data-slot="select-scroll-down-button"
+      className={cn('flex cursor-default items-center justify-center py-1', className)}
+      {...props}
+    >
+      <ChevronDownIcon className="size-4" />
+    </SelectPrimitive.ScrollDownButton>
+  );
+}
+
+export {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectScrollDownButton,
+  SelectScrollUpButton,
+  SelectSeparator,
+  SelectTrigger,
+  SelectValue,
+};
+</file>
+
+<file path="src/app/components/ui/sonner.tsx">
+import { useTheme } from "next-themes"
+import { Toaster as Sonner, ToasterProps } from "sonner"
+
+const Toaster = ({ ...props }: ToasterProps) => {
+  const { theme = "system" } = useTheme()
+
+  return (
+    <Sonner
+      theme={theme as ToasterProps["theme"]}
+      className="toaster group"
+      style={
+        {
+          "--normal-bg": "var(--popover)",
+          "--normal-text": "var(--popover-foreground)",
+          "--normal-border": "var(--border)",
+        } as React.CSSProperties
+      }
+      {...props}
+    />
+  )
+}
+
+export { Toaster }
+</file>
+
+<file path="src/app/hooks/useAuth.ts">
+import { useState, useEffect, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { RoutePath, AppRoutes } from '@/app/router/config';
+import { isAuthenticated } from '@/app/utils/auth';
+
+export const useAuth = () => {
+  const [isAuth, setIsAuth] = useState(isAuthenticated());
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    setIsAuth(isAuthenticated());
+  }, []);
+
+  const logout = useCallback(() => {
+    localStorage.removeItem('Authorization');
+    setIsAuth(false);
+    navigate(RoutePath[AppRoutes.LOGIN]);
+  }, [navigate]);
+
+  const login = useCallback((token: string) => {
+    localStorage.setItem('Authorization', token);
+    setIsAuth(true);
+  }, []);
+
+  return {
+    isAuthenticated: isAuth,
+    login,
+    logout,
+  };
+};
+</file>
+
+<file path="src/app/layouts/AuthLayout/index.ts">
+export { AuthLayout } from './AuthLayout';
+</file>
+
+<file path="src/app/layouts/CourseLayout/CourseLayout.tsx">
+import React from 'react';
+import { CourseHeader } from './CourseHeader';
+
+interface Props {
+  children: React.ReactNode;
+}
+
+export const CourseLayout: React.FC<Props> = ({ children }) => {
+  return (
+    <>
+      <CourseHeader />
+      <main>{children}</main>
+    </>
+  );
+};
+</file>
+
+<file path="src/app/layouts/CourseLayout/index.ts">
+export { CourseLayout } from './CourseLayout';
+</file>
+
+<file path="src/app/router/index.tsx">
+import { Suspense } from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+
+import { PageLoader } from '../components/PageLoader';
+import { routeConfig } from './config';
+
+function AppRouter() {
+  return (
+    <BrowserRouter>
+      <Suspense fallback={<PageLoader />}>
+        <Routes>
+          {Object.values(routeConfig).map(({ element, path }) => (
+            <Route
+              key={path}
+              path={path}
+              element={element}
+            />
+          ))}
+        </Routes>
+      </Suspense>
+    </BrowserRouter>
+  );
+}
+
+export default AppRouter;
+</file>
+
+<file path="src/app/router/ProtectedRoute.tsx">
+import React from 'react';
+import { Navigate, useLocation } from 'react-router-dom';
+import { useAuth } from '@/app/hooks/useAuth';
+import { RoutePath, AppRoutes } from './config';
+
+interface ProtectedRouteProps {
+  children: React.ReactNode;
+}
+
+export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
+  const location = useLocation();
+  const { isAuthenticated } = useAuth();
+
+  if (!isAuthenticated) {
+    return (
+      <Navigate
+        to={RoutePath[AppRoutes.LOGIN]}
+        state={{ from: location }}
+        replace
+      />
+    );
+  }
+
+  return <>{children}</>;
+};
+</file>
+
+<file path="src/app/utils/auth.ts">
+export const isAuthenticated = (): boolean => {
+  const token = localStorage.getItem('Authorization');
+  return !!token;
+};
+</file>
+
+<file path="src/lib/useClient.ts">
+import { createClient } from "@supabase/supabase-js";
+
+export const useClient = () => {
+  return createClient(import.meta.env.VITE_SUPABASE_URL, import.meta.env.VITE_SUPABASE_ANON_KEY);
+};
+</file>
+
+<file path="src/pages/AuthOnboarding/AuthOnboardingPageAsync.tsx">
+import { lazy } from 'react';
+
+export const AuthOnboardingPageAsync = lazy(() => import('./AuthOnboardingPage'));
+</file>
+
+<file path="src/pages/AuthOnboarding/hooks/useTrackProgress.ts">
+import { useState } from 'react';
+import type { AuthOnboarding } from '@/types/authOnboarding';
+import { useProgressStore } from '@/app/layouts/OnboardingLayout';
+
+interface UseTrackProgressProps {
+  onboarding: AuthOnboarding[];
+}
+
+export const useTrackProgress = ({ onboarding }: UseTrackProgressProps) => {
+  const { setProgress } = useProgressStore();
+
+  const [currentStep, setCurrentStep] = useState(0);
+
+  const trackProgress = () => {
+    const nextStepIndex = currentStep + 1;
+    const totalSteps = onboarding.length;
+    const progressPercentage = Math.round((nextStepIndex / totalSteps) * 100);
+    setProgress(progressPercentage);
+  };
+
+  return {
+    trackProgress,
+    setCurrentStep,
+    currentStep,
+  };
+};
+</file>
+
+<file path="src/pages/AuthOnboarding/mock.ts">
+import { AuthOnboarding } from '@/types/authOnboarding';
+
+const onb: AuthOnboarding[] = [
+  {
+    id: 1,
+    title: "Let's Personalise Your Learning Journey",
+    text: 'Every leader faces unique challenges. Tell us about your context so we can:<ul><li>Customize exercises for your industry</li><li>Match content to your experience level</li><li>Align learning paths with your goals</li></ul>',
+    button: {
+      type: 'primary',
+      label: 'Start personalisation',
+      action: 'next',
+    },
+    components: [],
+  },
+  {
+    id: 2,
+    title: 'What is your current role?',
+    text: 'What is your current or most recent job position at work?',
+    button: {
+      type: 'secondary',
+      label: 'Next',
+      action: 'next',
+    },
+    components: [
+      {
+        type: 'input',
+        placeholder: 'i.e. Project Manager',
+        pattern: null,
+        label: '',
+      },
+    ],
+  },
+  {
+    id: 3,
+    title: 'What is your field of work?',
+    text: 'What industry do you work in?',
+    button: {
+      type: 'secondary',
+      label: 'Next',
+      action: 'next',
+    },
+    components: [
+      {
+        type: 'select',
+        placeholder: 'Healthcare',
+        label: '',
+        items: [
+          { id: 1, name: 'Healthcare' },
+          { id: 2, name: 'Technology' },
+          { id: 3, name: 'Finance' },
+          { id: 4, name: 'Education' },
+          { id: 5, name: 'Manufacturing' },
+          { id: 6, name: 'Retail' },
+          { id: 7, name: 'Government' },
+          { id: 8, name: 'Non-profit' },
+        ],
+      },
+    ],
+  },
+  {
+    id: 4,
+    title: 'Current status',
+    text: '',
+    button: {
+      type: 'secondary',
+      label: 'Next',
+      action: 'next',
+    },
+    components: [
+      {
+        type: 'checkboxGroup',
+        items: [
+          { id: 1, name: 'Employed full-time' },
+          { id: 2, name: 'Employed part-time' },
+          { id: 3, name: 'Seeking opportunities' },
+          { id: 4, name: 'Student' },
+        ],
+      },
+    ],
+  },
+  {
+    id: 5,
+    title: 'How many people do you manage at work?',
+    text: '',
+    button: {
+      type: 'secondary',
+      label: 'Next',
+      action: 'next',
+    },
+    components: [
+      {
+        type: 'radioGroup',
+        items: [
+          { id: 1, name: 'No direct reports' },
+          { id: 2, name: '1-5 team members' },
+          { id: 3, name: '6-15 team members' },
+          { id: 4, name: '15+ team members' },
+        ],
+      },
+    ],
+  },
+  {
+    id: 6,
+    title: 'In your current role, what type of projects do you typically manage?',
+    text: '',
+    button: {
+      type: 'primary',
+      label: 'Next',
+      action: 'next',
+    },
+    components: [
+      {
+        type: 'radioGroup',
+        items: [
+          { id: 1, name: 'Technology/Software Development' },
+          { id: 2, name: 'Business Transformation' },
+          { id: 3, name: 'Marketing/Communication' },
+          { id: 4, name: 'Research & Development' },
+        ],
+      },
+    ],
+  },
+  {
+    id: 7,
+    title: 'What is your primary goal?',
+    text: '',
+    button: {
+      type: 'primary',
+      label: 'Next',
+      action: 'next',
+    },
+    components: [
+      {
+        type: 'chips',
+        items: [
+          { id: 1, name: 'Improve team leadership skills' },
+          { id: 2, name: 'Develop strategic thinking' },
+          { id: 3, name: 'Drive organizational change' },
+          { id: 4, name: 'Master project management' },
+          { id: 5, name: 'Build financial acumen' },
+          { id: 6, name: 'Enhance communication' },
+          { id: 7, name: 'Transition to management' },
+          { id: 8, name: 'Advance in current role' },
+          { id: 9, name: 'Switch industries' },
+          { id: 10, name: 'Return to workforce' },
+          { id: 11, name: 'Other' },
+        ],
+      },
+    ],
+  },
+];
+
+export default onb;
+</file>
+
+<file path="src/pages/AuthOnboarding/types.ts">
+export interface ComponentProps {
+  type: string;
+  placeholder?: string;
+  pattern?: string | null;
+  label?: string;
+  items?: ComponentItem[];
+}
+
+interface ComponentItem {
+  id: number;
+  name: string;
+}
+</file>
+
+<file path="src/pages/AuthOnboarding/ui/AuthInput.tsx">
+import { Input } from '@/app/components/ui/input';
+import type { ComponentProps } from '../types';
+
+interface InputComponentProps {
+  component: ComponentProps;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  error: string;
+}
+
+export const InputComponent: React.FC<InputComponentProps> = ({ component, value, onChange, error }) => {
+  return (
+    <div className="w-full space-y-2">
+      {component.label && <label className="text-sm font-medium">{component.label}</label>}
+      <Input
+        placeholder={component.placeholder || ''}
+        value={value}
+        onChange={onChange}
+        className={error ? 'border-red-500' : ''}
+      />
+      {error && <p className="text-sm text-red-500">{error}</p>}
+    </div>
+  );
+};
+</file>
+
+<file path="src/pages/AuthOnboarding/ui/AuthSelect.tsx">
+import type { ComponentProps } from '../types';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/app/components/ui/select';
+
+interface SelectComponentProps {
+  component: ComponentProps;
+  value: string;
+  onValueChange: (value: string) => void;
+  error: string;
+}
+
+export const SelectComponent: React.FC<SelectComponentProps> = ({ component, value, onValueChange, error }) => {
+  return (
+    <div className="w-full space-y-2">
+      {component.label && <label className="text-sm font-medium">{component.label}</label>}
+      <Select
+        value={value}
+        onValueChange={onValueChange}
+      >
+        <SelectTrigger className="w-full">
+          <SelectValue placeholder={component.placeholder || 'Select an option'} />
+        </SelectTrigger>
+        <SelectContent>
+          {component.items?.map(item => (
+            <SelectItem
+              key={item.id}
+              value={item.name}
+            >
+              {item.name}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+      {error && <p className="text-sm text-red-500">{error}</p>}
+    </div>
+  );
+};
+</file>
+
+<file path="src/pages/Course/components/LessonCard.tsx">
+import { Lock, CircleCheck } from 'lucide-react';
+import type { Lesson } from '@/types/lessons';
+import { Progress } from '@/app/components/ui/progress';
+
+export const LessonCard: React.FC<{ lesson: Lesson }> = ({ lesson }) => {
+  return (
+    <div
+      className="relative w-full rounded-[8px] border border-[#D9D9D9] p-5 shadow-md"
+      key={lesson.id}
+    >
+      <div className="flex items-start">
+        <div className="mr-8 max-w-[308px]">
+          <img
+            className="object-cover"
+            src={lesson.cover}
+            alt=""
+          />
+        </div>
+        <div>
+          <h3 className="mb-3 text-2xl font-medium text-[#1E1E1E]">{lesson.title}</h3>
+          <p className="text-sm text-[#757575]">{lesson.description}</p>
+        </div>
+      </div>
+
+      {lesson.isBlocked && (
+        <div className="absolute top-5 right-5">
+          <Lock />
+        </div>
+      )}
+
+      {(lesson.isDone || !lesson.isBlocked) && (
+        <div className="absolute top-5 right-5">
+          <CircleCheck />
+        </div>
+      )}
+
+      {!lesson.isDone && !lesson.isBlocked && (
+        <div className="mt-4">
+          <Progress
+            className="bg-[#E8DEF8]"
+            value={lesson.progress}
+          />
+        </div>
+      )}
+    </div>
+  );
+};
+</file>
+
+<file path="src/pages/Course/CoursePageAsync.tsx">
+import { lazy } from 'react';
+
+export const CoursePageAsync = lazy(() => import('./CoursePage'));
+</file>
+
+<file path="src/pages/Courses/CoursesPageAsync.tsx">
+import { lazy } from 'react';
+
+export const CoursesPageAsync = lazy(() => import('./CoursesPage'));
+</file>
+
+<file path="src/pages/Courses/ui/CourseFilters.tsx">
+import React from 'react';
+import { Check } from 'lucide-react';
+import type { CourseCategory } from '@/types/courses';
+import { cn } from '@/lib/utils';
+
+interface Props {
+  categories: CourseCategory[];
+  filters: CourseCategory[];
+  changeFilters: (category: CourseCategory) => void;
+}
+
+export const CourseFilters: React.FC<Props> = ({ categories, filters, changeFilters }) => {
+  return (
+    <div>
+      <p className="text-sm font-medium text-[#49454F]">Course topics</p>
+
+      <div className="mt-3 flex flex-wrap gap-2">
+        {categories.map(category => {
+          const isSelected = !!filters.find(item => item.id === category.id);
+
+          return (
+            <button
+              key={category.id}
+              onClick={() => changeFilters(category)}
+              className={cn(
+                'flex cursor-pointer items-center gap-2 rounded-[8px] p-2 text-base transition-colors duration-200',
+                {
+                  'bg-[#F5F5F5] text-[#757575] hover:bg-[#EEEEEE] active:bg-[#E0E0E0]': !isSelected,
+                  'bg-[#050038] text-[#F5F5F5] hover:bg-[#1F1956] active:bg-[#000020]': isSelected,
+                },
+              )}
+            >
+              {isSelected && (
+                <span>
+                  <Check />
+                </span>
+              )}
+              {category.name}
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+</file>
+
+<file path="src/pages/CoursesByAlias/CoursesByAliasPageAsync.tsx">
+import { lazy } from 'react';
+
+export const CoursesByAliasPageAsync = lazy(() => import('./CoursesByAliasPage'));
+</file>
+
+<file path="src/pages/CoursesByAlias/mock.ts">
+import { Course } from '@/types/courses';
+
+export const coursesMock: Course[] = [
+  {
+    id: 1,
+    cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+    title: 'Course 1',
+    subtitle: 'Subtitle 1',
+    progress: 0,
+  },
+  {
+    id: 2,
+    cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+    title: 'Course 2',
+    subtitle: 'Subtitle 2',
+    progress: 45,
+  },
+  {
+    id: 3,
+    cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+    title: 'Course 3',
+    subtitle: 'Subtitle 3',
+    progress: 27,
+  },
+  {
+    id: 4,
+    cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+    title: 'Course 4',
+    subtitle: 'Subtitle 4',
+    progress: 60,
+  },
+  {
+    id: 5,
+    cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+    title: 'Course 5',
+    subtitle: 'Subtitle 5',
+    progress: 15,
+  },
+  {
+    id: 6,
+    cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+    title: 'Course 6',
+    subtitle: 'Subtitle 6',
+    progress: 90,
+  },
+  {
+    id: 7,
+    cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+    title: 'Course 7',
+    subtitle: 'Subtitle 7',
+    progress: 0,
+  },
+  {
+    id: 8,
+    cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+    title: 'Course 8',
+    subtitle: 'Subtitle 8',
+    progress: 0,
+  },
+  {
+    id: 9,
+    cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+    title: 'Course 9',
+    subtitle: 'Subtitle 9',
+    progress: 0,
+  },
+  {
+    id: 10,
+    cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+    title: 'Course 10',
+    subtitle: 'Subtitle 10',
+    progress: 0,
+  },
+];
+</file>
+
+<file path="src/pages/FAQ/FAQPageAsync.tsx">
+import { lazy } from 'react';
+
+export const FAQPageAsync = lazy(() => import('./FAQPage'));
+</file>
+
+<file path="src/pages/Home/HomePageAsync.tsx">
+import { lazy } from 'react';
+
+export const HomePageAsync = lazy(() => import('./HomePage'));
+</file>
+
+<file path="src/pages/Home/index.ts">
+export { HomePageAsync as HomePage } from './HomePageAsync';
+</file>
+
+<file path="src/pages/Lesson/components/LessonIntro.tsx">
+import React from 'react';
+import { cn } from '@/lib/utils';
+import type { LessonDetails } from '@/types/lessons';
+import { Button } from '@/app/components/ui/button';
+
+interface LessonIntroProps {
+  lesson: LessonDetails;
+  startedLesson: boolean;
+  handleContinue: () => void;
+}
+
+export const LessonIntro: React.FC<LessonIntroProps> = ({ lesson, startedLesson, handleContinue }) => {
+  return (
+    <div
+      className={cn(`transition-opacity duration-500`, {
+        'mb-16': startedLesson,
+      })}
+    >
+      <img
+        src={lesson.cover}
+        alt=""
+        className="mb-9 h-[384px] w-full object-cover"
+      />
+
+      <h1 className="mb-6 text-4xl font-medium text-black">{lesson.title}</h1>
+
+      <div
+        className="mb-8"
+        dangerouslySetInnerHTML={{ __html: lesson.description }}
+      ></div>
+
+      {!startedLesson && <Button onClick={handleContinue}>Continue</Button>}
+    </div>
+  );
+};
+</file>
+
+<file path="src/pages/Lesson/components/SelectedButtons.tsx">
+import React, { useState } from 'react';
+import { cn } from '@/lib/utils';
+
+interface SelectedButtonsProps {
+  items: {
+    id: number;
+    label: string;
+  }[];
+  onSelect: () => void;
+}
+
+export const SelectedButtons: React.FC<SelectedButtonsProps> = ({ items, onSelect }) => {
+  const [selectedId, setSelectedId] = useState<number | null>(null);
+
+  const handleClick = (id: number) => {
+    setSelectedId(id);
+    setTimeout(() => {
+      onSelect();
+    }, 300);
+  };
+
+  return (
+    <div className="mt-4 flex flex-wrap gap-2">
+      {items.map(item => (
+        <button
+          key={item.id}
+          onClick={() => handleClick(item.id)}
+          className={cn(`cursor-pointer rounded-lg border-2 p-3 text-base text-[#1E1E1E] transition-all duration-300`, {
+            'border-[#2C2C2C] hover:bg-[#2C2C2C] hover:text-white': selectedId === null,
+            'border-black': selectedId === item.id,
+            'opacity-50': selectedId !== item.id && selectedId !== null,
+          })}
+          disabled={!!selectedId}
+        >
+          {item.label}
+        </button>
+      ))}
+    </div>
+  );
+};
+</file>
+
+<file path="src/pages/Lesson/components/Slider.tsx">
+import React from 'react';
+import { cn } from '@/lib/utils';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from '@/app/components/ui/carousel';
+
+interface SliderItem {
+  id: number;
+  componentType: 'text' | 'image';
+  text?: string;
+  src?: string;
+  annotation?: string;
+}
+
+interface SliderProps {
+  items: SliderItem[];
+}
+
+export const Slider: React.FC<SliderProps> = ({ items }) => {
+  return (
+    <div className="mt-4 rounded-lg bg-gray-100 p-4">
+      <Carousel
+        opts={{
+          align: 'center',
+          loop: false,
+          skipSnaps: false,
+        }}
+        className="w-full"
+      >
+        <CarouselContent>
+          {items.map((item) => (
+            <CarouselItem key={item.id} className="w-full">
+              <div className={cn("flex flex-col items-center p-2", {
+                'h-full justify-center': item.componentType === 'text',
+              })}>
+                {item.componentType === 'text' && (
+                  <div className="mb-4 text-center text-base">{item.text}</div>
+                )}
+                {item.componentType === 'image' && item.src && (
+                  <>
+                    <img
+                      src={item.src}
+                      alt={item.annotation || ''}
+                      className="mb-2 h-64 w-full object-cover rounded"
+                    />
+                    {item.annotation && (
+                      <div className="mt-2 text-center text-sm text-gray-500">
+                        {item.annotation}
+                      </div>
+                    )}
+                  </>
+                )}
+              </div>
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+        <CarouselPrevious className="left-2 bg-white" />
+        <CarouselNext className="right-2 bg-white" />
+      </Carousel>
+    </div>
+  );
+};
+</file>
+
+<file path="src/pages/Lesson/LessonPageAsync.tsx">
+import { lazy } from 'react';
+
+export const LessonPageAsync = lazy(() => import('./LessonPage'));
+</file>
+
+<file path="src/pages/Library/LibraryPageAsync.tsx">
+import { lazy } from 'react';
+
+export const LibraryPageAsync = lazy(() => import('./LibraryPage'));
+</file>
+
+<file path="src/pages/Login/LoginPageAsync.tsx">
+import { lazy } from 'react';
+
+export const LoginPageAsync = lazy(() => import('./LoginPage'));
+</file>
+
+<file path="src/pages/ProfileSettings/ProfileSettingsPageAsync.tsx">
+import { lazy } from 'react';
+
+export const ProfileSettingsPageAsync = lazy(() => import('./ProfileSettingsPage'));
+</file>
+
+<file path="src/pages/ProfileSettings/types.ts">
+export enum FormFieldNames {
+  NAME = 'name',
+  SURNAME = 'surname',
+  EMAIL = 'email',
+  MESSAGE = 'message',
+}
+
+export interface ProfileData {
+  name: string;
+  surname: string;
+  email: string;
+  message: string;
+  errors?: {
+    [key in FormFieldNames | 'general']?: string;
+  };
+}
+</file>
+
+<file path="src/pages/Register/RegisterPageAsync.tsx">
+import { lazy } from 'react';
+
+export const RegisterPageAsync = lazy(() => import('./RegisterPage'));
+</file>
+
+<file path="src/types/authOnboarding.ts">
+export interface AuthOnboarding {
+  id: number;
+  title: string;
+  text: string; // html
+  button: {
+    type: 'primary' | 'secondary';
+    label: string;
+    action: 'next' | 'finish';
+  };
+  components: AuthOnboardingComponent[];
+}
+
+interface ComponentWithItems {
+  items: {
+    id: number;
+    name: string;
+  }[];
+}
+
+interface AuthOnboardingSelect extends ComponentWithItems {
+  type: 'select';
+  placeholder: string;
+  label: string;
+}
+
+interface AuthOnboardingInput {
+  type: 'input';
+  placeholder: string;
+  pattern: string | null;
+  label: string;
+}
+
+interface AuthOnboardingCheckboxGroup extends ComponentWithItems {
+  type: 'checkboxGroup';
+}
+
+interface AuthOnboardingRadioGroup extends ComponentWithItems {
+  type: 'radioGroup';
+}
+
+interface AuthOnboardingChips extends ComponentWithItems {
+  type: 'chips';
+}
+
+type AuthOnboardingComponent =
+  | AuthOnboardingSelect
+  | AuthOnboardingInput
+  | AuthOnboardingCheckboxGroup
+  | AuthOnboardingRadioGroup
+  | AuthOnboardingChips;
+</file>
+
+<file path="src/types/user.ts">
+export interface User {
+  email: string;
+  login: string;
+}
+</file>
+
+<file path="src/vite-env.d.ts">
+/// <reference types="vite/client" />
+</file>
+
+<file path="tsconfig.app.json">
+{
+  "compilerOptions": {
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
+    "target": "ES2020",
+    "useDefineForClassFields": true,
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "skipLibCheck": true,
+
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "isolatedModules": true,
+    "moduleDetection": "force",
+    "noEmit": true,
+    "jsx": "react-jsx",
+
+    /* Linting */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedSideEffectImports": true,
+
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "include": ["src"]
+}
+</file>
+
+<file path="tsconfig.node.json">
+{
+  "compilerOptions": {
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",
+    "target": "ES2022",
+    "lib": ["ES2023"],
+    "module": "ESNext",
+    "skipLibCheck": true,
+
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "isolatedModules": true,
+    "moduleDetection": "force",
+    "noEmit": true,
+
+    /* Linting */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedSideEffectImports": true,
+
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "include": ["vite.config.ts"]
+}
+</file>
+
+<file path="components.json">
+{
+  "$schema": "https://ui.shadcn.com/schema.json",
+  "style": "new-york",
+  "rsc": false,
+  "tsx": true,
+  "tailwind": {
+    "config": "",
+    "css": "src/assets/index.css",
+    "baseColor": "stone",
+    "cssVariables": true,
+    "prefix": ""
+  },
+  "aliases": {
+    "components": "@/app/components",
+    "utils": "@/lib/utils",
+    "ui": "@/app/components/ui",
+    "lib": "@/lib",
+    "hooks": "@/hooks"
+  },
+  "iconLibrary": "lucide"
+}
+</file>
+
+<file path="src/App.tsx">
+import AppRouter from './app/router';
+
+function App() {
+  return (
+    <main>
+      <AppRouter />
+    </main>
+  );
+}
+
+export default App;
+</file>
+
+<file path="src/app/components/layouts/Logo/ui/Logo.tsx">
+import React from 'react';
+
+export const Logo: React.FC = () => {
+  return (
+    <svg
+      width="282"
+      height="50"
+      viewBox="0 0 282 50"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M11.1431 16.8375L9.76814 10.9171H3.90931L9.19354 33.7881H0V39.0724H25.0565V33.7881H15.0626L12.8258 24.0816C13.8621 18.6845 16.1605 15.8628 20.0083 15.8628C21.7936 15.8628 23.4558 16.2629 25.0668 17.1248V11.4917C23.6918 11.03 22.0809 10.6914 20.0083 10.6914C15.2371 10.6914 12.7642 12.8769 11.1636 16.8375H11.1431Z"
+        fill="#050038"
+      />
+      <path
+        d="M40.4477 10.4562C33.0908 10.4562 28.0323 16.4894 28.0323 24.9955C28.0323 33.5016 33.0908 39.5349 40.4477 39.5349C47.8046 39.5349 52.8631 33.5016 52.8631 24.9955C52.8631 16.4894 47.8046 10.4562 40.4477 10.4562ZM40.4477 34.3635C36.0254 34.3635 33.6654 30.2797 33.6654 24.9955C33.6654 19.7113 36.0254 15.6275 40.4477 15.6275C44.8701 15.6275 47.23 19.7113 47.23 24.9955C47.23 30.2797 44.8701 34.3635 40.4477 34.3635Z"
+        fill="#050038"
+      />
+      <path
+        d="M54.6995 24.9955C54.6995 32.691 58.7216 39.5349 68.4898 39.5349C72.1631 39.5349 75.0976 38.4985 76.3084 37.9855V32.3524C73.9484 33.6145 71.5988 34.3635 68.4898 34.3635C63.0927 34.3635 60.3326 30.7415 60.3326 24.9955C60.3326 19.2496 63.0927 15.6275 68.4898 15.6275C71.5885 15.6275 73.9484 16.3766 76.3084 17.6386V12.0055C75.0976 11.4925 72.1733 10.4562 68.4898 10.4562C58.7216 10.4562 54.6995 17.2898 54.6995 24.9955Z"
+        fill="#050038"
+      />
+      <path
+        d="M104.064 10.9173H96.9942L86.2513 22.9839V0H80.6182V39.0726H86.2513V25.5695L97.456 39.0726H104.638L92.0486 24.0202L104.064 10.9173Z"
+        fill="#050038"
+      />
+      <path
+        d="M116.18 10.4562C108.71 10.4562 103.939 16.4894 103.939 24.9955C103.939 32.8141 107.961 39.5349 117.729 39.5349C121.403 39.5349 124.337 38.4985 125.548 37.9855V32.3524C123.188 33.6145 120.838 34.3635 117.729 34.3635C112.907 34.3635 109.911 31.4905 109.572 27.0066H127.446C127.508 26.2063 127.559 25.3444 127.559 24.3081C127.559 16.1508 123.65 10.4562 116.18 10.4562ZM109.685 22.1738C110.26 17.7515 112.497 15.3402 116.18 15.3402C119.628 15.3402 121.813 17.7002 122.1 22.1738H109.685Z"
+        fill="#050038"
+      />
+      <path
+        d="M141.001 3.84644H135.368V10.916H128.986V16.2003H135.368V27.9179C135.368 36.0751 138.754 39.5227 146.922 39.5227C149.969 39.5227 153.304 38.6608 154.904 37.9733V32.2274C152.493 33.4381 149.671 34.2385 146.922 34.2385C143.012 34.2385 141.001 32.5147 141.001 27.9179V16.2003H154.904V10.916H141.001V3.84644Z"
+        fill="#050038"
+      />
+      <path
+        d="M175.94 24.9955C175.94 32.691 179.962 39.5349 189.73 39.5349C193.403 39.5349 196.338 38.4985 197.549 37.9855V32.3524C195.189 33.6145 192.839 34.3635 189.73 34.3635C184.333 34.3635 181.573 30.7415 181.573 24.9955C181.573 19.2496 184.333 15.6275 189.73 15.6275C192.829 15.6275 195.189 16.3766 197.549 17.6386V12.0055C196.338 11.4925 193.414 10.4562 189.73 10.4562C179.962 10.4562 175.94 17.2898 175.94 24.9955Z"
+        fill="#050038"
+      />
+      <path
+        d="M201.796 16.1998H217.824V22.233C216.161 21.5969 214.027 21.1454 211.329 21.1454C204.895 21.1454 200.699 24.6545 200.699 30.2261C200.699 35.7976 204.895 39.3067 210.816 39.3067C213.801 39.3067 216.274 38.2704 217.936 36.6595L218.162 39.0707H223.446V10.9155H201.786V16.1998H201.796ZM217.824 32.0627C216.736 33.3863 214.438 34.5355 211.79 34.5355C207.994 34.5355 206.332 32.6373 206.332 30.2261C206.332 27.8148 207.994 25.9166 211.79 25.9166C214.15 25.9166 216.1 26.2655 217.824 26.8914V32.0627Z"
+        fill="#050038"
+      />
+      <path
+        d="M247.129 10.6923C244.893 10.6923 243.333 11.667 241.845 13.1035C240.809 11.4413 239.321 10.6923 237.361 10.6923C235.401 10.6923 233.914 11.7286 232.703 12.9291L232.477 10.918H227.655V39.0732H232.826V17.0641C233.514 16.3151 234.437 15.7405 235.525 15.7405C237.597 15.7405 238.336 16.9513 238.336 21.1376V39.063H243.395V17.0539C244.082 16.3049 245.005 15.7303 246.093 15.7303C248.166 15.7303 248.904 16.941 248.904 21.1274V39.0527H254.076V21.0658C254.076 13.8218 251.716 10.6615 247.119 10.6615L247.129 10.6923Z"
+        fill="#050038"
+      />
+      <path
+        d="M269.599 10.6914C267.126 10.6914 265.177 11.5533 263.34 12.8769L263.166 10.9274H257.707V49.9999H263.34V37.6461C264.889 38.5696 266.788 39.3084 269.599 39.3084C276.781 39.3084 281.317 34.137 281.317 24.9434C281.317 15.7499 276.781 10.6914 269.599 10.6914ZM268.101 34.0241C266.552 34.0241 264.653 33.5624 263.33 32.4132V17.4737C264.653 16.3245 266.552 15.8628 268.101 15.8628C272.759 15.8628 275.684 18.9615 275.684 24.9434C275.684 30.9254 272.749 34.0241 268.101 34.0241Z"
+        fill="#050038"
+      />
+    </svg>
+  );
+};
+</file>
+
+<file path="src/app/components/layouts/Navigation/MainNavigation.tsx">
+import React from 'react';
+import { Home, BookOpen, Book } from 'lucide-react';
+import { RoutePath } from '@/app/router/config';
+import { NavLink } from './NavLink';
+
+export const MainNavigation: React.FC = () => {
+  return (
+    <nav className="flex gap-8">
+      <NavLink
+        to={RoutePath.home}
+        icon={<Home className="size-5" />}
+      >
+        Home
+      </NavLink>
+
+      <NavLink
+        to={RoutePath.courses}
+        icon={<BookOpen className="size-5" />}
+      >
+        Courses
+      </NavLink>
+
+      <NavLink
+        to={RoutePath.library}
+        icon={<Book className="size-5" />}
+      >
+        Library
+      </NavLink>
+    </nav>
+  );
+};
+
+export default MainNavigation;
+</file>
+
+<file path="src/app/components/layouts/Navigation/NavLink.tsx">
+import React from 'react';
+import { Link, useLocation } from 'react-router-dom';
+
+interface Props {
+  to: string;
+  icon: React.ReactNode;
+  children: React.ReactNode;
+}
+
+export const NavLink: React.FC<Props> = ({ to, icon, children }) => {
+  const location = useLocation();
+  const isActive = location.pathname === to;
+
+  return (
+    <div className="relative">
+      <div className="group flex items-center gap-2">
+        {icon}
+        <Link
+          to={to}
+          className="relative py-4"
+        >
+          {children}
+          <div
+            className={`absolute bottom-0 left-0 h-0.5 w-full origin-left transform bg-black transition-transform duration-300 ${isActive ? 'scale-x-100' : 'scale-x-0'}`}
+          />
+          <div
+            className={`absolute bottom-0 left-0 h-0.5 w-full origin-left scale-x-0 transform bg-black transition-transform duration-300 group-hover:scale-x-100 ${isActive ? 'opacity-0' : 'opacity-100'}`}
+          />
+        </Link>
+      </div>
+    </div>
+  );
+};
+</file>
+
+<file path="src/app/components/PageLoader.tsx">
+export const PageLoader = () => {
+  return <div>loader...</div>;
+};
+</file>
+
+<file path="src/app/components/ui/accordion.tsx">
+import * as React from 'react';
+import * as AccordionPrimitive from '@radix-ui/react-accordion';
+import { ChevronDownIcon } from 'lucide-react';
+
+import { cn } from '@/lib/utils';
+
+function Accordion({ ...props }: React.ComponentProps<typeof AccordionPrimitive.Root>) {
+  return (
+    <AccordionPrimitive.Root
+      data-slot="accordion"
+      {...props}
+    />
+  );
+}
+
+function AccordionItem({ className, ...props }: React.ComponentProps<typeof AccordionPrimitive.Item>) {
+  return (
+    <AccordionPrimitive.Item
+      data-slot="accordion-item"
+      className={cn(
+        'mb-2 overflow-hidden rounded-[8px] border border-[#D9D9D9] bg-[#F5F5F5] data-[state=open]:bg-white',
+        className,
+      )}
+      {...props}
+    />
+  );
+}
+
+function AccordionTrigger({ className, children, ...props }: React.ComponentProps<typeof AccordionPrimitive.Trigger>) {
+  return (
+    <AccordionPrimitive.Header className="flex">
+      <AccordionPrimitive.Trigger
+        data-slot="accordion-trigger"
+        className={cn(
+          'focus-visible:border-ring focus-visible:ring-ring/50 flex flex-1 items-start justify-between gap-4 px-4 py-4 text-left text-sm font-medium transition-all outline-none hover:underline focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50 [&[data-state=open]>svg]:rotate-180',
+          className,
+        )}
+        {...props}
+      >
+        {children}
+        <ChevronDownIcon className="text-muted-foreground pointer-events-none size-4 shrink-0 translate-y-0.5 transition-transform duration-200" />
+      </AccordionPrimitive.Trigger>
+    </AccordionPrimitive.Header>
+  );
+}
+
+function AccordionContent({ className, children, ...props }: React.ComponentProps<typeof AccordionPrimitive.Content>) {
+  return (
+    <AccordionPrimitive.Content
+      data-slot="accordion-content"
+      className="data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down overflow-hidden text-sm"
+      {...props}
+    >
+      <div className={cn('px-4 pt-0 pb-4', className)}>{children}</div>
+    </AccordionPrimitive.Content>
+  );
+}
+
+export { Accordion, AccordionItem, AccordionTrigger, AccordionContent };
+</file>
+
+<file path="src/app/components/ui/button.tsx">
+import * as React from 'react';
+import { Slot } from '@radix-ui/react-slot';
+import { cva, type VariantProps } from 'class-variance-authority';
+
+import { cn } from '@/lib/utils';
+
+const buttonVariants = cva(
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-[color,box-shadow] disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
+  {
+    variants: {
+      variant: {
+        default: 'bg-primary text-primary-foreground shadow-xs hover:bg-primary/90',
+        primary: 'bg-primary text-primary-foreground shadow-xs hover:bg-primary/90',
+        destructive:
+          'bg-destructive text-white shadow-xs hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40',
+        outline: 'border border-input bg-background shadow-xs hover:bg-accent hover:text-accent-foreground',
+        secondary: 'bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80',
+        ghost: 'hover:bg-accent hover:text-accent-foreground',
+        link: 'text-primary underline-offset-4 hover:underline',
+      },
+      size: {
+        default: 'h-9 px-4 py-2 has-[>svg]:px-3',
+        sm: 'h-8 rounded-md gap-1.5 px-3 has-[>svg]:px-2.5',
+        lg: 'h-10 rounded-md px-6 has-[>svg]:px-4',
+        icon: 'size-9',
+      },
+    },
+    defaultVariants: {
+      variant: 'default',
+      size: 'default',
+    },
+  },
+);
+
+function Button({
+  className,
+  variant,
+  size,
+  asChild = false,
+  ...props
+}: React.ComponentProps<'button'> &
+  VariantProps<typeof buttonVariants> & {
+    asChild?: boolean;
+  }) {
+  const Comp = asChild ? Slot : 'button';
+
+  return (
+    <Comp
+      data-slot="button"
+      className={cn(buttonVariants({ variant, size, className }))}
+      {...props}
+    />
+  );
+}
+
+export { Button, buttonVariants };
+</file>
+
+<file path="src/app/components/ui/checkbox-group.tsx">
+import React, { useState } from 'react';
+import { SquareCheckBig, Square } from 'lucide-react';
+
+interface Option {
+  id: string;
+  label: string;
+}
+
+interface CheckboxGroupProps {
+  options: Option[];
+  onSelectionChange?: (selectedOptions: string[]) => void;
+}
+
+export const CheckboxGroup: React.FC<CheckboxGroupProps> = ({ options, onSelectionChange }) => {
+  const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
+
+  const handleCheckboxChange = (optionId: string) => {
+    const updatedSelection = selectedOptions.includes(optionId)
+      ? selectedOptions.filter(id => id !== optionId)
+      : [...selectedOptions, optionId];
+
+    setSelectedOptions(updatedSelection);
+
+    if (onSelectionChange) {
+      onSelectionChange(updatedSelection);
+    }
+  };
+
+  return (
+    <div className="space-y-2">
+      {options.map(option => {
+        const isSelected = selectedOptions.includes(option.id);
+
+        return (
+          <div
+            key={option.id}
+            className="flex cursor-pointer items-center rounded-md border border-gray-200 bg-gray-100 p-3"
+            onClick={() => handleCheckboxChange(option.id)}
+          >
+            <div className="flex-grow font-semibold">{option.label}</div>
+            {isSelected ? (
+              <SquareCheckBig className="h-6 w-6 text-blue-600" />
+            ) : (
+              <Square className="h-6 w-6 text-gray-400" />
+            )}
+          </div>
+        );
+      })}
+    </div>
+  );
+};
+</file>
+
+<file path="src/app/components/ui/chips-list.tsx">
+import React, { useState } from 'react';
+import { Check } from 'lucide-react';
+import { cn } from '@/lib/utils';
+
+interface ChipOption {
+  id: string | number;
+  label: string;
+  icon?: React.ReactNode;
+}
+
+interface ChipsListProps {
+  options: ChipOption[];
+  multiSelect?: boolean;
+  defaultSelected?: (string | number)[];
+  onChange?: (selectedIds: (string | number)[]) => void;
+}
+
+export const ChipsList: React.FC<ChipsListProps> = ({
+  options,
+  multiSelect = true,
+  defaultSelected = [],
+  onChange,
+}) => {
+  const [selectedChips, setSelectedChips] = useState<(string | number)[]>(defaultSelected);
+
+  const handleChipClick = (id: string | number) => {
+    let newSelected: (string | number)[];
+
+    if (multiSelect) {
+      if (selectedChips.includes(id)) {
+        newSelected = selectedChips.filter(chipId => chipId !== id);
+      } else {
+        newSelected = [...selectedChips, id];
+      }
+    } else {
+      newSelected = selectedChips.includes(id) ? [] : [id];
+    }
+
+    setSelectedChips(newSelected);
+
+    if (onChange) {
+      onChange(newSelected);
+    }
+  };
+
+  return (
+    <div className="flex flex-wrap gap-2">
+      {options.map(option => {
+        const isSelected = selectedChips.includes(option.id);
+
+        return (
+          <div
+            key={option.id}
+            onClick={() => handleChipClick(option.id)}
+            className={cn(`flex cursor-pointer items-center gap-2 rounded-full px-4 py-2 transition-colors`, {
+              'bg-black text-white': isSelected,
+              'bg-gray-100 text-gray-700 hover:bg-gray-200': !isSelected,
+            })}
+          >
+            {isSelected && <Check size={16} />}
+            {option.icon && <span>{option.icon}</span>}
+            <span>{option.label}</span>
+          </div>
+        );
+      })}
+    </div>
+  );
+};
+</file>
+
+<file path="src/app/components/ui/progress.tsx">
+import * as React from 'react';
+import * as ProgressPrimitive from '@radix-ui/react-progress';
+
+import { cn } from '@/lib/utils';
+
+const Progress = React.forwardRef<
+  React.ElementRef<typeof ProgressPrimitive.Root>,
+  React.ComponentPropsWithoutRef<typeof ProgressPrimitive.Root>
+>(({ className, value, ...props }, ref) => (
+  <ProgressPrimitive.Root
+    ref={ref}
+    className={cn('relative h-2 w-full overflow-hidden rounded-full bg-white', className)}
+    {...props}
+  >
+    <ProgressPrimitive.Indicator
+      className="bg-primary h-full w-full flex-1 transition-all"
+      style={{ transform: `translateX(-${100 - (value || 0)}%)` }}
+    />
+  </ProgressPrimitive.Root>
+));
+Progress.displayName = ProgressPrimitive.Root.displayName;
+
+export { Progress };
+</file>
+
+<file path="src/app/components/ui/radio-group.tsx">
+import React, { useState } from 'react';
+import { CircleCheck } from 'lucide-react';
+
+interface RadioOption {
+  value: string;
+  label: string;
+}
+
+interface Props {
+  options: RadioOption[];
+  defaultValue?: string;
+  onChange?: (value: string) => void;
+}
+
+export const RadioGroup: React.FC<Props> = ({ options, defaultValue = '', onChange }) => {
+  const [selectedValue, setSelectedValue] = useState(defaultValue);
+
+  const handleSelect = (value: string) => {
+    setSelectedValue(value);
+    if (onChange) {
+      onChange(value);
+    }
+  };
+
+  return (
+    <div className="flex flex-col space-y-2">
+      {options.map(option => (
+        <div
+          key={option.value}
+          className={`flex cursor-pointer items-center justify-between rounded-md p-4 ${selectedValue === option.value ? 'border border-blue-200 bg-blue-50' : 'border border-gray-200 bg-gray-50'} `}
+          onClick={() => handleSelect(option.value)}
+        >
+          <span className="text-gray-700">{option.label}</span>
+          {selectedValue === option.value && (
+            <CircleCheck
+              className="text-blue-500"
+              size={20}
+            />
+          )}
+        </div>
+      ))}
+    </div>
+  );
+};
+</file>
+
+<file path="src/app/components/ui/textarea.tsx">
+import * as React from 'react';
+
+import { cn } from '@/lib/utils';
+
+function Textarea({ className, ...props }: React.ComponentProps<'textarea'>) {
+  return (
+    <textarea
+      data-slot="textarea"
+      className={cn(
+        'border-input placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive flex field-sizing-content min-h-16 w-full rounded-md border bg-transparent px-3 py-2 text-base shadow-xs transition-[color,box-shadow] outline-none focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50 md:text-sm',
+        className,
+      )}
+      {...props}
+    />
+  );
+}
+
+export { Textarea };
+</file>
+
+<file path="src/app/layouts/AuthLayout/AuthLayout.tsx">
+import React from 'react';
+import asideImg from '@/assets/images/aside.png';
+
+interface Props {
+  children: React.ReactNode;
+}
+
+export const AuthLayout: React.FC<Props> = ({ children }) => {
+  return (
+    <div className="grid h-screen w-full grid-cols-3">
+      <aside className="h-full w-full">
+        <img
+          src={asideImg}
+          alt=""
+          className="h-full max-h-screen w-full max-w-screen object-cover"
+        />
+      </aside>
+      <main className="col-span-2 flex items-center justify-center">{children}</main>
+    </div>
+  );
+};
+</file>
+
+<file path="src/app/layouts/LessonLayout/index.ts">
+export { LessonLayout } from './LessonLayout';
+export { useProgressStore } from './model/store';
+</file>
+
+<file path="src/app/layouts/LessonLayout/model/store.ts">
+import { create } from 'zustand';
+
+interface ProgressState {
+  progress: number;
+  setProgress: (progress: number) => void;
+}
+
+export const useProgressStore = create<ProgressState>(set => ({
+  progress: 0,
+  setProgress: progress => set({ progress }),
+}));
+</file>
+
+<file path="src/app/layouts/MainLayout/index.ts">
+export { MainLayout } from './ui/MainLayout';
+</file>
+
+<file path="src/app/layouts/MainLayout/ui/MainLayout.tsx">
+import React from 'react';
+import { MainHeader } from './MainHeader';
+
+interface Props {
+  children: React.ReactNode;
+}
+
+export const MainLayout: React.FC<Props> = ({ children }) => {
+  return (
+    <>
+      <MainHeader />
+      <main>{children}</main>
+    </>
+  );
+};
+</file>
+
+<file path="src/app/layouts/OnboardingLayout/index.ts">
+export { OnboardingLayout } from './ui/OnboardingLayout';
+export { useProgressStore } from './model/store';
+</file>
+
+<file path="src/app/layouts/OnboardingLayout/model/store.ts">
+import { create } from 'zustand';
+
+interface ProgressState {
+  progress: number;
+  setProgress: (progress: number) => void;
+}
+
+export const useProgressStore = create<ProgressState>(set => ({
+  progress: 0,
+  setProgress: progress => set({ progress }),
+}));
+</file>
+
+<file path="src/app/layouts/OnboardingLayout/ui/OnboardingLayout.tsx">
+import React from 'react';
+import { ProgressHeader } from '@/app/components/layouts/ProgressHeader';
+import { useProgressStore } from '../model/store';
+
+interface Props {
+  children: React.ReactNode;
+}
+
+export const OnboardingLayout: React.FC<Props> = ({ children }) => {
+  const { progress } = useProgressStore();
+
+  const onBack = () => {
+    // @todo: Ансарыч с query-параметрами поработай тут по брацки и прогресс в минус заведи
+  };
+
+  return (
+    <div>
+      <ProgressHeader
+        progress={progress}
+        onBack={onBack}
+      />
+
+      <main>{children}</main>
+    </div>
+  );
+};
+</file>
+
+<file path="src/app/layouts/withLayout.tsx">
+import { ComponentType, ReactElement } from 'react';
+
+export function withLayout<P extends object>(
+  WrappedComponent: ComponentType<P>,
+  Layout: ComponentType<{ children: ReactElement }>,
+) {
+  return function WithLayoutComponent(props: P) {
+    return (
+      <Layout>
+        <WrappedComponent {...props} />
+      </Layout>
+    );
+  };
+}
+</file>
+
+<file path="src/lib/getQueryParams.ts">
+import { IPaginationQuery, ISearchQuery } from '@/types/query';
+
+interface QueryParams {
+  [key: string]: number | number[] | string | string[];
+}
+
+export function getQueryParams<T extends IPaginationQuery | ISearchQuery>(data: T | QueryParams): string {
+  const getStringByArray = (value: string[] | number[]) => value.join('');
+
+  return Object.entries(data)
+    .map(([key, value]) => `${key}=${Array.isArray(value) ? getStringByArray(value) : value}`)
+    .join('&');
+}
+</file>
+
+<file path="src/lib/utils.ts">
+import { clsx, type ClassValue } from 'clsx';
+import { twMerge } from 'tailwind-merge';
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}
+</file>
+
+<file path="src/main.tsx">
+import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
+
+import App from './App.tsx';
+
+import '@/assets/index.css';
+
+createRoot(document.getElementById('root')!).render(
+  <StrictMode>
+    <App />
+  </StrictMode>,
+);
+</file>
+
+<file path="src/pages/AuthOnboarding/index.ts">
+export { AuthOnboardingPageAsync as AuthOnboardingPage } from './AuthOnboardingPageAsync';
+</file>
+
+<file path="src/pages/AuthOnboarding/ui/AuthChecboxGroup.tsx">
+import type { ComponentProps } from '../types';
+import { CheckboxGroup } from '@/app/components/ui/checkbox-group';
+
+interface CheckboxGroupComponentProps {
+  component: ComponentProps;
+  onSelectionChange: (selectedOptions: string[]) => void;
+  error: string;
+}
+
+export const CheckboxGroupComponent: React.FC<CheckboxGroupComponentProps> = ({
+  component,
+  onSelectionChange,
+  error,
+}) => {
+  const options =
+    component.items?.map(item => ({
+      id: item.id.toString(),
+      label: item.name,
+    })) || [];
+
+  return (
+    <div className="w-full space-y-2">
+      <CheckboxGroup
+        options={options}
+        onSelectionChange={onSelectionChange}
+      />
+      {error && <p className="text-sm text-red-500">{error}</p>}
+    </div>
+  );
+};
+</file>
+
+<file path="src/pages/AuthOnboarding/ui/AuthChipsList.tsx">
+import React from 'react';
+import type { ComponentProps } from '../types';
+import { ChipsList } from '@/app/components/ui/chips-list';
+
+interface ChipsListComponentProps {
+  component: ComponentProps;
+  selectedValues: (string | number)[];
+  onSelectionChange: (selectedOptions: (string | number)[]) => void;
+  error: string;
+}
+
+export const ChipsListComponent: React.FC<ChipsListComponentProps> = ({
+  component,
+  selectedValues,
+  onSelectionChange,
+  error,
+}) => {
+  const options =
+    component.items?.map(item => ({
+      id: item.id,
+      label: item.name,
+    })) || [];
+
+  return (
+    <div className="w-full space-y-2">
+      <ChipsList
+        options={options}
+        defaultSelected={selectedValues}
+        onChange={onSelectionChange}
+      />
+      {error && <p className="text-sm text-red-500">{error}</p>}
+    </div>
+  );
+};
+</file>
+
+<file path="src/pages/AuthOnboarding/ui/AuthRadioGroup.tsx">
+import React from 'react';
+import type { ComponentProps } from '../types';
+import { RadioGroup } from '@/app/components/ui/radio-group';
+
+interface RadioGroupComponentProps {
+  component: ComponentProps;
+  value: string;
+  onValueChange: (value: string) => void;
+  error: string;
+}
+
+export const RadioGroupComponent: React.FC<RadioGroupComponentProps> = ({ component, value, onValueChange, error }) => {
+  const options =
+    component.items?.map(item => ({
+      value: item.name,
+      label: item.name,
+    })) || [];
+
+  return (
+    <div className="w-full space-y-2">
+      <RadioGroup
+        options={options}
+        defaultValue={value}
+        onChange={onValueChange}
+      />
+      {error && <p className="text-sm text-red-500">{error}</p>}
+    </div>
+  );
+};
+</file>
+
+<file path="src/pages/Course/index.ts">
+export { CoursePageAsync as CoursePage } from './CoursePageAsync';
+</file>
+
+<file path="src/pages/Course/mock.ts">
+import type { CourseDetails } from '@/types/courses';
+
+export const mock: CourseDetails = {
+  id: 1,
+  cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+  title: 'Course 1',
+  subtitle: 'Subtitle 1',
+  progress: 20,
+  category: [
+    {
+      id: 1,
+      alias: 'alias',
+      name: 'name category',
+    },
+  ],
+  description:
+    'Body text for your whole article or post. We’ll put in some lorem ipsum to show how a filled-out page might look: <br/><br/> Excepteur efficient emerging, minim veniam anim aute carefully curated Ginza conversation exquisite perfect nostrud nisi intricate Content. Qui  international first-class nulla ut. Punctual adipisicing, essential lovely queen tempor eiusmod irure. Exclusive izakaya charming Scandinavian impeccable aute quality of life soft power pariatur Melbourne occaecat discerning.',
+  lessons: [
+    {
+      id: 1,
+      title: 'lesson 1',
+      description: 'descr 1',
+      cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+      isDone: true,
+      isBlocked: false,
+      progress: 100,
+    },
+    {
+      id: 2,
+      title: 'lesson 2',
+      description: 'descr 2',
+      cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+      isDone: false,
+      isBlocked: false,
+      progress: 40,
+    },
+    {
+      id: 3,
+      title: 'lesson 3',
+      description: 'descr 3',
+      cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+      isDone: false,
+      isBlocked: true,
+      progress: 0,
+    },
+    {
+      id: 4,
+      title: 'lesson 4',
+      description: 'descr 4',
+      cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+      isDone: false,
+      isBlocked: true,
+      progress: 0,
+    },
+    {
+      id: 5,
+      title: 'lesson 5',
+      description: 'descr 5',
+      cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+      isDone: false,
+      isBlocked: true,
+      progress: 0,
+    },
+  ],
+};
+</file>
+
+<file path="src/pages/Courses/index.ts">
+export { CoursesPageAsync as CoursesPage } from './CoursesPageAsync';
+</file>
+
+<file path="src/pages/Courses/mock.ts">
+import { Course, CourseCategory } from '@/types/courses';
+
+export const categoriesMock: CourseCategory[] = [
+  {
+    id: 1,
+    name: 'Management',
+    alias: 'management',
+  },
+  {
+    id: 2,
+    name: 'Programming',
+    alias: 'programming',
+  },
+  {
+    id: 3,
+    name: 'Data Science',
+    alias: 'data-science',
+  },
+  {
+    id: 4,
+    name: 'Digital Marketing',
+    alias: 'digital-marketing',
+  },
+  {
+    id: 5,
+    name: 'Design',
+    alias: 'design',
+  },
+  {
+    id: 6,
+    name: 'Business',
+    alias: 'business',
+  },
+  {
+    id: 7,
+    name: 'Personal Development',
+    alias: 'personal-development',
+  },
+  {
+    id: 8,
+    name: 'Finance',
+    alias: 'finance',
+  },
+  {
+    id: 9,
+    name: 'Language Learning',
+    alias: 'language-learning',
+  },
+  {
+    id: 10,
+    name: 'Health & Wellness',
+    alias: 'health-wellness',
+  },
+];
+
+export const courses: { [key: string]: Course[] } = {
+  title: [
+    {
+      id: 1,
+      cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+      title: 'Course 1',
+      subtitle: 'Subtitle 1',
+      progress: 0,
+    },
+    {
+      id: 2,
+      cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+      title: 'Course 2',
+      subtitle: 'Subtitle 2',
+      progress: 45,
+    },
+    {
+      id: 3,
+      cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+      title: 'Course 3',
+      subtitle: 'Subtitle 3',
+      progress: 27,
+    },
+    {
+      id: 4,
+      cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+      title: 'Course 4',
+      subtitle: 'Subtitle 4',
+      progress: 60,
+    },
+    {
+      id: 5,
+      cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+      title: 'Course 5',
+      subtitle: 'Subtitle 5',
+      progress: 15,
+    },
+    {
+      id: 6,
+      cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+      title: 'Course 6',
+      subtitle: 'Subtitle 6',
+      progress: 90,
+    },
+    {
+      id: 7,
+      cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+      title: 'Course 7',
+      subtitle: 'Subtitle 7',
+      progress: 0,
+    },
+    {
+      id: 8,
+      cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+      title: 'Course 8',
+      subtitle: 'Subtitle 8',
+      progress: 0,
+    },
+    {
+      id: 9,
+      cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+      title: 'Course 9',
+      subtitle: 'Subtitle 9',
+      progress: 0,
+    },
+    {
+      id: 10,
+      cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+      title: 'Course 10',
+      subtitle: 'Subtitle 10',
+      progress: 0,
+    },
+  ],
+  title2: [
+    {
+      id: 1,
+      cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+      title: 'Course 1',
+      subtitle: 'Subtitle 1',
+      progress: 0,
+    },
+    {
+      id: 2,
+      cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+      title: 'Course 2',
+      subtitle: 'Subtitle 2',
+      progress: 45,
+    },
+    {
+      id: 3,
+      cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+      title: 'Course 3',
+      subtitle: 'Subtitle 3',
+      progress: 27,
+    },
+    {
+      id: 4,
+      cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+      title: 'Course 4',
+      subtitle: 'Subtitle 4',
+      progress: 60,
+    },
+    {
+      id: 5,
+      cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+      title: 'Course 5',
+      subtitle: 'Subtitle 5',
+      progress: 15,
+    },
+    {
+      id: 6,
+      cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+      title: 'Course 6',
+      subtitle: 'Subtitle 6',
+      progress: 90,
+    },
+    {
+      id: 7,
+      cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+      title: 'Course 7',
+      subtitle: 'Subtitle 7',
+      progress: 0,
+    },
+    {
+      id: 8,
+      cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+      title: 'Course 8',
+      subtitle: 'Subtitle 8',
+      progress: 0,
+    },
+    {
+      id: 9,
+      cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+      title: 'Course 9',
+      subtitle: 'Subtitle 9',
+      progress: 0,
+    },
+    {
+      id: 10,
+      cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+      title: 'Course 10',
+      subtitle: 'Subtitle 10',
+      progress: 0,
+    },
+  ],
+  title3: [
+    {
+      id: 1,
+      cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+      title: 'Course 1',
+      subtitle: 'Subtitle 1',
+      progress: 0,
+    },
+    {
+      id: 2,
+      cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+      title: 'Course 2',
+      subtitle: 'Subtitle 2',
+      progress: 45,
+    },
+    {
+      id: 3,
+      cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+      title: 'Course 3',
+      subtitle: 'Subtitle 3',
+      progress: 27,
+    },
+    {
+      id: 4,
+      cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+      title: 'Course 4',
+      subtitle: 'Subtitle 4',
+      progress: 60,
+    },
+    {
+      id: 5,
+      cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+      title: 'Course 5',
+      subtitle: 'Subtitle 5',
+      progress: 15,
+    },
+    {
+      id: 6,
+      cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+      title: 'Course 6',
+      subtitle: 'Subtitle 6',
+      progress: 90,
+    },
+    {
+      id: 7,
+      cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+      title: 'Course 7',
+      subtitle: 'Subtitle 7',
+      progress: 0,
+    },
+    {
+      id: 8,
+      cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+      title: 'Course 8',
+      subtitle: 'Subtitle 8',
+      progress: 0,
+    },
+    {
+      id: 9,
+      cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+      title: 'Course 9',
+      subtitle: 'Subtitle 9',
+      progress: 0,
+    },
+    {
+      id: 10,
+      cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+      title: 'Course 10',
+      subtitle: 'Subtitle 10',
+      progress: 0,
+    },
+    {
+      id: 1,
+      cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+      title: 'Course 1',
+      subtitle: 'Subtitle 1',
+      progress: 0,
+    },
+    {
+      id: 2,
+      cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+      title: 'Course 2',
+      subtitle: 'Subtitle 2',
+      progress: 45,
+    },
+    {
+      id: 3,
+      cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+      title: 'Course 3',
+      subtitle: 'Subtitle 3',
+      progress: 27,
+    },
+    {
+      id: 4,
+      cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+      title: 'Course 4',
+      subtitle: 'Subtitle 4',
+      progress: 60,
+    },
+    {
+      id: 5,
+      cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+      title: 'Course 5',
+      subtitle: 'Subtitle 5',
+      progress: 15,
+    },
+    {
+      id: 6,
+      cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+      title: 'Course 6',
+      subtitle: 'Subtitle 6',
+      progress: 90,
+    },
+    {
+      id: 7,
+      cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+      title: 'Course 7',
+      subtitle: 'Subtitle 7',
+      progress: 0,
+    },
+    {
+      id: 8,
+      cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+      title: 'Course 8',
+      subtitle: 'Subtitle 8',
+      progress: 0,
+    },
+    {
+      id: 9,
+      cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+      title: 'Course 9',
+      subtitle: 'Subtitle 9',
+      progress: 0,
+    },
+    {
+      id: 10,
+      cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+      title: 'Course 10',
+      subtitle: 'Subtitle 10',
+      progress: 0,
+    },
+  ],
+};
+</file>
+
+<file path="src/pages/CoursesByAlias/index.ts">
+export { CoursesByAliasPageAsync as CoursesByAliasPage } from './CoursesByAliasPageAsync';
+</file>
+
+<file path="src/pages/FAQ/index.ts">
+export { FAQPageAsync as FAQPage } from './FAQPageAsync';
+</file>
+
+<file path="src/pages/Home/mock.ts">
+import type { Course } from '@/types/courses';
+
+export const continueCourses: Course[] = [
+  {
+    id: 1,
+    cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+    title: 'Course 1',
+    subtitle: 'Subtitle 1',
+    progress: 10,
+  },
+  {
+    id: 2,
+    cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+    title: 'Course 2',
+    subtitle: 'Subtitle 2',
+    progress: 45,
+  },
+  {
+    id: 3,
+    cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+    title: 'Course 3',
+    subtitle: 'Subtitle 3',
+    progress: 27,
+  },
+  {
+    id: 4,
+    cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+    title: 'Course 4',
+    subtitle: 'Subtitle 4',
+    progress: 73,
+  },
+  {
+    id: 5,
+    cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+    title: 'Course 5',
+    subtitle: 'Subtitle 5',
+    progress: 15,
+  },
+  {
+    id: 6,
+    cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+    title: 'Course 6',
+    subtitle: 'Subtitle 6',
+    progress: 90,
+  },
+  {
+    id: 7,
+    cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+    title: 'Course 7',
+    subtitle: 'Subtitle 7',
+    progress: 32,
+  },
+  {
+    id: 8,
+    cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+    title: 'Course 8',
+    subtitle: 'Subtitle 8',
+    progress: 68,
+  },
+  {
+    id: 9,
+    cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+    title: 'Course 9',
+    subtitle: 'Subtitle 9',
+    progress: 54,
+  },
+  {
+    id: 10,
+    cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+    title: 'Course 10',
+    subtitle: 'Subtitle 10',
+    progress: 41,
+  },
+];
+
+export const recommended: Course[] = [
+  {
+    id: 1,
+    cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+    title: 'Course 1',
+    subtitle: 'Subtitle 1',
+    progress: 0,
+  },
+  {
+    id: 2,
+    cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+    title: 'Course 2',
+    subtitle: 'Subtitle 2',
+    progress: 45,
+  },
+  {
+    id: 3,
+    cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+    title: 'Course 3',
+    subtitle: 'Subtitle 3',
+    progress: 27,
+  },
+  {
+    id: 4,
+    cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+    title: 'Course 4',
+    subtitle: 'Subtitle 4',
+    progress: 60,
+  },
+  {
+    id: 5,
+    cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+    title: 'Course 5',
+    subtitle: 'Subtitle 5',
+    progress: 15,
+  },
+  {
+    id: 6,
+    cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+    title: 'Course 6',
+    subtitle: 'Subtitle 6',
+    progress: 90,
+  },
+  {
+    id: 7,
+    cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+    title: 'Course 7',
+    subtitle: 'Subtitle 7',
+    progress: 0,
+  },
+  {
+    id: 8,
+    cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+    title: 'Course 8',
+    subtitle: 'Subtitle 8',
+    progress: 0,
+  },
+  {
+    id: 9,
+    cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+    title: 'Course 9',
+    subtitle: 'Subtitle 9',
+    progress: 0,
+  },
+  {
+    id: 10,
+    cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+    title: 'Course 10',
+    subtitle: 'Subtitle 10',
+    progress: 0,
+  },
+];
+
+export const other: { [key: string]: Course[] } = {
+  title: [...continueCourses],
+  title2: [...recommended],
+  title3: [...continueCourses, ...recommended].slice(0, 5),
+};
+</file>
+
+<file path="src/pages/Lesson/hooks/useLessonProgress.ts">
+import { useCallback } from 'react';
+
+interface UseLessonProgressProps {
+  totalSteps: number;
+}
+
+export function useLessonProgress({ totalSteps }: UseLessonProgressProps) {
+  const calculateProgress = useCallback(
+    (index: number) => {
+      const totalStepsWithIntro = totalSteps + 1;
+      const currentStep = index + 1;
+      return Math.round((currentStep / totalStepsWithIntro) * 100);
+    },
+    [totalSteps],
+  );
+
+  return {
+    calculateProgress,
+  };
+}
+</file>
+
+<file path="src/pages/Lesson/hooks/useScrollAnimation.ts">
+import { useCallback } from 'react';
+
+interface UseScrollAnimationProps {
+  stepsRefs: React.MutableRefObject<{ [key: number]: HTMLDivElement | null }>;
+  containerRef: React.RefObject<HTMLDivElement | null>;
+  onScrollComplete?: (stepIndex: number) => void;
+}
+
+export function useScrollAnimation({ stepsRefs, containerRef, onScrollComplete }: UseScrollAnimationProps) {
+  const scrollToStep = useCallback(
+    (stepIndex: number) => {
+      if (stepsRefs.current[stepIndex] && containerRef?.current) {
+        const targetElement = stepsRefs.current[stepIndex];
+        const headerHeight = 80;
+        const yOffset = targetElement.offsetTop;
+
+        const targetPosition = yOffset - headerHeight;
+
+        const startPosition = window.pageYOffset;
+        const distance = targetPosition - startPosition;
+        const duration = 800;
+        let startTime: number | null = null;
+
+        function animation(currentTime: number) {
+          if (startTime === null) startTime = currentTime;
+          const elapsedTime = currentTime - startTime;
+          const progress = Math.min(elapsedTime / duration, 1);
+
+          const easeInOut = (t: number) => {
+            return t < 0.5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1;
+          };
+
+          window.scrollTo(0, startPosition + distance * easeInOut(progress));
+
+          if (elapsedTime < duration) {
+            requestAnimationFrame(animation);
+          } else {
+            setTimeout(() => {
+              if (onScrollComplete) {
+                onScrollComplete(stepIndex);
+              }
+            }, 200);
+          }
+        }
+
+        requestAnimationFrame(animation);
+      }
+    },
+    [stepsRefs, containerRef, onScrollComplete],
+  );
+
+  const registerStepRef = useCallback(
+    (index: number, ref: HTMLDivElement | null) => {
+      stepsRefs.current[index] = ref;
+    },
+    [stepsRefs],
+  );
+
+  return {
+    scrollToStep,
+    registerStepRef,
+  };
+}
+</file>
+
+<file path="src/pages/Lesson/index.ts">
+export { LessonPageAsync as LessonPage } from './LessonPageAsync';
+</file>
+
+<file path="src/pages/Library/index.ts">
+export { LibraryPageAsync as LibraryPage } from './LibraryPageAsync';
+</file>
+
+<file path="src/pages/Login/index.ts">
+export { LoginPageAsync as LoginPage } from './LoginPageAsync';
+</file>
+
+<file path="src/pages/Login/utils/getErrorMessage.ts">
+import { ValidationErrorCode } from './validation';
+
+export const getErrorMessage = (code: string): string => {
+  const errorMessages: Record<string, string> = {
+    [ValidationErrorCode.REQUIRED]: 'Поле обязательно для заполнения',
+    [ValidationErrorCode.INVALID_EMAIL]: 'Неверный формат email',
+    [ValidationErrorCode.PASSWORD_TOO_SHORT]: 'Пароль должен содержать минимум 6 символов',
+    [ValidationErrorCode.PASSWORD_NO_DIGIT]: 'Пароль должен содержать хотя бы одну цифру',
+    UNKNOWN_ERROR: 'Произошла ошибка при входе',
+  };
+
+  return errorMessages[code] || 'Неизвестная ошибка';
+};
+</file>
+
+<file path="src/pages/ProfileSettings/index.ts">
+export { ProfileSettingsPageAsync as ProfileSettingsPage } from './ProfileSettingsPageAsync';
+</file>
+
+<file path="src/pages/ProfileSettings/ui/UpdateProfile.tsx">
+import React, { useActionState, useState } from 'react';
+
+import { Input } from '@/app/components/ui/input';
+import { Button } from '@/app/components/ui/button';
+
+import { ProfileData, FormFieldNames } from '../types';
+
+import { validateProfile } from '../utils/validation';
+import { getErrorMessage } from '../utils/getErrorMessage';
+import { Textarea } from '@/app/components/ui/textarea';
+
+const initialState: ProfileData = {
+  name: '',
+  email: '',
+  surname: '',
+  message: '',
+};
+
+const MESSAGE_MAX_LENGTH = 512;
+
+async function formAction(_: ProfileData, formData: FormData) {
+  const name = formData.get(FormFieldNames.NAME) as string;
+  const email = formData.get(FormFieldNames.EMAIL) as string;
+  const surname = formData.get(FormFieldNames.SURNAME) as string;
+  const message = formData.get(FormFieldNames.MESSAGE) as string;
+
+  const validationResult = await validateProfile({ name, email, surname, message });
+
+  if (validationResult.success) {
+    // @todo: здесь запрос на бэк и редирект на страницу входа
+
+    return { email, name, surname, message };
+  } else {
+    const errorMessages: { [key: string]: string } = {};
+
+    validationResult.errors?.forEach(error => {
+      errorMessages[error.fieldName] = getErrorMessage(error.code);
+    });
+
+    return {
+      email,
+      name,
+      surname,
+      message,
+      errors: errorMessages,
+    };
+  }
+}
+
+export const UpdateProfile: React.FC = () => {
+  const [state, action, pending] = useActionState<ProfileData, FormData>(formAction, initialState);
+  const [messageLength, setMessageLength] = useState(state.message?.length || 0);
+
+  const handleMessageChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const text = e.target.value;
+    if (text.length <= MESSAGE_MAX_LENGTH) {
+      setMessageLength(text.length);
+    }
+  };
+
+  return (
+    <form
+      action={action}
+      className="w-80 rounded-[2px] border border-[#D9D9D9] p-6 shadow-md"
+    >
+      <label className="mb-1 flex flex-col gap-2">
+        <p className="text-base text-[#1E1E1E]">Name</p>
+        <Input
+          name={FormFieldNames.NAME}
+          type="text"
+          placeholder="Name"
+          className="w-full"
+          defaultValue={state.name}
+          autoComplete="given-name"
+        />
+        {state.errors?.name && <p className="text-sm text-red-500">{state.errors.name}</p>}
+      </label>
+
+      <label className="mb-1 flex flex-col gap-2">
+        <p className="text-base text-[#1E1E1E]">Surname</p>
+        <Input
+          name={FormFieldNames.SURNAME}
+          type="text"
+          placeholder="Surname"
+          className="w-full"
+          defaultValue={state.surname}
+          autoComplete="family-name"
+        />
+        {state.errors?.surname && <p className="text-sm text-red-500">{state.errors.surname}</p>}
+      </label>
+
+      <label className="mb-1 flex flex-col gap-2">
+        <p className="text-base text-[#1E1E1E]">Email</p>
+        <Input
+          name={FormFieldNames.EMAIL}
+          type="email"
+          placeholder="Email"
+          className="w-full"
+          defaultValue={state.email}
+          autoComplete="email"
+        />
+        {state.errors?.email && <p className="text-sm text-red-500">{state.errors.email}</p>}
+      </label>
+
+      <label className="mb-1 flex flex-col gap-2">
+        <p className="text-base text-[#1E1E1E]">Message</p>
+        <div className="relative">
+          <Textarea
+            name={FormFieldNames.MESSAGE}
+            placeholder="Message"
+            className="w-full"
+            defaultValue={state.message}
+            autoComplete="off"
+            maxLength={MESSAGE_MAX_LENGTH}
+            onChange={handleMessageChange}
+          />
+          <div className="mt-1 text-right text-xs text-gray-500">
+            {messageLength}/{MESSAGE_MAX_LENGTH}
+          </div>
+        </div>
+        {state.errors?.message && <p className="text-sm text-red-500">{state.errors.message}</p>}
+      </label>
+
+      {state.errors?.general && <p className="mb-4 text-sm text-red-500">{state.errors.general}</p>}
+
+      <Button
+        type="submit"
+        className="mt-4 w-full"
+        disabled={pending}
+      >
+        Submit
+      </Button>
+    </form>
+  );
+};
+</file>
+
+<file path="src/pages/ProfileSettings/utils/getErrorMessage.ts">
+import { ValidationErrorCode } from './validation';
+
+export const getErrorMessage = (code: string): string => {
+  const errorMessages: Record<string, string> = {
+    [ValidationErrorCode.REQUIRED]: 'Поле обязательно для заполнения',
+    [ValidationErrorCode.INVALID_EMAIL]: 'Неверный формат email',
+    [ValidationErrorCode.INVALID_NAME]: 'Имя должно содержать только буквы',
+    [ValidationErrorCode.NAME_TOO_SHORT]: 'Имя должно содержать минимум 2 символа',
+    [ValidationErrorCode.INVALID_SURNAME]: 'Фамилия должна содержать только буквы',
+    [ValidationErrorCode.SURNAME_TOO_SHORT]: 'Фамилия должна содержать минимум 3 символа',
+    UNKNOWN_ERROR: 'Произошла неизвестная ошибка',
+  };
+
+  return errorMessages[code] || 'Неизвестная ошибка';
+};
+</file>
+
+<file path="src/pages/ProfileSettings/utils/validation.ts">
+import { z } from 'zod';
+import { FormFieldNames } from '../types';
+import { EMAIL, SYMBOLS_ONLY } from '@/app/common/regex';
+
+export enum ValidationErrorCode {
+  REQUIRED = 'REQUIRED',
+  INVALID_NAME = 'INVALID_NAME',
+  NAME_TOO_SHORT = 'NAME_TOO_SHORT',
+  INVALID_SURNAME = 'INVALID_SURNAME',
+  SURNAME_TOO_SHORT = 'SURNAME_TOO_SHORT',
+  INVALID_EMAIL = 'INVALID_EMAIL',
+}
+
+const profileSchema = z.object({
+  [FormFieldNames.NAME]: z
+    .string({
+      required_error: ValidationErrorCode.REQUIRED,
+    })
+    .min(2, ValidationErrorCode.NAME_TOO_SHORT)
+    .regex(SYMBOLS_ONLY, ValidationErrorCode.INVALID_NAME),
+
+  [FormFieldNames.SURNAME]: z
+    .string()
+    .min(3, ValidationErrorCode.SURNAME_TOO_SHORT)
+    .regex(SYMBOLS_ONLY, ValidationErrorCode.INVALID_SURNAME)
+    .optional(),
+
+  [FormFieldNames.EMAIL]: z
+    .string({
+      required_error: ValidationErrorCode.REQUIRED,
+    })
+    .email(ValidationErrorCode.INVALID_EMAIL)
+    .regex(EMAIL, ValidationErrorCode.INVALID_EMAIL),
+
+  [FormFieldNames.MESSAGE]: z.string().optional(),
+});
+
+type ProfileFormData = z.infer<typeof profileSchema>;
+
+interface ValidationError {
+  fieldName: string;
+  code: string;
+}
+
+interface ValidationResult {
+  success: boolean;
+  data?: ProfileFormData;
+  errors?: ValidationError[];
+}
+
+export function validateProfile(data: unknown): Promise<ValidationResult> {
+  return new Promise(resolve => {
+    try {
+      const validatedData = profileSchema.parse(data);
+
+      resolve({
+        success: true,
+        data: validatedData,
+      });
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        const errors: ValidationError[] = error.errors.map(err => ({
+          fieldName: err.path[0]?.toString() || '',
+          code: err.message,
+        }));
+
+        console.error('Ошибки валидации:', errors);
+        resolve({ success: false, errors });
+      } else {
+        resolve({
+          success: false,
+          errors: [{ fieldName: 'general', code: 'UNKNOWN_ERROR' }],
+        });
+      }
+    }
+  });
+}
+</file>
+
+<file path="src/pages/Register/index.ts">
+export { RegisterPageAsync as RegisterPage } from './RegisterPageAsync';
+</file>
+
+<file path="src/pages/Register/utils/getErrorMessage.ts">
+import { ValidationErrorCode } from './validation';
+
+export const getErrorMessage = (code: string): string => {
+  const errorMessages: Record<string, string> = {
+    [ValidationErrorCode.REQUIRED]: 'Поле обязательно для заполнения',
+    [ValidationErrorCode.INVALID_EMAIL]: 'Неверный формат email',
+    [ValidationErrorCode.PASSWORD_TOO_SHORT]: 'Пароль должен содержать минимум 6 символов',
+    [ValidationErrorCode.PASSWORD_NO_DIGIT]: 'Пароль должен содержать хотя бы одну цифру',
+    UNKNOWN_ERROR: 'Произошла ошибка при входе',
+  };
+
+  return errorMessages[code] || 'Неизвестная ошибка';
+};
+</file>
+
+<file path="src/types/pagination.ts">
+export interface IPagination<T> {
+  data: T[];
+  currentPage: number;
+  totalCount: number;
+  totalPages: number;
+}
+</file>
+
+<file path="src/types/query.ts">
+export interface IPaginationQuery {
+  page?: number;
+}
+
+export interface ISearchQuery extends IPaginationQuery {
+  searchText: string;
+}
+</file>
+
+<file path="tsconfig.json">
+{
+  "files": [],
+  "references": [
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.node.json" }
+  ],
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  }
+}
+</file>
+
+<file path="vite.config.ts">
+import { defineConfig } from 'vite'
+
+import react from '@vitejs/plugin-react'
+import tailwindcss from '@tailwindcss/vite'
+
+import path from 'path';
+
+export default defineConfig({
+  plugins: [
+    react(),
+    tailwindcss(),
+  ],
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+    }
+  },
+})
+</file>
+
+<file path=".gitignore">
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+.env
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.vercel
+</file>
+
+<file path="src/app/api/client.ts">
+import axios, { AxiosError, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
+
+const client = axios.create({
+  baseURL: 'http://localhost:3000/api/v1',
+});
+
+function requestSuccess(config: InternalAxiosRequestConfig): InternalAxiosRequestConfig {
+  const token = localStorage.getItem('Authorization');
+
+  if (token) {
+    config.headers.Authorization = token;
+  }
+
+  return config;
+}
+
+function requestError(error: AxiosError): Promise<never> {
+  return Promise.reject(error);
+}
+
+function responseSuccess<T>(response: AxiosResponse<T>): T {
+  return response.data;
+}
+
+function responseError(error: AxiosError): Promise<never> {
+  console.error('error >>>', error);
+  return Promise.reject(error);
+}
+
+client.interceptors.request.use(requestSuccess, requestError);
+client.interceptors.response.use(responseSuccess, responseError);
+
+export { client };
+</file>
+
+<file path="src/app/api/index.ts">
+import { client } from './client';
+import { authModule } from './modules/auth';
+import { courseModule } from './modules/course';
+
+export const api = {
+  profile: courseModule(client),
+  auth: authModule(client),
+};
+</file>
+
+<file path="src/app/api/modules/course.ts">
+import type { AxiosInstance } from 'axios';
+import type { Course, CourseCategory, CourseDetails } from '@/types/courses';
+import type { IPaginationQuery } from '@/types/query';
+import type { IPagination } from '@/types/pagination';
+import { getQueryParams } from '@/lib/getQueryParams';
+
+export const courseModule = (client: AxiosInstance) => ({
+  getContinueLearning: (query?: IPaginationQuery): Promise<IPagination<Course>> => {
+    let url = '/continue-learning';
+
+    if (query) {
+      url = `${url}?${getQueryParams(query)}`;
+    }
+
+    return client.get(url);
+  },
+
+  getRecommendedCourses: (query?: IPaginationQuery): Promise<IPagination<Course>> => {
+    let url = '/recommended';
+
+    if (query) {
+      url = `${url}?${getQueryParams(query)}`;
+    }
+
+    return client.get(url);
+  },
+
+  getCoursesByAlias: (alias: string, query?: IPaginationQuery): Promise<IPagination<Course>> => {
+    let url = `/courses/${alias}`;
+
+    if (query) {
+      url = `${url}?${getQueryParams(query)}`;
+    }
+
+    return client.get(url);
+  },
+
+  getCourseDetails: (alias: string, id: number): Promise<CourseDetails> => {
+    return client.get(`/courses/${alias}/${id}`);
+  },
+
+  getCoursesByCategory: (ids: number[], page: number = 1): Promise<IPagination<Course>> => {
+    return client.get(`/courses/filter?${getQueryParams({ ids, page })}`);
+  },
+
+  getCategories: (): Promise<CourseCategory[]> => {
+    return client.get('/courses/categories');
+  },
+});
+</file>
+
+<file path="src/app/components/business/CourseCard.tsx">
+import React from 'react';
+import type { Course } from '@/types/courses';
+import { Progress } from '@radix-ui/react-progress';
+import { Link } from 'react-router-dom';
+import { RoutePath } from '@/app/router/config';
+
+interface Props {
+  course: Course;
+}
+
+export const CourseCard: React.FC<Props> = ({ course }) => {
+  return (
+    // @ts-ignore
+    <Link to={RoutePath.course.replace(':id', course.id)}>
+      <div>
+        <img
+          src={course.cover}
+          alt={course.title}
+          className="object-cover"
+        />
+      </div>
+
+      <div className="mt-4 flex flex-col gap-2">
+        <p className="text-xl font-medium text-[#1E1E1E]">{course.title}</p>
+        <p className="text-base text-[#757575]">{course.subtitle}</p>
+      </div>
+
+      {Boolean(course.progress) && (
+        <div className="mt-4">
+          <Progress value={course.progress} />
+        </div>
+      )}
+    </Link>
+  );
+};
+</file>
+
+<file path="src/app/components/ui/circle-progress.tsx">
+import * as React from 'react';
+import * as ProgressPrimitive from '@radix-ui/react-progress';
+
+import { cn } from '@/lib/utils';
+
+const CircleProgress = React.forwardRef<
+  React.ElementRef<typeof ProgressPrimitive.Root>,
+  React.ComponentPropsWithoutRef<typeof ProgressPrimitive.Root>
+>(({ className, value, ...props }) => {
+  const radius = 20;
+  const circumference = 2 * Math.PI * radius;
+  const strokeDashoffset = circumference - ((value || 0) / 100) * circumference;
+
+  return (
+    <div
+      className={cn('relative', className)}
+      {...props}
+    >
+      <svg
+        width="48"
+        height="48"
+        viewBox="0 0 48 48"
+        className="-rotate-90 transform"
+      >
+        <circle
+          cx="24"
+          cy="24"
+          r={radius}
+          fill="none"
+          stroke="#65558F80"
+          strokeWidth="6"
+        />
+        <circle
+          cx="24"
+          cy="24"
+          r={radius}
+          fill="none"
+          stroke="#65558F"
+          strokeWidth="6"
+          strokeDasharray={circumference}
+          strokeDashoffset={strokeDashoffset}
+          strokeLinecap="round"
+          style={{
+            transition: 'stroke-dashoffset 0.2s ease-in-out',
+          }}
+        />
+      </svg>
+    </div>
+  );
+});
+
+CircleProgress.displayName = 'CircleProgress';
+
+export { CircleProgress };
+</file>
+
+<file path="src/pages/Lesson/components/CompleteCourseFlow.tsx">
+import React, { useState } from 'react';
+import { CircleCheckBig, Star } from 'lucide-react';
+import { Button } from '@/app/components/ui/button';
+import { Textarea } from '@/app/components/ui/textarea';
+import { cn } from '@/lib/utils';
+
+interface Props {
+  lessonId: number;
+  courseAlias: string | null;
+}
+// @ts-ignore
+export const CompleteCourseFlow: React.FC<Props> = ({ lessonId, courseAlias }) => {
+  const [rating, setRating] = useState<number>(0);
+  const [showFeedback, setShowFeedback] = useState<boolean>(false);
+  const [animatingStarIndex, setAnimatingStarIndex] = useState<number | null>(null);
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+
+  const handleStarClick = (index: number) => {
+    setAnimatingStarIndex(index);
+    setTimeout(() => {
+      setAnimatingStarIndex(null);
+    }, 300);
+    setRating(index + 1);
+    setShowFeedback(true);
+  };
+
+  const handleTagClick = (tag: string) => {
+    setSelectedTags(prev => (prev.includes(tag) ? prev.filter(t => t !== tag) : [...prev, tag]));
+  };
+
+  const submitRating = () => {
+    console.log('Rating submitted:', {
+      rating,
+      selectedTags,
+      // здесь можно добавить чтение значения из textarea
+    });
+  };
+
+  return (
+    <div className="flex h-[calc(100vh-80px)] flex-col items-center justify-center">
+      <div className="flex flex-col items-center justify-center">
+        <CircleCheckBig className="mb-6 size-32" />
+        <h2 className="text-2xl text-black">Lesson complete!</h2>
+      </div>
+
+      <div className="mt-16 flex max-w-[360px] flex-col items-center justify-center gap-6 rounded-[8px] border border-[#D9D9D9] p-6">
+        <div className="flex items-center justify-center gap-2">
+          {[0, 1, 2, 3, 4].map(index => (
+            <Star
+              key={index}
+              className={`size-6 cursor-pointer transition-transform duration-300 ${
+                index < rating ? 'fill-black' : ''
+              } ${animatingStarIndex === index ? 'scale-125' : ''}`}
+              onClick={() => handleStarClick(index)}
+            />
+          ))}
+        </div>
+
+        <div>
+          <h3 className="text-center text-2xl font-semibold text-black">Rate the lesson</h3>
+          <p className="text-center text-base text-[#1E1E1E]">Your feedback helps us get better</p>
+        </div>
+
+        {showFeedback && (
+          <div className="mt-4 w-full">
+            <div className="mb-4 flex flex-wrap justify-center gap-2">
+              {['Useful', 'Fun', 'Engaging', 'Easy to follow', 'Interactive'].map(item => (
+                <button
+                  key={item}
+                  className={cn(
+                    'cursor-pointer rounded-lg border-2 border-[#2C2C2C] px-3 py-1.5 text-base text-[#1E1E1E] transition-all duration-200',
+                    {
+                      'opacity-80 hover:opacity-100': !selectedTags.includes(item),
+                      'bg-[#2C2C2C] font-medium text-white': selectedTags.includes(item),
+                    },
+                  )}
+                  onClick={() => handleTagClick(item)}
+                >
+                  {item}
+                </button>
+              ))}
+            </div>
+
+            <Textarea
+              placeholder="Write your feedback here"
+              className="min-h-24 w-full max-w-[300px]"
+            />
+          </div>
+        )}
+
+        <div className="mt-4">
+          <Button onClick={submitRating}>Submit</Button>
+        </div>
+      </div>
+    </div>
+  );
+};
+</file>
+
+<file path="src/pages/Lesson/components/RadioButtons.tsx">
+import React, { useState } from 'react';
+import { cn } from '@/lib/utils';
+
+interface RadioButtonsProps {
+  items: {
+    id: number;
+    label: string;
+  }[];
+  onSelect: () => void;
+}
+
+export const RadioButtons: React.FC<RadioButtonsProps> = ({ items, onSelect }) => {
+  const [selectedId, setSelectedId] = useState<number | null>(null);
+
+  const handleChange = (id: number) => {
+    setSelectedId(id);
+    setTimeout(() => {
+      onSelect();
+    }, 300);
+  };
+
+  return (
+    <div className="mt-4 rounded-lg bg-gray-100 p-4">
+      <div className="flex flex-col space-y-3">
+        {items.map(item => (
+          <label
+            key={item.id}
+            className={cn('flex cursor-pointer items-center rounded-md p-2 transition-all duration-300', {
+              'hover:bg-gray-200': selectedId !== item.id,
+            })}
+          >
+            <div className="relative mr-3 flex h-5 w-5 items-center justify-center">
+              <input
+                type="radio"
+                className="peer absolute opacity-0"
+                name="radio-options"
+                value={item.id}
+                checked={selectedId === item.id}
+                onChange={() => handleChange(item.id)}
+                disabled={selectedId !== null}
+              />
+              <div className="flex h-5 w-5 items-center justify-center rounded-full border border-gray-400 transition-all peer-checked:border-2 peer-checked:border-black"></div>
+              <div className="absolute h-2.5 w-2.5 scale-0 rounded-full bg-black transition-transform peer-checked:scale-100"></div>
+            </div>
+            <span
+              className={cn('text-base', {
+                'font-medium': selectedId === item.id,
+              })}
+            >
+              {item.label}
+            </span>
+          </label>
+        ))}
+      </div>
+    </div>
+  );
+};
+</file>
+
+<file path="src/pages/Lesson/hooks/useLessonState.ts">
+import { useState, useEffect } from 'react';
+import type { LessonDetails } from '@/types/lessons';
+
+interface LessonStateStorage {
+  startedLesson: boolean;
+  lessonId: string;
+}
+
+export function useLessonState(initialLessonData: LessonDetails) {
+  const [lesson, setLesson] = useState<LessonDetails>(initialLessonData);
+  const [startedLesson, setStartedLesson] = useState<boolean>(false);
+
+  useEffect(() => {
+    const storedState = sessionStorage.getItem(`lesson_state_${initialLessonData.id}`);
+
+    if (storedState) {
+      try {
+        const parsedState = JSON.parse(storedState) as LessonStateStorage;
+
+        if (parsedState.lessonId === initialLessonData.id.toString()) {
+          setStartedLesson(parsedState.startedLesson);
+        }
+      } catch (error) {
+        console.error('Failed to parse lesson state from sessionStorage:', error);
+      }
+    }
+  }, [initialLessonData.id]);
+
+  const startLesson = () => {
+    setStartedLesson(true);
+
+    const stateToStore: LessonStateStorage = {
+      startedLesson: true,
+      lessonId: lesson.id.toString()
+    };
+
+    sessionStorage.setItem(`lesson_state_${lesson.id.toString()}`, JSON.stringify(stateToStore));
+  };
+
+  const resetLessonState = () => {
+    sessionStorage.removeItem(`lesson_state_${initialLessonData.id.toString()}`);
+    setStartedLesson(false);
+  };
+
+  return {
+    lesson,
+    setLesson,
+    startedLesson,
+    startLesson,
+    resetLessonState,
+  };
+}
+</file>
+
+<file path="src/pages/Library/mock.ts">
+import type { Course } from '@/types/courses';
+
+export const bookmarked: Course[] = [
+  {
+    id: 1,
+    cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+    title: 'Course 1',
+    subtitle: 'Subtitle 1',
+    progress: 10,
+  },
+  {
+    id: 2,
+    cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+    title: 'Course 2',
+    subtitle: 'Subtitle 2',
+    progress: 45,
+  },
+  {
+    id: 3,
+    cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+    title: 'Course 3',
+    subtitle: 'Subtitle 3',
+    progress: 27,
+  },
+  {
+    id: 4,
+    cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+    title: 'Course 4',
+    subtitle: 'Subtitle 4',
+    progress: 73,
+  },
+  {
+    id: 5,
+    cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+    title: 'Course 5',
+    subtitle: 'Subtitle 5',
+    progress: 15,
+  },
+  {
+    id: 6,
+    cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+    title: 'Course 6',
+    subtitle: 'Subtitle 6',
+    progress: 90,
+  },
+  {
+    id: 7,
+    cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+    title: 'Course 7',
+    subtitle: 'Subtitle 7',
+    progress: 32,
+  },
+  {
+    id: 8,
+    cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+    title: 'Course 8',
+    subtitle: 'Subtitle 8',
+    progress: 68,
+  },
+  {
+    id: 9,
+    cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+    title: 'Course 9',
+    subtitle: 'Subtitle 9',
+    progress: 54,
+  },
+  {
+    id: 10,
+    cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+    title: 'Course 10',
+    subtitle: 'Subtitle 10',
+    progress: 41,
+  },
+];
+
+export const completed: Course[] = [
+  {
+    id: 1,
+    cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+    title: 'Course 1',
+    subtitle: 'Subtitle 1',
+    progress: 0,
+  },
+  {
+    id: 2,
+    cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+    title: 'Course 2',
+    subtitle: 'Subtitle 2',
+    progress: 45,
+  },
+  {
+    id: 3,
+    cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+    title: 'Course 3',
+    subtitle: 'Subtitle 3',
+    progress: 27,
+  },
+  {
+    id: 4,
+    cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+    title: 'Course 4',
+    subtitle: 'Subtitle 4',
+    progress: 60,
+  },
+  {
+    id: 5,
+    cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+    title: 'Course 5',
+    subtitle: 'Subtitle 5',
+    progress: 15,
+  },
+  {
+    id: 6,
+    cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+    title: 'Course 6',
+    subtitle: 'Subtitle 6',
+    progress: 90,
+  },
+  {
+    id: 7,
+    cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+    title: 'Course 7',
+    subtitle: 'Subtitle 7',
+    progress: 0,
+  },
+  {
+    id: 8,
+    cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+    title: 'Course 8',
+    subtitle: 'Subtitle 8',
+    progress: 0,
+  },
+  {
+    id: 9,
+    cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+    title: 'Course 9',
+    subtitle: 'Subtitle 9',
+    progress: 0,
+  },
+  {
+    id: 10,
+    cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+    title: 'Course 10',
+    subtitle: 'Subtitle 10',
+    progress: 0,
+  },
+];
+</file>
+
+<file path="src/pages/Login/utils/validation.ts">
+import { z } from 'zod';
+import { FormFieldNames } from '../types';
+import { EMAIL } from '@/app/common/regex';
+
+export enum ValidationErrorCode {
+  REQUIRED = 'REQUIRED',
+  INVALID_EMAIL = 'INVALID_EMAIL',
+  PASSWORD_TOO_SHORT = 'PASSWORD_TOO_SHORT',
+  PASSWORD_NO_DIGIT = 'PASSWORD_NO_DIGIT',
+}
+
+const loginSchema = z.object({
+  [FormFieldNames.EMAIL]: z
+    .string({
+      required_error: ValidationErrorCode.REQUIRED,
+    })
+    .email(ValidationErrorCode.INVALID_EMAIL)
+    .regex(EMAIL, ValidationErrorCode.INVALID_EMAIL),
+  [FormFieldNames.PASSWORD]: z
+    .string({
+      required_error: ValidationErrorCode.REQUIRED,
+    })
+    .min(6, ValidationErrorCode.PASSWORD_TOO_SHORT)
+    .regex(/^(?=.*\d).{6,}$/, ValidationErrorCode.PASSWORD_NO_DIGIT),
+});
+
+type LoginFormData = z.infer<typeof loginSchema>;
+
+interface ValidationError {
+  fieldName: string;
+  code: string;
+}
+
+interface ValidationResult {
+  success: boolean;
+  data?: LoginFormData;
+  errors?: ValidationError[];
+}
+
+export function validateLogin(data: unknown): Promise<ValidationResult> {
+  return new Promise(resolve => {
+    try {
+      const validatedData = loginSchema.parse(data);
+      resolve({
+        success: true,
+        data: validatedData,
+      });
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        const errors: ValidationError[] = error.errors.map(err => ({
+          fieldName: err.path[0]?.toString() || '',
+          code: err.message,
+        }));
+
+        console.error('Ошибки валидации:', errors);
+        resolve({ success: false, errors });
+      } else {
+        resolve({
+          success: false,
+          errors: [{ fieldName: 'general', code: 'UNKNOWN_ERROR' }],
+        });
+      }
+    }
+  });
+}
+</file>
+
+<file path="src/pages/Register/types.ts">
+export enum FormFieldNames {
+  EMAIL = 'email',
+  PASSWORD = 'password',
+}
+
+export interface RegisterData {
+  email: string;
+  password: string;
+  errors?: {
+    [key in FormFieldNames | 'general']?: string;
+  };
+  success?: boolean;
+}
+</file>
+
+<file path="src/pages/Register/utils/validation.ts">
+import { z } from 'zod';
+import { FormFieldNames } from '../types';
+import { EMAIL } from '@/app/common/regex';
+
+export enum ValidationErrorCode {
+  REQUIRED = 'REQUIRED',
+  INVALID_EMAIL = 'INVALID_EMAIL',
+  PASSWORD_TOO_SHORT = 'PASSWORD_TOO_SHORT',
+  PASSWORD_NO_DIGIT = 'PASSWORD_NO_DIGIT',
+}
+
+const loginSchema = z.object({
+  [FormFieldNames.EMAIL]: z
+    .string({
+      required_error: ValidationErrorCode.REQUIRED,
+    })
+    .email(ValidationErrorCode.INVALID_EMAIL)
+    .regex(EMAIL, ValidationErrorCode.INVALID_EMAIL),
+  [FormFieldNames.PASSWORD]: z
+    .string({
+      required_error: ValidationErrorCode.REQUIRED,
+    })
+    .min(6, ValidationErrorCode.PASSWORD_TOO_SHORT)
+    .regex(/^(?=.*\d).{6,}$/, ValidationErrorCode.PASSWORD_NO_DIGIT),
+});
+
+export type LoginFormData = z.infer<typeof loginSchema>;
+
+export interface ValidationError {
+  fieldName: string;
+  code: string;
+}
+
+export interface ValidationResult {
+  success: boolean;
+  data?: LoginFormData;
+  errors?: ValidationError[];
+}
+
+export function validateLogin(data: unknown): Promise<ValidationResult> {
+  return new Promise(resolve => {
+    try {
+      const validatedData = loginSchema.parse(data);
+      resolve({
+        success: true,
+        data: validatedData,
+      });
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        const errors: ValidationError[] = error.errors.map(err => ({
+          fieldName: err.path[0]?.toString() || '',
+          code: err.message,
+        }));
+
+        console.error('Ошибки валидации:', errors);
+        resolve({ success: false, errors });
+      } else {
+        resolve({
+          success: false,
+          errors: [{ fieldName: 'general', code: 'UNKNOWN_ERROR' }],
+        });
+      }
+    }
+  });
+}
+</file>
+
+<file path="src/types/courses.ts">
+import { Lesson } from './lessons';
+
+export interface Course {
+  id: number;
+  cover: string;
+  title: string;
+  subtitle: string;
+  progress: number;
+  category?: CourseCategory[];
+}
+
+export interface CourseDetails extends Course {
+  description: string;
+  lessons: Lesson[];
+}
+
+export interface CourseCategory {
+  id: number;
+  alias: string;
+  name: string;
+}
+</file>
+
+<file path="src/app/api/modules/auth.ts">
+import type { AxiosInstance } from 'axios';
+import type { User } from '@/types/user';
+
+interface LoginPayload {
+  email: string;
+  password: string;
+}
+
+export const authModule = (client: AxiosInstance) => ({
+  // @todo: return User & Tokens
+  login(payload: LoginPayload): Promise<User> {
+    return client.post('/auth/login', payload);
+  },
+
+  // @todo: any kaka
+  logout(): Promise<any> {
+    return client.post('/auth/logout');
+  },
+
+  // @todo: rename to register payload
+  // @todo: return User & Tokens
+  register(payload: LoginPayload): Promise<User> {
+    return client.post('/auth/register', payload);
+  },
+
+  // getOnboarding(): Promise<AuthOnboarding> {},
+});
+</file>
+
+<file path="src/app/components/business/CourseCarousel.tsx">
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { CircleArrowRight } from 'lucide-react';
+
+import type { Course } from '@/types/courses';
+
+import { Carousel, CarouselPrevious, CarouselContent, CarouselItem, CarouselNext } from '../ui/carousel';
+import { CourseCard } from './CourseCard';
+
+interface Props {
+  title?: string;
+  courses: Course[];
+  seeAllLink?: string;
+}
+
+export const CourseCarousel: React.FC<Props> = ({ title, seeAllLink, courses }) => {
+  return (
+    <section className="mb-12">
+      {title && <h2 className="mb-8 text-3xl font-medium text-black">{title}</h2>}
+
+      <Carousel>
+        <CarouselPrevious className="left-[24px] z-50 size-12" />
+
+        <CarouselContent>
+          {courses.map(course => (
+            <CarouselItem
+              className="mr-6 max-h-96 max-w-md rounded-xl border-1 border-[#D9D9D9] p-4 last:mr-0"
+              key={course.id}
+            >
+              <CourseCard course={course} />
+            </CarouselItem>
+          ))}
+
+          {seeAllLink && courses.length > 2 && (
+            <CarouselItem className="flex max-w-24 items-center justify-center">
+              <Link
+                to={seeAllLink}
+                className="flex flex-col items-center gap-2"
+              >
+                <CircleArrowRight className="size-8" />
+                <p>See all</p>
+              </Link>
+            </CarouselItem>
+          )}
+        </CarouselContent>
+
+        <CarouselNext className="right-[24px] z-50 size-12" />
+      </Carousel>
+    </section>
+  );
+};
+</file>
+
+<file path="src/app/components/layouts/UserButton/UserButton.tsx">
+import React, { useState, useRef, useEffect } from 'react';
+import { User } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { RoutePath, AppRoutes } from '@/app/router/config';
+import { useAuth } from '@/app/hooks/useAuth';
+
+export const UserButton: React.FC = () => {
+  const { isAuthenticated, logout } = useAuth();
+
+  const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const handleLogout = () => {
+    logout();
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  if (!isAuthenticated) {
+    return (
+      <div className="flex items-center space-x-4">
+        <Link
+          to={RoutePath[AppRoutes.LOGIN]}
+          className="text-base font-medium text-gray-700 hover:text-gray-900"
+        >
+          Sign in
+        </Link>
+        <Link
+          to={RoutePath[AppRoutes.REGISTER]}
+          className="rounded-md bg-blue-600 px-4 py-2 text-base font-medium text-white hover:bg-blue-700"
+        >
+          Sign up
+        </Link>
+      </div>
+    );
+  }
+
+  return (
+    <div
+      className="relative"
+      ref={dropdownRef}
+    >
+      <button
+        onClick={toggleDropdown}
+        className="flex items-center justify-center rounded-full p-2 hover:bg-gray-100 focus:outline-none"
+      >
+        <User className="size-8 text-gray-700" />
+      </button>
+
+      {isOpen && (
+        <div className="ring-opacity-5 absolute right-0 z-40 mt-0.5 w-48 origin-top-right rounded-md bg-white shadow-lg focus:outline-none">
+          <div className="py-1">
+            <Link
+              to={RoutePath[AppRoutes.PROFILE_SETTINGS]}
+              className="block px-4 py-2 text-base font-normal text-[#1E1E1E] hover:bg-gray-100"
+            >
+              Settings
+            </Link>
+            <Link
+              to={RoutePath[AppRoutes.FAQ]}
+              className="block px-4 py-2 text-base font-normal text-[#1E1E1E] hover:bg-gray-100"
+            >
+              Help
+            </Link>
+
+            <div className="my-1 h-px bg-gray-200"></div>
+
+            <button
+              className="block w-full px-4 py-2 text-left text-base font-normal text-[#1E1E1E] hover:bg-gray-100"
+              onClick={handleLogout}
+            >
+              Log out
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+</file>
+
+<file path="src/app/layouts/CourseLayout/CourseHeader.tsx">
+import React from 'react';
+import { Logo } from '@/app/components/layouts/Logo';
+import { MainNavigation } from '@/app/components/layouts/Navigation/MainNavigation';
+import { UserButton } from '@/app/components/layouts/UserButton';
+
+export const CourseHeader: React.FC = () => {
+  return (
+    <header className="flex items-center justify-between px-14 shadow-xl">
+      <div>
+        <Logo />
+      </div>
+
+      <MainNavigation />
+
+      <UserButton />
+    </header>
+  );
+};
+</file>
+
+<file path="src/app/layouts/LessonLayout/LessonLayout.tsx">
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { ProgressHeader } from '@/app/components/layouts/ProgressHeader';
+import { useProgressStore } from './model/store';
+
+interface Props {
+  children: React.ReactNode;
+}
+
+export const LessonLayout: React.FC<Props> = ({ children }) => {
+  const { progress } = useProgressStore();
+
+  const navigate = useNavigate();
+
+  const handleBack = () => {
+    navigate(-1);
+  };
+
+  return (
+    <div>
+      <ProgressHeader
+        hasBack
+        onBack={handleBack}
+        progress={progress}
+        className="fixed top-0 left-0 z-30 w-full"
+      />
+
+      <main>{children}</main>
+    </div>
+  );
+};
+</file>
+
+<file path="src/assets/index.css">
+@import 'tailwindcss';
+
+@plugin 'tailwindcss-animate';
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --background: hsl(0 0% 100%);
+  --foreground: hsl(20 14.3% 4.1%);
+  --card: hsl(0 0% 100%);
+  --card-foreground: hsl(20 14.3% 4.1%);
+  --popover: hsl(0 0% 100%);
+  --popover-foreground: hsl(20 14.3% 4.1%);
+  --primary: hsl(24 9.8% 10%);
+  --primary-foreground: hsl(60 9.1% 97.8%);
+  --secondary: hsl(60 4.8% 95.9%);
+  --secondary-foreground: hsl(24 9.8% 10%);
+  --muted: hsl(60 4.8% 95.9%);
+  --muted-foreground: hsl(25 5.3% 44.7%);
+  --accent: hsl(60 4.8% 95.9%);
+  --accent-foreground: hsl(24 9.8% 10%);
+  --destructive: hsl(0 84.2% 60.2%);
+  --destructive-foreground: hsl(60 9.1% 97.8%);
+  --border: hsl(20 5.9% 90%);
+  --input: hsl(20 5.9% 90%);
+  --ring: hsl(20 14.3% 4.1%);
+  --chart-1: hsl(12 76% 61%);
+  --chart-2: hsl(173 58% 39%);
+  --chart-3: hsl(197 37% 24%);
+  --chart-4: hsl(43 74% 66%);
+  --chart-5: hsl(27 87% 67%);
+  --radius: 0.6rem;
+}
+
+.dark {
+  --background: hsl(20 14.3% 4.1%);
+  --foreground: hsl(60 9.1% 97.8%);
+  --card: hsl(20 14.3% 4.1%);
+  --card-foreground: hsl(60 9.1% 97.8%);
+  --popover: hsl(20 14.3% 4.1%);
+  --popover-foreground: hsl(60 9.1% 97.8%);
+  --primary: hsl(60 9.1% 97.8%);
+  --primary-foreground: hsl(24 9.8% 10%);
+  --secondary: hsl(12 6.5% 15.1%);
+  --secondary-foreground: hsl(60 9.1% 97.8%);
+  --muted: hsl(12 6.5% 15.1%);
+  --muted-foreground: hsl(24 5.4% 63.9%);
+  --accent: hsl(12 6.5% 15.1%);
+  --accent-foreground: hsl(60 9.1% 97.8%);
+  --destructive: hsl(0 62.8% 30.6%);
+  --destructive-foreground: hsl(60 9.1% 97.8%);
+  --border: hsl(12 6.5% 15.1%);
+  --input: hsl(12 6.5% 15.1%);
+  --ring: hsl(24 5.7% 82.9%);
+  --chart-1: hsl(220 70% 50%);
+  --chart-2: hsl(160 60% 45%);
+  --chart-3: hsl(30 80% 55%);
+  --chart-4: hsl(280 65% 60%);
+  --chart-5: hsl(340 75% 55%);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  ul {
+    @apply mt-2 list-disc pl-8;
+  }
+}
+</file>
+
+<file path="src/pages/Lesson/hooks/useLessonNavigation.ts">
+import { useState, useCallback, useEffect } from 'react';
+
+interface UseLessonNavigationProps {
+  totalSteps: number;
+  onProgressChange: (progress: number) => void;
+  lessonId: string;
+}
+
+interface NavigationState {
+  currentStepIndex: number;
+  visibleSteps: number[];
+  stepOpacity: { [key: number]: number };
+  isCompleted: boolean;
+  lessonId: string;
+  lastUpdated: number;
+}
+
+export function useLessonNavigation({ totalSteps, onProgressChange, lessonId }: UseLessonNavigationProps) {
+  const [currentStepIndex, setCurrentStepIndex] = useState<number>(-1);
+  const [visibleSteps, setVisibleSteps] = useState<number[]>([]);
+  const [stepOpacity, setStepOpacity] = useState<{ [key: number]: number }>({});
+  const [isCompleted, setIsCompleted] = useState<boolean>(false);
+
+  useEffect(() => {
+    const storedNavigation = sessionStorage.getItem(`lesson_navigation_${lessonId}`);
+
+    if (storedNavigation) {
+      try {
+        const parsedNavigation = JSON.parse(storedNavigation) as NavigationState;
+
+        if (parsedNavigation.lessonId === lessonId) {
+          setCurrentStepIndex(parsedNavigation.currentStepIndex);
+          setVisibleSteps(parsedNavigation.visibleSteps);
+          setStepOpacity(parsedNavigation.stepOpacity);
+          setIsCompleted(parsedNavigation.isCompleted);
+
+          if (parsedNavigation.currentStepIndex !== -1) {
+            onProgressChange(calculateProgress(parsedNavigation.currentStepIndex));
+          }
+        }
+      } catch (error) {
+        console.error('Failed to parse navigation state from sessionStorage:', error);
+      }
+    }
+  }, [lessonId]);
+
+  const saveNavigationState = useCallback(() => {
+    const navigationState: NavigationState = {
+      currentStepIndex,
+      visibleSteps,
+      stepOpacity,
+      isCompleted,
+      lessonId,
+      lastUpdated: Date.now()
+    };
+
+    sessionStorage.setItem(`lesson_navigation_${lessonId}`, JSON.stringify(navigationState));
+  }, [currentStepIndex, visibleSteps, stepOpacity, isCompleted, lessonId]);
+
+  useEffect(() => {
+    if (currentStepIndex !== -1) {
+      saveNavigationState();
+    }
+  }, [currentStepIndex, visibleSteps, stepOpacity, isCompleted, saveNavigationState]);
+
+  useEffect(() => {
+    if (visibleSteps.length > 0) {
+      const updatedOpacity = { ...stepOpacity };
+      visibleSteps.forEach((stepIndex) => {
+        if (stepIndex < currentStepIndex) {
+          updatedOpacity[stepIndex] = 1;
+        }
+      });
+
+      if (JSON.stringify(updatedOpacity) !== JSON.stringify(stepOpacity)) {
+        setStepOpacity(updatedOpacity);
+      }
+    }
+  }, [visibleSteps, currentStepIndex]);
+
+  const calculateProgress = useCallback(
+    (index: number) => {
+      const totalStepsWithIntro = totalSteps + 1;
+      const currentStep = index + 1;
+
+      return Math.round((currentStep / totalStepsWithIntro) * 100);
+    },
+    [totalSteps],
+  );
+
+  const goToNextStep = useCallback(() => {
+    if (currentStepIndex === -1) {
+      const newIndex = 0;
+      setCurrentStepIndex(newIndex);
+      setVisibleSteps(prev => [...prev, newIndex]);
+      onProgressChange(calculateProgress(newIndex));
+      setStepOpacity(prev => ({ ...prev, [newIndex]: 0 }));
+
+      return newIndex;
+    } else if (currentStepIndex < totalSteps - 1) {
+      const newIndex = currentStepIndex + 1;
+      setCurrentStepIndex(newIndex);
+      setVisibleSteps(prev => [...prev, newIndex]);
+      onProgressChange(calculateProgress(newIndex));
+      setStepOpacity(prev => ({ ...prev, [newIndex]: 0 }));
+
+      return newIndex;
+    }
+    return -1;
+  }, [currentStepIndex, totalSteps, onProgressChange, calculateProgress]);
+
+  const setStepVisible = useCallback((stepIndex: number) => {
+    setStepOpacity(prev => ({ ...prev, [stepIndex]: 1 }));
+  }, []);
+
+  const completeCourse = useCallback(() => {
+    onProgressChange(100);
+    setIsCompleted(true);
+
+    const navigationState: NavigationState = {
+      currentStepIndex,
+      visibleSteps,
+      stepOpacity,
+      isCompleted: true,
+      lessonId,
+      lastUpdated: Date.now()
+    };
+
+    sessionStorage.setItem(`lesson_navigation_${lessonId}`, JSON.stringify(navigationState));
+  }, [onProgressChange, currentStepIndex, visibleSteps, stepOpacity, lessonId]);
+
+  const clearLessonState = useCallback(() => {
+    sessionStorage.removeItem(`lesson_navigation_${lessonId}`);
+    sessionStorage.removeItem(`lesson_state_${lessonId}`);
+    onProgressChange(0);
+  }, [lessonId, onProgressChange]);
+
+  return {
+    currentStepIndex,
+    visibleSteps,
+    stepOpacity,
+    goToNextStep,
+    setStepVisible,
+    isLastStep: currentStepIndex === totalSteps - 1,
+    isCourseCompleted: isCompleted,
+    completeCourse,
+    clearLessonState,
+  };
+}
+</file>
+
+<file path="src/pages/Lesson/mock.ts">
+import { LessonDetails } from '@/types/lessons';
+
+export const mock: LessonDetails = {
+  id: 1,
+  title: 'lesson 1',
+  description:
+    "<p>The staff in a chain of three busy coffee shops feel stressed and overworked. We'll use transaction data to help them keep up with customer demand.</p>",
+  cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+  isDone: true,
+  isBlocked: false,
+  progress: 0,
+  steps: [
+    {
+      id: 1,
+      cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+      coverAnnotation: 'cover annotation',
+      text: 'It looks like Store 11 has the most need. But demand for coffee is not constant throughout the day, so it would be helpful to see how this varies over time. Which visualization would you choose for this?',
+      isDone: false,
+      component: null,
+    },
+    {
+      id: 2,
+      cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+      coverAnnotation: 'cover annotation',
+      text: 'Which visualization would you choose for this? Which visualization would you choose for this? Which visualization would you choose for this? Which visualization would you choose for this? Which visualization would you choose for this? Which visualization would you choose for this? Which visualization would you choose for this? Which visualization would you choose for this? Which visualization would you choose for this? Which visualization would you choose for this?Which visualization would you choose for this?Which visualization would you choose for this?Which visualization would you choose for this?Which visualization would you choose for this?Which visualization would you choose for this?Which visualization would you choose for this?Which visualization would you choose for this?Which visualization would you choose for this?Which visualization would you choose for this?',
+      isDone: false,
+      component: {
+        type: 'selectedButtons',
+        items: [
+          { id: 1, label: 'item 1' },
+          { id: 2, label: 'item 2' },
+        ],
+      },
+    },
+    {
+      id: 236,
+      cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+      coverAnnotation: 'cover annotation',
+      text: 'Which visualization would you choose for this? Which visualization would you choose for this? Which visualization would you choose for this? Which visualization would you choose for this? Which visualization would you choose for this? Which visualization would you choose for this? Which visualization would you choose for this? Which visualization would you choose for this? Which visualization would you choose for this? Which visualization would you choose for this?Which visualization would you choose for this?Which visualization would you choose for this?Which visualization would you choose for this?Which visualization would you choose for this?Which visualization would you choose for this?Which visualization would you choose for this?Which visualization would you choose for this?Which visualization would you choose for this?Which visualization would you choose for this?',
+      isDone: false,
+      component: {
+        type: 'slider',
+        items: [
+          {
+            id: 1,
+            componentType: 'text',
+            text: 'text text texttexttexttexttexttexttext text text text',
+          },
+          {
+            id: 2,
+            componentType: 'image',
+            src: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+            annotation: 'annotation',
+          },
+          {
+            id: 3,
+            componentType: 'image',
+            src: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+            annotation: 'annotation',
+          },
+        ],
+      },
+    },
+    {
+      id: 3,
+      cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+      coverAnnotation: 'cover annotation',
+      text: 'text 224gwrgwrg lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. ',
+      isDone: false,
+      component: {
+        type: 'radioButtons',
+        items: [
+          { id: 1, label: 'item 1' },
+          { id: 2, label: 'item 2' },
+        ],
+      },
+    },
+    {
+      id: 4,
+      cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+      coverAnnotation: 'cover annotation',
+      text: 'text ghehehehehhae getahah hetheh t wrgethet  wgwggh  tgwgwg 224gwrgwrg lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. ',
+      isDone: false,
+      component: {
+        type: 'radioButtons',
+        items: [
+          { id: 1, label: 'item 1' },
+          { id: 2, label: 'item 2' },
+        ],
+      },
+    },
+    {
+      id: 5,
+      cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+      coverAnnotation: 'cover annotation',
+      text: 'text пропущен',
+      isDone: false,
+      component: {
+        type: 'selectedButtons',
+        items: [
+          { id: 1, label: 'item 1' },
+          { id: 2, label: 'item 2' },
+        ],
+      },
+    },
+  ],
+};
+</file>
+
+<file path="src/pages/Login/types.ts">
+export enum FormFieldNames {
+  EMAIL = 'email',
+  PASSWORD = 'password',
+}
+
+export interface LoginData {
+  email: string;
+  password: string;
+  errors?: {
+    [key in FormFieldNames | 'general']?: string;
+  };
+  success?: boolean;
+}
+</file>
+
+<file path="src/pages/ProfileSettings/ProfileSettingsPage.tsx">
+import React from 'react';
+import { UpdateProfile } from './ui/UpdateProfile';
+
+const ProfileSettingsPage: React.FC = () => {
+  return (
+    <div className="flex min-h-screen items-center justify-center">
+      <UpdateProfile />
+    </div>
+  );
+};
+
+export default ProfileSettingsPage;
+</file>
+
+<file path="src/app/layouts/MainLayout/ui/MainHeader.tsx">
+import React from 'react';
+import { Logo } from '@/app/components/layouts/Logo';
+import { MainNavigation } from '@/app/components/layouts/Navigation/MainNavigation';
+import { UserButton } from '@/app/components/layouts/UserButton/UserButton';
+
+export const MainHeader: React.FC = () => {
+  return (
+    <header className="flex items-center justify-between px-14 shadow-xl">
+      <div>
+        <Logo />
+      </div>
+
+      <MainNavigation />
+
+      <UserButton />
+    </header>
+  );
+};
+</file>
+
+<file path="src/pages/AuthOnboarding/AuthOnboardingPage.tsx">
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+import { useTrackProgress } from './hooks/useTrackProgress';
+
+import { Button } from '@/app/components/ui/button';
+
+import { InputComponent } from './ui/AuthInput';
+import { SelectComponent } from './ui/AuthSelect';
+import { CheckboxGroupComponent } from './ui/AuthChecboxGroup';
+import { RadioGroupComponent } from './ui/AuthRadioGroup';
+import { ChipsListComponent } from './ui/AuthChipsList';
+
+import mockOnb from './mock';
+
+interface StepData {
+  id: number;
+  data: {
+    value: string | number | string[] | number[] | (string | number)[];
+  };
+}
+
+const AuthOnboardingPage: React.FC = () => {
+  const navigate = useNavigate();
+
+  // @ts-ignore
+  const [onboarding, setOnboarding] = useState(mockOnb);
+  const [currentOnboarding, setCurrentOnboarding] = useState(onboarding[0]);
+  const [inputValue, setInputValue] = useState('');
+  const [multipleValues, setMultipleValues] = useState<string[]>([]);
+  const [chipsValues, setChipsValues] = useState<(string | number)[]>([]);
+  const [isValid, setIsValid] = useState(false);
+  const [stepsData, setStepsData] = useState<StepData[]>([]);
+  const [error, setError] = useState('');
+
+  const { currentStep, setCurrentStep, trackProgress } = useTrackProgress({ onboarding });
+
+  useEffect(() => {
+    const savedData = stepsData.find(item => item.id === currentOnboarding.id);
+
+    if (savedData) {
+      if (Array.isArray(savedData.data.value)) {
+        if (currentOnboarding.components[0]?.type === 'chips') {
+          setChipsValues(savedData.data.value as (string | number)[]);
+        } else {
+          setMultipleValues(savedData.data.value as string[]);
+        }
+        setIsValid(true);
+      } else {
+        setInputValue(savedData.data.value as string);
+        validateInput(savedData.data.value as string);
+      }
+    } else {
+      setInputValue('');
+      setMultipleValues([]);
+      setChipsValues([]);
+      setIsValid(currentOnboarding.components.length === 0);
+    }
+    setError('');
+  }, [currentStep, currentOnboarding.id]);
+
+  const validateInput = (value: string) => {
+    if (!currentOnboarding.components.length) {
+      setIsValid(true);
+      return true;
+    }
+
+    const component = currentOnboarding.components[0];
+
+    if (component.type === 'input' || component.type === 'select' || component.type === 'radioGroup') {
+      if (!value.trim()) {
+        setError('This field is required');
+        setIsValid(false);
+        return false;
+      }
+
+      if (component.type === 'input' && component.pattern && !new RegExp(component.pattern).test(value)) {
+        setError('Invalid format');
+        setIsValid(false);
+        return false;
+      }
+
+      setError('');
+      setIsValid(true);
+      return true;
+    }
+
+    setIsValid(true);
+    return true;
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setInputValue(value);
+    validateInput(value);
+  };
+
+  const handleSelectChange = (value: string) => {
+    setInputValue(value);
+    validateInput(value);
+  };
+
+  const handleRadioChange = (value: string) => {
+    setInputValue(value);
+    validateInput(value);
+  };
+
+  const handleCheckboxGroupChange = (selectedOptions: string[]) => {
+    setMultipleValues(selectedOptions);
+    setIsValid(selectedOptions.length > 0);
+  };
+
+  const handleChipsChange = (selectedChips: (string | number)[]) => {
+    setChipsValues(selectedChips);
+    setIsValid(selectedChips.length > 0);
+  };
+
+  const handleNext = () => {
+    if (currentStep < onboarding.length - 1) {
+      const nextStep = currentStep + 1;
+      setCurrentStep(nextStep);
+      setCurrentOnboarding(onboarding[nextStep]);
+    } else {
+      handleFinish();
+    }
+  };
+
+  const handleFinish = () => {
+    console.log('Collected data:', stepsData);
+    navigate('/');
+  };
+
+  const handleCheckboxGroupSubmit = () => {
+    if (multipleValues.length === 0) {
+      setError('Please select at least one option');
+      return false;
+    }
+
+    const newStepData: StepData = {
+      id: currentOnboarding.id,
+      data: {
+        value: multipleValues,
+      },
+    };
+
+    updateStepData(newStepData);
+    return true;
+  };
+
+  const handleChipsSubmit = () => {
+    if (chipsValues.length === 0) {
+      setError('Please select at least one option');
+      return false;
+    }
+
+    const newStepData: StepData = {
+      id: currentOnboarding.id,
+      data: {
+        value: chipsValues,
+      },
+    };
+
+    updateStepData(newStepData);
+    return true;
+  };
+
+  const handleInputOrSelectSubmit = () => {
+    if (!validateInput(inputValue)) {
+      return false;
+    }
+
+    const newStepData: StepData = {
+      id: currentOnboarding.id,
+      data: {
+        value: inputValue,
+      },
+    };
+
+    updateStepData(newStepData);
+    return true;
+  };
+
+  const updateStepData = (newStepData: StepData) => {
+    setStepsData(prevData => {
+      const existingIndex = prevData.findIndex(item => item.id === currentOnboarding.id);
+      if (existingIndex >= 0) {
+        const updatedData = [...prevData];
+        updatedData[existingIndex] = newStepData;
+        return updatedData;
+      } else {
+        return [...prevData, newStepData];
+      }
+    });
+  };
+
+  const handleSubmit = () => {
+    const component = currentOnboarding.components.length > 0 ? currentOnboarding.components[0] : null;
+    let isSubmitValid = true;
+
+    if (component) {
+      if (component.type === 'checkboxGroup') {
+        isSubmitValid = handleCheckboxGroupSubmit();
+      } else if (component.type === 'chips') {
+        isSubmitValid = handleChipsSubmit();
+      } else if (component.type === 'input' || component.type === 'select' || component.type === 'radioGroup') {
+        isSubmitValid = handleInputOrSelectSubmit();
+      }
+    }
+
+    if (isSubmitValid) {
+      if (currentOnboarding.button.action === 'next') {
+        handleNext();
+        trackProgress();
+      } else {
+        handleFinish();
+      }
+    }
+  };
+
+  const renderComponent = () => {
+    if (!currentOnboarding.components.length) return null;
+
+    const component = currentOnboarding.components[0];
+
+    if (component.type === 'input') {
+      return (
+        <InputComponent
+          component={component}
+          value={inputValue}
+          onChange={handleInputChange}
+          error={error}
+        />
+      );
+    }
+
+    if (component.type === 'select' && component.items) {
+      return (
+        <SelectComponent
+          component={component}
+          value={inputValue}
+          onValueChange={handleSelectChange}
+          error={error}
+        />
+      );
+    }
+
+    if (component.type === 'radioGroup' && component.items) {
+      return (
+        <RadioGroupComponent
+          component={component}
+          value={inputValue}
+          onValueChange={handleRadioChange}
+          error={error}
+        />
+      );
+    }
+
+    if (component.type === 'checkboxGroup' && component.items) {
+      return (
+        <CheckboxGroupComponent
+          component={component}
+          onSelectionChange={handleCheckboxGroupChange}
+          error={error}
+        />
+      );
+    }
+
+    if (component.type === 'chips' && component.items) {
+      return (
+        <ChipsListComponent
+          component={component}
+          selectedValues={chipsValues}
+          onSelectionChange={handleChipsChange}
+          error={error}
+        />
+      );
+    }
+
+    return null;
+  };
+
+  return (
+    <div className="flex min-h-screen flex-col items-center justify-center p-6">
+      <div className="mx-auto flex w-full max-w-[800px] flex-col items-start space-y-6">
+        <h1 className="text-2xl font-bold">{currentOnboarding.title}</h1>
+
+        {currentOnboarding.text && (
+          <div
+            className="text-left text-base"
+            dangerouslySetInnerHTML={{ __html: currentOnboarding.text }}
+          />
+        )}
+
+        {renderComponent()}
+
+        {currentOnboarding.button && (
+          <Button
+            variant={currentOnboarding.button?.type}
+            onClick={handleSubmit}
+            disabled={!isValid}
+          >
+            {currentOnboarding.button.label}
+          </Button>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default AuthOnboardingPage;
+</file>
+
+<file path="src/pages/Courses/CoursesPage.tsx">
+import React, { useState } from 'react';
+import type { CourseCategory } from '@/types/courses';
+
+import { CourseCarousel } from '@/app/components/business/CourseCarousel';
+import { CourseFilters } from './ui/CourseFilters';
+
+import { RoutePath } from '@/app/router/config';
+
+import { categoriesMock, courses } from './mock';
+
+const CoursesPage: React.FC = () => {
+  // @ts-ignore
+  const [listCourses, setListCourses] = useState(courses);
+  // @ts-ignore
+  const [categories, setCategories] = useState<CourseCategory[]>([...categoriesMock]);
+  const [filters, setFilters] = useState<CourseCategory[]>([]);
+
+  const changeFilters = (category: CourseCategory) => {
+    const existingFilter = filters.find(item => item.id === category.id);
+
+    if (existingFilter) {
+      setFilters(filters.filter(item => item.id !== category.id));
+    } else {
+      setFilters([...filters, category]);
+    }
+  };
+
+  return (
+    <div className="container mx-auto py-12">
+      <h1 className="text-3xl font-medium text-black">Browse all courses</h1>
+      <div className="mt-3 mb-2 h-px w-full bg-[#CAC4D0]"></div>
+
+      <CourseFilters
+        categories={categories}
+        filters={filters}
+        changeFilters={changeFilters}
+      />
+
+      <div className="mt-4">
+        {Object.entries(listCourses).map(([category, courseList]) => (
+          <CourseCarousel
+            key={category}
+            title={category}
+            courses={courseList}
+            seeAllLink={RoutePath['courses-by-alias'].replace(':alias', category)}
+          />
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default CoursesPage;
+</file>
+
+<file path="src/pages/CoursesByAlias/CoursesByAliasPage.tsx">
+import React, { useState } from 'react';
+import type { Course, CourseCategory } from '@/types/courses';
+import { CourseCard } from '@/app/components/business/CourseCard';
+import { coursesMock } from './mock';
+
+const CoursesByAliasPage: React.FC = () => {
+  // @ts-ignore
+  const [courses, setCourses] = useState<Course[]>(coursesMock);
+  // @ts-ignore
+  const [category, setCategory] = useState<CourseCategory>({
+    id: 1,
+    name: 'Name',
+    alias: 'title1',
+  });
+
+  return (
+    <div className="container mx-auto py-12">
+      <h1 className="mb-4 text-3xl font-medium text-black">{category.name}</h1>
+
+      <div className="grid grid-cols-3 gap-x-5 gap-y-3">
+        {courses.map(item => {
+          return (
+            <div
+              key={item.id}
+              className="max-h-96 rounded-xl border-1 border-[#D9D9D9] p-4"
+            >
+              <CourseCard course={item} />
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+
+export default CoursesByAliasPage;
+</file>
+
+<file path="src/pages/FAQ/FAQPage.tsx">
+import React, { useState } from 'react';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/app/components/ui/accordion';
+
+const FAQPage: React.FC = () => {
+  // @ts-ignore
+  const [faq, setFaq] = useState([
+    {
+      question: 'Question 1',
+      answer: 'Ask 1.',
+      id: 1,
+    },
+    {
+      question: 'Question 2',
+      answer: 'Ask 2.',
+      id: 2,
+    },
+  ]);
+
+  return (
+    <div className="flex min-h-screen w-full items-center">
+      <div className="mx-auto w-full max-w-2xl">
+        <Accordion
+          type="single"
+          collapsible
+        >
+          {faq.map(item => {
+            return (
+              <AccordionItem
+                key={item.id}
+                value={`faq-${item.id}`}
+              >
+                <AccordionTrigger>{item.question}</AccordionTrigger>
+                <AccordionContent>{item.answer}</AccordionContent>
+              </AccordionItem>
+            );
+          })}
+        </Accordion>
+      </div>
+    </div>
+  );
+};
+
+export default FAQPage;
+</file>
+
+<file path="src/pages/Home/HomePage.tsx">
+import { useEffect, useState } from 'react';
+import type { Course } from '@/types/courses';
+
+import { continueCourses as cont, recommended as rec, other } from './mock';
+import { RoutePath } from '@/app/router/config';
+import { CourseCarousel } from '@/app/components/business/CourseCarousel';
+import { useClient } from '@/lib/useClient';
+
+interface CourseMap {
+  [key: string]: Course[];
+}
+
+const HomePage = () => {
+  const [continueCourses, setContinueCourses] = useState<Course[]>();
+  // @ts-ignore
+  const [recommended, setRecommended] = useState<Course[]>(rec);
+  // @ts-ignore
+  const [courses, setCourses] = useState<CourseMap>(other);
+
+  const supabase = useClient();
+
+  useEffect(() => {
+    const fetchCourses = async () => {
+      const { data, error } = await supabase.from('courses').select('*');
+      if (error) {
+        console.error(error);
+      } else {
+        setContinueCourses(data);
+      }
+    };
+    fetchCourses();
+  }, []);
+
+  return (
+    <div className="container mx-auto py-12">
+      <CourseCarousel
+        title="Continue learning"
+        courses={continueCourses || []}
+        seeAllLink={RoutePath['courses-by-alias'].replace(':alias', 'continue-learning')}
+      />
+
+      <CourseCarousel
+        title="Recommended for you"
+        courses={recommended}
+        seeAllLink={RoutePath['courses-by-alias'].replace(':alias', 'recommended')}
+      />
+
+      {/* {Object.entries(courses).map(([category, courseList]) => (
+        <CourseCarousel
+          key={category}
+          title={category}
+          courses={courseList}
+          seeAllLink={RoutePath['courses-by-alias'].replace(':alias', category)}
+        />
+      ))} */}
+    </div>
+  );
+};
+
+export default HomePage;
+</file>
+
+<file path="src/types/lessons.ts">
+export interface Lesson {
+  id: number;
+  title: string;
+  description: string;
+  cover: string;
+  isDone: boolean;
+  isBlocked: boolean;
+  progress: number;
+}
+
+export interface LessonDetails {
+  id: number;
+  title: string;
+  description: string;
+  cover: string;
+  isDone: boolean;
+  isBlocked: boolean;
+  progress: number;
+  steps: LessonStep[];
+}
+
+export interface LessonStep {
+  id: number;
+  cover: string;
+  coverAnnotation: string;
+  text: string;
+  isDone: boolean;
+  component: LessonComponent | null;
+}
+
+export type LessonComponent = SelectedButtonsComponent | RadioButtonsComponent | SliderComponent;
+
+interface SelectedButtonsComponent {
+  type: 'selectedButtons';
+  items: {
+    id: number;
+    label: string;
+  }[];
+}
+
+interface RadioButtonsComponent {
+  type: 'radioButtons';
+  items: {
+    id: number;
+    label: string;
+  }[];
+}
+
+interface SliderTextItem {
+  id: number;
+  componentType: 'text';
+  text: string;
+}
+
+interface SliderImageItem {
+  id: number;
+  componentType: 'image';
+  src: string;
+  annotation?: string;
+}
+
+interface SliderComponent {
+  type: 'slider';
+  items: (SliderTextItem | SliderImageItem)[];
+}
+</file>
+
+<file path="src/pages/Library/LibraryPage.tsx">
+import React, { useState } from 'react';
+import type { Course } from '@/types/courses';
+
+import { RoutePath } from '@/app/router/config';
+import { CourseCarousel } from '@/app/components/business/CourseCarousel';
+
+import { bookmarked, completed } from './mock';
+
+const LibraryPage: React.FC = () => {
+  // @ts-ignore
+  const [bookmarkedCourses, setBookmarkedCourses] = useState<Course[]>(bookmarked);
+  // @ts-ignore
+  const [completedCourses, setCompletedCourses] = useState<Course[]>(completed);
+
+  return (
+    <div className="container mx-auto py-12">
+      <CourseCarousel
+        title="Bookmarked courses"
+        courses={bookmarkedCourses}
+        seeAllLink={RoutePath['courses-by-alias'].replace(':alias', 'bookmarked-courses')}
+      />
+
+      <CourseCarousel
+        title="Completed courses"
+        courses={completedCourses}
+        seeAllLink={RoutePath['courses-by-alias'].replace(':alias', 'completed-courses')}
+      />
+    </div>
+  );
+};
+
+export default LibraryPage;
+</file>
+
+<file path="src/pages/Register/RegisterPage.tsx">
+import React, { useActionState } from 'react';
+
+import { Input } from '@/app/components/ui/input';
+import { Button } from '@/app/components/ui/button';
+import { toast, Toaster } from 'sonner';
+
+import { useClient } from '@/lib/useClient';
+import { validateLogin } from './utils/validation';
+import { getErrorMessage } from './utils/getErrorMessage';
+import { FormFieldNames, type RegisterData } from './types';
+import { Link } from 'react-router-dom';
+
+const initialState: RegisterData = {
+  email: '',
+  password: '',
+  errors: {},
+};
+
+const formAction = async (_: RegisterData, formData: FormData) => {
+  const email = formData.get(FormFieldNames.EMAIL) as string;
+  const password = formData.get(FormFieldNames.PASSWORD) as string;
+  const supabase = useClient();
+
+  const validationResult = await validateLogin({ email, password });
+
+  if (validationResult.success) {
+    const { error } = await supabase.auth.signUp({
+      email,
+      password,
+    });
+
+    if (error) {
+      return { email, password, errors: { general: error.message } };
+    }
+
+    toast.success('Check email for verification ');
+
+    // @todo: переделать на что-то нормальное
+    setTimeout(() => {
+      window.location.href = '/login';
+    }, 1500);
+
+    return { email, password };
+  } else {
+    const errorMessages: { [key: string]: string } = {};
+
+    validationResult.errors?.forEach(error => {
+      errorMessages[error.fieldName] = getErrorMessage(error.code);
+    });
+
+    toast.error('Registration failed');
+
+    return {
+      email,
+      password,
+      errors: errorMessages,
+    };
+  }
+};
+
+const LoginPage: React.FC = () => {
+  const [state, action, pending] = useActionState<RegisterData, FormData>(formAction, initialState);
+
+  return (
+    <>
+      <Toaster
+        richColors
+        position="top-center"
+      />
+      <form
+        action={action}
+        className="w-80 rounded-[2px] border border-[#D9D9D9] p-6 shadow-md"
+      >
+        <label className="mb-1 flex flex-col gap-2">
+          <p className="text-base text-[#1E1E1E]">Email</p>
+          <Input
+            type="email"
+            placeholder="Email"
+            name={FormFieldNames.EMAIL}
+            className="w-full"
+            defaultValue={state.email}
+          />
+        </label>
+        {state.errors?.[FormFieldNames.EMAIL] && (
+          <p className="mb-3 text-sm text-red-500">{state.errors[FormFieldNames.EMAIL]}</p>
+        )}
+
+        <label className="mt-4 mb-1 flex flex-col gap-2">
+          <p className="text-base text-[#1E1E1E]">Password</p>
+          <Input
+            type="password"
+            placeholder="Password"
+            name={FormFieldNames.PASSWORD}
+            className="w-full"
+            defaultValue={state.password}
+          />
+        </label>
+        {state.errors?.[FormFieldNames.PASSWORD] && (
+          <p className="mb-3 text-sm text-red-500">{state.errors[FormFieldNames.PASSWORD]}</p>
+        )}
+
+        {state.errors?.general && <p className="mt-2 mb-3 text-sm text-red-500">{state.errors.general}</p>}
+
+        <Link to="/login">
+          <p className="text-sm text-[#1E1E1E]">Already have an account? Sign in</p>
+        </Link>
+        <Button
+          className="mt-4 w-full"
+          type="submit"
+          disabled={pending}
+        >
+          Register
+        </Button>
+      </form>
+    </>
+  );
+};
+
+export default LoginPage;
+</file>
+
+<file path="src/app/components/layouts/ProgressHeader/ProgressHeader.tsx">
+import React from 'react';
+import { ArrowLeft } from 'lucide-react';
+import { cn } from '@/lib/utils';
+
+import { UserButton } from '@/app/components/layouts/UserButton/UserButton';
+import { Progress } from '@/app/components/ui/progress';
+
+interface Props {
+  hasBack?: boolean;
+  hasProfile?: boolean;
+  onBack?: () => void;
+  progress: number;
+  className?: string;
+}
+
+export const ProgressHeader: React.FC<Props> = props => {
+  const { hasBack = true, onBack, hasProfile = true, progress, className } = props;
+
+  return (
+    <header className={cn('flex items-center justify-between bg-[#D9D9D9] px-8 py-3', className)}>
+      <div>
+        {hasBack && typeof onBack === 'function' && (
+          <button onClick={onBack}>
+            <ArrowLeft />
+          </button>
+        )}
+      </div>
+      <div className="w-[640px]">
+        <Progress
+          value={progress}
+          className="w-full"
+        />
+      </div>
+      <div>
+        {hasProfile && (
+          <UserButton />
+        )}
+      </div>
+    </header>
+  );
+};
+</file>
+
+<file path="src/pages/Login/LoginPage.tsx">
+import React, { useActionState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useAuth } from '@/app/hooks/useAuth';
+
+import { Input } from '@/app/components/ui/input';
+import { Button } from '@/app/components/ui/button';
+import { toast, Toaster } from 'sonner';
+
+import { validateLogin } from './utils/validation';
+import { useClient } from '@/lib/useClient';
+import { getErrorMessage } from './utils/getErrorMessage';
+import { FormFieldNames, type LoginData } from './types';
+
+const initialState: LoginData = {
+  email: '',
+  password: '',
+  errors: {},
+  success: false,
+};
+
+const supabase = useClient();
+
+const formAction = async (_: LoginData, formData: FormData) => {
+  const email = formData.get(FormFieldNames.EMAIL) as string;
+  const password = formData.get(FormFieldNames.PASSWORD) as string;
+
+  const validationResult = await validateLogin({ email, password });
+
+  if (validationResult.success) {
+    const { data } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    if (data?.session?.access_token) {
+      localStorage.setItem('Authorization', data.session.access_token);
+
+      toast.success('Login successful');
+
+      return { email, password, success: true };
+    } else {
+      return { email, password, errors: { general: 'Authentication failed' } };
+    }
+  } else {
+    const errorMessages: { [key: string]: string } = {};
+
+    validationResult.errors?.forEach(error => {
+      errorMessages[error.fieldName] = getErrorMessage(error.code);
+    });
+
+    toast.error('Login failed');
+
+    return {
+      email,
+      password,
+      errors: errorMessages,
+      success: false,
+    };
+  }
+};
+
+const LoginPage: React.FC = () => {
+  const [state, action, pending] = useActionState<LoginData, FormData>(formAction, initialState);
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { login } = useAuth();
+
+  React.useEffect(() => {
+    if (state.success) {
+      const token = localStorage.getItem('Authorization');
+      if (token) {
+        login(token);
+        const from = location.state?.from?.pathname || '/';
+        navigate(from, { replace: true });
+      }
+    }
+  }, [state.success, navigate, location, login]);
+
+  return (
+    <>
+      <Toaster
+        richColors
+        position="top-center"
+      />
+      <form
+        action={action}
+        className="w-80 rounded-[2px] border border-[#D9D9D9] p-6 shadow-md"
+      >
+        <label className="mb-1 flex flex-col gap-2">
+          <p className="text-base text-[#1E1E1E]">Email</p>
+          <Input
+            type="email"
+            placeholder="Email"
+            name={FormFieldNames.EMAIL}
+            className="w-full"
+            defaultValue={state.email}
+          />
+        </label>
+        {state.errors?.[FormFieldNames.EMAIL] && (
+          <p className="mb-3 text-sm text-red-500">{state.errors[FormFieldNames.EMAIL]}</p>
+        )}
+
+        <label className="mt-4 mb-1 flex flex-col gap-2">
+          <p className="text-base text-[#1E1E1E]">Password</p>
+          <Input
+            type="password"
+            placeholder="Password"
+            name={FormFieldNames.PASSWORD}
+            className="w-full"
+            defaultValue={state.password}
+          />
+        </label>
+        {state.errors?.[FormFieldNames.PASSWORD] && (
+          <p className="mb-3 text-sm text-red-500">{state.errors[FormFieldNames.PASSWORD]}</p>
+        )}
+
+        {state.errors?.general && <p className="mt-2 mb-3 text-sm text-red-500">{state.errors.general}</p>}
+
+        <Link to="/register">
+          <p className="text-sm text-[#1E1E1E]">Don't have an account? Sign up</p>
+        </Link>
+
+        <Button
+          className="mt-4 w-full"
+          type="submit"
+          disabled={pending}
+        >
+          {pending ? (
+            <div className="flex items-center justify-center">
+              <svg
+                className="mr-2 h-4 w-4 animate-spin"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                  fill="none"
+                />
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+                />
+              </svg>
+              Loading...
+            </div>
+          ) : (
+            'Sign in'
+          )}
+        </Button>
+      </form>
+    </>
+  );
+};
+
+export default LoginPage;
+</file>
+
+<file path="package.json">
+{
+  "name": "rocketcamp",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "eslint .",
+    "lint:error": "eslint . --quiet",
+    "lint:fix": "eslint . --fix",
+    "preview": "vite preview",
+    "format": "prettier --write src/",
+    "gen:page": "node scripts/generators/page.js"
+  },
+  "dependencies": {
+    "@radix-ui/react-accordion": "^1.2.3",
+    "@radix-ui/react-progress": "^1.1.2",
+    "@radix-ui/react-select": "^2.1.6",
+    "@radix-ui/react-slot": "^1.1.2",
+    "@shadcn/ui": "^0.0.4",
+    "@supabase/supabase-js": "^2.49.1",
+    "@tailwindcss/vite": "^4.0.5",
+    "@types/node": "^22.13.1",
+    "axios": "^1.7.9",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "dotenv": "^16.4.7",
+    "embla-carousel-react": "^8.5.2",
+    "husky": "^9.1.7",
+    "lucide-react": "^0.475.0",
+    "next-themes": "^0.4.6",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-router": "^7.4.0",
+    "react-router-dom": "^7.1.5",
+    "sonner": "^2.0.1",
+    "tailwind-merge": "^3.0.1",
+    "tailwindcss": "^4.0.5",
+    "tailwindcss-animate": "^1.0.7",
+    "zod": "^3.24.2",
+    "zustand": "^5.0.3"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.19.0",
+    "@types/react": "^19.0.8",
+    "@types/react-dom": "^19.0.3",
+    "@vitejs/plugin-react": "^4.3.4",
+    "eslint": "^9.19.0",
+    "eslint-plugin-react-hooks": "^5.0.0",
+    "eslint-plugin-react-refresh": "^0.4.18",
+    "globals": "^15.14.0",
+    "prettier": "^3.4.2",
+    "prettier-plugin-tailwindcss": "^0.6.11",
+    "typescript": "~5.7.2",
+    "typescript-eslint": "^8.22.0",
+    "vite": "^6.1.0"
+  }
+}
+</file>
+
+<file path="src/app/router/config.tsx">
+import { RouteObject } from 'react-router-dom';
+
+import { CoursePage } from '@/pages/Course';
+import { LessonPage } from '@/pages/Lesson';
+import { CoursesByAliasPage } from '@/pages/CoursesByAlias';
+import { RegisterPage } from '@/pages/Register';
+import { AuthOnboardingPage } from '@/pages/AuthOnboarding';
+import { CoursesPage } from '@/pages/Courses';
+import { LibraryPage } from '@/pages/Library';
+import { HomePage } from '@/pages/Home';
+import { LoginPage } from '@/pages/Login';
+import { ProfileSettingsPage } from '@/pages/ProfileSettings';
+import { FAQPage } from '@/pages/FAQ';
+
+import { withLayout } from '../layouts/withLayout';
+
+import { MainLayout } from '../layouts/MainLayout';
+import { AuthLayout } from '../layouts/AuthLayout';
+import { OnboardingLayout } from '../layouts/OnboardingLayout';
+import { CourseLayout } from '../layouts/CourseLayout';
+import { LessonLayout } from '../layouts/LessonLayout';
+import { ProtectedRoute } from './ProtectedRoute';
+
+export enum AppRoutes {
+  HOME = 'home',
+  LOGIN = 'login',
+  REGISTER = 'register',
+  AUTH_ONBOARDING = 'auth-onboarding',
+  COURSES = 'courses',
+  LIBRARY = 'library',
+  FAQ = 'faq',
+  PROFILE_SETTINGS = 'profile-settings',
+  COURSE = 'course',
+  LESSON = 'lesson',
+  COURSES_BY_ALIAS = 'courses-by-alias',
+}
+
+const HomePageWithLayout = withLayout(HomePage, MainLayout);
+const LoginPageWithLayout = withLayout(LoginPage, AuthLayout);
+const RegisterPageWithLayout = withLayout(RegisterPage, AuthLayout);
+const AuthOnboardingPageWithLayout = withLayout(AuthOnboardingPage, OnboardingLayout);
+const CoursesPageWithLayout = withLayout(CoursesPage, MainLayout);
+const LibraryPageWithLayout = withLayout(LibraryPage, MainLayout);
+const ProfileSettingsPageWithLayout = withLayout(ProfileSettingsPage, MainLayout);
+const FAQPageWithLayout = withLayout(FAQPage, MainLayout);
+const CourseByAliasWithLayout = withLayout(CoursesByAliasPage, MainLayout);
+const CourseWithLayout = withLayout(CoursePage, CourseLayout);
+const LessonWithLayout = withLayout(LessonPage, LessonLayout);
+
+export const RoutePath: Record<AppRoutes, string> = {
+  [AppRoutes.HOME]: '/',
+  [AppRoutes.LOGIN]: '/login',
+  [AppRoutes.REGISTER]: '/register',
+  [AppRoutes.AUTH_ONBOARDING]: '/auth-onboarding',
+  [AppRoutes.COURSES]: '/courses',
+  [AppRoutes.LIBRARY]: '/library',
+  [AppRoutes.FAQ]: '/faq',
+  [AppRoutes.PROFILE_SETTINGS]: '/profile-settings',
+  [AppRoutes.COURSE]: '/course/:id',
+  [AppRoutes.LESSON]: '/lesson/:courseId/:lessonId',
+  [AppRoutes.COURSES_BY_ALIAS]: '/courses/:alias',
+};
+
+export const routeConfig: Record<AppRoutes, RouteObject> = {
+  [AppRoutes.HOME]: {
+    path: RoutePath[AppRoutes.HOME],
+    element: (
+      <ProtectedRoute>
+        <HomePageWithLayout />
+      </ProtectedRoute>
+    ),
+  },
+  [AppRoutes.LOGIN]: {
+    path: RoutePath[AppRoutes.LOGIN],
+    element: <LoginPageWithLayout />,
+  },
+  [AppRoutes.REGISTER]: {
+    path: RoutePath[AppRoutes.REGISTER],
+    element: <RegisterPageWithLayout />,
+  },
+  [AppRoutes.AUTH_ONBOARDING]: {
+    path: RoutePath[AppRoutes.AUTH_ONBOARDING],
+    element: (
+      <ProtectedRoute>
+        <AuthOnboardingPageWithLayout />
+      </ProtectedRoute>
+    ),
+  },
+  [AppRoutes.COURSES]: {
+    path: RoutePath[AppRoutes.COURSES],
+    element: (
+      <ProtectedRoute>
+        <CoursesPageWithLayout />
+      </ProtectedRoute>
+    ),
+  },
+  [AppRoutes.LIBRARY]: {
+    path: RoutePath[AppRoutes.LIBRARY],
+    element: (
+      <ProtectedRoute>
+        <LibraryPageWithLayout />
+      </ProtectedRoute>
+    ),
+  },
+  [AppRoutes.PROFILE_SETTINGS]: {
+    path: RoutePath[AppRoutes.PROFILE_SETTINGS],
+    element: (
+      <ProtectedRoute>
+        <ProfileSettingsPageWithLayout />
+      </ProtectedRoute>
+    ),
+  },
+  [AppRoutes.FAQ]: {
+    path: RoutePath[AppRoutes.FAQ],
+    element: (
+      <ProtectedRoute>
+        <FAQPageWithLayout />
+      </ProtectedRoute>
+    ),
+  },
+  [AppRoutes.COURSE]: {
+    path: RoutePath[AppRoutes.COURSE],
+    element: (
+      <ProtectedRoute>
+        <CourseWithLayout />
+      </ProtectedRoute>
+    ),
+  },
+  [AppRoutes.LESSON]: {
+    path: RoutePath[AppRoutes.LESSON],
+    element: (
+      <ProtectedRoute>
+        <LessonWithLayout />
+      </ProtectedRoute>
+    ),
+  },
+  [AppRoutes.COURSES_BY_ALIAS]: {
+    path: RoutePath[AppRoutes.COURSES_BY_ALIAS],
+    element: (
+      <ProtectedRoute>
+        <CourseByAliasWithLayout />
+      </ProtectedRoute>
+    ),
+  },
+};
+</file>
+
+<file path="src/pages/Course/CoursePage.tsx">
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+
+import { Button } from '@/app/components/ui/button';
+import { CircleProgress } from '@/app/components/ui/circle-progress';
+
+import { LessonCard } from './components/LessonCard';
+
+import { RoutePath } from '@/app/router/config';
+
+import { mock } from './mock';
+
+const CoursePage: React.FC = () => {
+  // @ts-ignore
+  const [course, setCourse] = useState(mock);
+
+  const navigate = useNavigate();
+
+  const handleStartLearning = () => {
+    const firstNotDoneLesson = course.lessons.find(lesson => !lesson.isDone);
+
+    if (firstNotDoneLesson) {
+      navigate(
+        RoutePath.lesson
+          .replace(':courseId', course.id.toString())
+          .replace(':lessonId', firstNotDoneLesson.id.toString()),
+      );
+    }
+  };
+
+  const handleGetNotified = () => {};
+
+  const renderAction = () => {
+    if (course.progress === 0) {
+      return (
+        <Button
+          onClick={handleStartLearning}
+          className="mt-2 cursor-pointer"
+        >
+          Start Learning
+        </Button>
+      );
+    }
+
+    if (course.progress === 100) {
+      return (
+        <Button
+          onClick={handleStartLearning}
+          className="mt-2 cursor-pointer"
+        >
+          Start Learning
+        </Button>
+      );
+    }
+
+    return (
+      <button
+        onClick={handleGetNotified}
+        className="text-base text-[#050038]"
+      >
+        Get notified when course is available
+      </button>
+    );
+  };
+
+  return (
+    <div className="mx-auto max-w-[1200px] py-5">
+      <h1 className="mb-6 text-3xl font-medium text-black">{course.title}</h1>
+
+      <div className="flex items-start gap-8">
+        <div className="relative max-w-[484px]">
+          <img
+            src={course.cover}
+            alt=""
+          />
+
+          <CircleProgress
+            value={course.progress}
+            className="absolute top-2 right-2"
+          />
+        </div>
+
+        <div>
+          <h2 className="mb-6 text-2xl font-semibold text-[#1E1E1E]">About the course</h2>
+          <div
+            className="text-base text-[#1E1E1E]"
+            dangerouslySetInnerHTML={{ __html: course.description }}
+          ></div>
+
+          {renderAction()}
+        </div>
+      </div>
+
+      <div className="my-7 h-px w-full bg-[#CAC4D0]"></div>
+
+      <section className="flex flex-col gap-4">
+        {course.lessons.map(lesson => {
+          if (lesson.isBlocked) {
+            return <LessonCard lesson={lesson} />;
+          } else {
+            return (
+              <Link
+                to={RoutePath.lesson
+                  .replace(':courseId', course.id.toString())
+                  .replace(':lessonId', lesson.id.toString())}
+              >
+                <LessonCard lesson={lesson} />
+              </Link>
+            );
+          }
+        })}
+      </section>
+    </div>
+  );
+};
+
+export default CoursePage;
+</file>
+
+<file path="src/pages/Lesson/LessonPage.tsx">
+import React, { useRef, useCallback, useState, useEffect } from 'react';
+import type { LessonComponent } from '@/types/lessons';
+import { useLocation } from 'react-router-dom';
+
+import { useProgressStore } from '@/app/layouts/LessonLayout';
+import { Button } from '@/app/components/ui/button';
+
+import { SelectedButtons } from './components/SelectedButtons';
+import { RadioButtons } from './components/RadioButtons';
+import { LessonIntro } from './components/LessonIntro';
+import { CompleteCourseFlow } from './components/CompleteCourseFlow';
+import { Slider } from './components/Slider';
+
+import { useLessonState } from './hooks/useLessonState';
+import { useLessonNavigation } from './hooks/useLessonNavigation';
+import { useScrollAnimation } from './hooks/useScrollAnimation';
+
+import { mock } from './mock';
+
+const LessonPage: React.FC = () => {
+  const { setProgress } = useProgressStore();
+
+  const { lesson, startedLesson, startLesson } = useLessonState(mock);
+
+  const [courseAlias, setCourseAlias] = useState<string | null>(null);
+
+  const lessonContentRef = useRef<HTMLDivElement>(null);
+  const stepsRefs = useRef<{ [key: number]: HTMLDivElement | null }>({});
+
+  const location = useLocation();
+
+  const {
+    currentStepIndex,
+    visibleSteps,
+    stepOpacity,
+    goToNextStep,
+    setStepVisible,
+    isLastStep,
+    isCourseCompleted,
+    completeCourse,
+  } = useLessonNavigation({
+    totalSteps: lesson.steps.length,
+    onProgressChange: setProgress,
+    lessonId: lesson.id.toString(),
+  });
+
+  const { scrollToStep, registerStepRef } = useScrollAnimation({
+    stepsRefs,
+    containerRef: lessonContentRef,
+    onScrollComplete: setStepVisible,
+  });
+
+  const handleContinue = useCallback(() => {
+    if (currentStepIndex === -1) {
+      startLesson();
+    }
+
+    if (isLastStep) {
+      completeCourse();
+      return;
+    }
+
+    const newIndex = goToNextStep();
+    if (newIndex !== -1) {
+      setTimeout(() => {
+        scrollToStep(newIndex);
+      }, 100);
+    }
+  }, [currentStepIndex, goToNextStep, scrollToStep, startLesson, isLastStep, completeCourse]);
+
+  const handleOptionSelect = useCallback(() => {
+    handleContinue();
+  }, [handleContinue]);
+
+  const renderActionComponent = useCallback(
+    (component: LessonComponent | null) => {
+      if (!component) return null;
+
+      switch (component.type) {
+        case 'selectedButtons':
+          return (
+            <SelectedButtons
+              items={component.items}
+              onSelect={handleOptionSelect}
+            />
+          );
+        case 'radioButtons':
+          return (
+            <RadioButtons
+              items={component.items}
+              onSelect={handleOptionSelect}
+            />
+          );
+        case 'slider':
+          return <Slider items={component.items} />;
+        default:
+          return null;
+      }
+    },
+    [handleOptionSelect],
+  );
+
+  useEffect(() => {
+    const alias = location.pathname.split('/')[2];
+
+    if (alias) {
+      setCourseAlias(alias);
+    }
+  }, [location.pathname, completeCourse]);
+
+  useEffect(() => {
+    if (startedLesson && currentStepIndex > 0 && visibleSteps.length > 0) {
+      setTimeout(() => {
+        scrollToStep(currentStepIndex);
+      }, 300);
+    }
+  }, [currentStepIndex, scrollToStep, startedLesson, visibleSteps.length]);
+
+  return (
+    <div
+      className="mx-auto max-w-[640px] pt-24 pb-24"
+      ref={lessonContentRef}
+    >
+      {isCourseCompleted ? (
+        <CompleteCourseFlow
+          lessonId={lesson.id}
+          courseAlias={courseAlias}
+        />
+      ) : (
+        <>
+          <LessonIntro
+            lesson={lesson}
+            startedLesson={startedLesson}
+            handleContinue={handleContinue}
+          />
+
+          {startedLesson &&
+            visibleSteps.map(stepIndex => (
+              <div
+                key={`step-${stepIndex}`}
+                ref={ref => registerStepRef(stepIndex, ref)}
+                className="mb-16 transition-opacity duration-700"
+                style={{ opacity: stepOpacity[stepIndex] || 0 }}
+              >
+                <img
+                  src={lesson.steps[stepIndex].cover}
+                  alt=""
+                  className="mb-2 h-[384px] w-full object-cover"
+                />
+
+                {lesson.steps[stepIndex].coverAnnotation && (
+                  <div className="mb-8 text-center text-sm text-gray-500">
+                    {lesson.steps[stepIndex].coverAnnotation}
+                  </div>
+                )}
+
+                <div
+                  className="mb-8"
+                  dangerouslySetInnerHTML={{ __html: lesson.steps[stepIndex].text }}
+                ></div>
+
+                {lesson.steps[stepIndex].component && (
+                  <div className="mb-8">{renderActionComponent(lesson.steps[stepIndex].component)}</div>
+                )}
+
+                {(stepIndex === currentStepIndex && !lesson.steps[stepIndex].component) ||
+                  (lesson.steps[stepIndex].component?.type === 'slider' && (
+                    <Button onClick={handleContinue}>Continue</Button>
+                  ))}
+              </div>
+            ))}
+        </>
+      )}
+    </div>
+  );
+};
+
+export default LessonPage;
+</file>
+
+</files>
