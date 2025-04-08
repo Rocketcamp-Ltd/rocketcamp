@@ -7,6 +7,8 @@ export interface Course {
   subtitle: string;
   progress: number;
   category?: CourseCategory[];
+  created_at?: string;
+  updated_at?: string;
 }
 
 export interface CourseDetails extends Course {
