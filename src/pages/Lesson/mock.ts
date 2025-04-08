@@ -1,5 +1,6 @@
 import { LessonDetails } from '@/types/lessons';
 
+// @ts-ignore
 export const mock: LessonDetails = {
   id: 1,
   title: 'lesson 1',
