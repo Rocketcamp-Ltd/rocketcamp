@@ -17,6 +17,10 @@ export interface LessonDetails {
   isBlocked: boolean;
   progress: number;
   steps: LessonStep[];
+  // New fields for Supabase integration
+  currentStepIndex: number; // Changed from optional to required with default -1
+  visibleSteps: number[];
+  completedSteps?: number[];
 }
 
 export interface LessonStep {

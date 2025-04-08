@@ -18,8 +18,8 @@ export const LessonIntro: React.FC<LessonIntroProps> = ({ lesson, startedLesson,
     >
       <img
         src={lesson.cover}
-        alt=""
-        className="mb-9 h-[384px] w-full object-cover"
+        alt={lesson.title}
+        className="mb-9 h-[384px] w-full rounded-lg object-cover"
       />
 
       <h1 className="mb-6 text-4xl font-medium text-black">{lesson.title}</h1>
@@ -29,7 +29,9 @@ export const LessonIntro: React.FC<LessonIntroProps> = ({ lesson, startedLesson,
         dangerouslySetInnerHTML={{ __html: lesson.description }}
       ></div>
 
-      {!startedLesson && <Button onClick={handleContinue}>Continue</Button>}
+      {!startedLesson && (
+        <Button onClick={handleContinue}>{lesson.progress > 0 ? 'Continue Learning' : 'Start Learning'}</Button>
+      )}
     </div>
   );
 };
