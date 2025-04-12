@@ -81,7 +81,7 @@ export const routeConfig: Record<AppRoutes, RouteObject> = {
   [AppRoutes.AUTH_ONBOARDING]: {
     path: RoutePath[AppRoutes.AUTH_ONBOARDING],
     element: (
-      <ProtectedRoute>
+      <ProtectedRoute requireOnboarding={false}>
         <AuthOnboardingPageWithLayout />
       </ProtectedRoute>
     ),

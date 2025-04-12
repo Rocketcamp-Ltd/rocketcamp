@@ -10,6 +10,7 @@ import { validateLogin } from './utils/validation';
 import { useClient } from '@/lib/useClient';
 import { getErrorMessage } from './utils/getErrorMessage';
 import { FormFieldNames, type LoginData } from './types';
+import { RoutePath, AppRoutes } from '@/app/router/config';
 
 const initialState: LoginData = {
   email: '',
@@ -18,19 +19,22 @@ const initialState: LoginData = {
   success: false,
 };
 
-const supabase = useClient();
-
 const formAction = async (_: LoginData, formData: FormData) => {
   const email = formData.get(FormFieldNames.EMAIL) as string;
   const password = formData.get(FormFieldNames.PASSWORD) as string;
+  const supabase = useClient();
 
   const validationResult = await validateLogin({ email, password });
 
   if (validationResult.success) {
-    const { data } = await supabase.auth.signInWithPassword({
+    const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
+
+    if (error) {
+      return { email, password, errors: { general: error.message } };
+    }
 
     if (data?.session?.access_token) {
       localStorage.setItem('Authorization', data.session.access_token);
@@ -64,17 +68,42 @@ const LoginPage: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { login } = useAuth();
+  const supabase = useClient();
 
   React.useEffect(() => {
     if (state.success) {
       const token = localStorage.getItem('Authorization');
       if (token) {
         login(token);
-        const from = location.state?.from?.pathname || '/';
-        navigate(from, { replace: true });
+
+        // Check if the user needs to complete onboarding
+        const checkOnboardingStatus = async () => {
+          const {
+            data: { user },
+          } = await supabase.auth.getUser();
+
+          if (user) {
+            const { data, error } = await supabase
+              .from('user_onboarding')
+              .select('is_completed')
+              .eq('user_id', user.id)
+              .single();
+
+            // If no onboarding record or onboarding not completed, redirect to onboarding
+            if (error || !data?.is_completed) {
+              navigate(RoutePath[AppRoutes.AUTH_ONBOARDING], { replace: true });
+            } else {
+              // Otherwise, navigate to originally requested page or home
+              const from = location.state?.from?.pathname || '/';
+              navigate(from, { replace: true });
+            }
+          }
+        };
+
+        checkOnboardingStatus();
       }
     }
-  }, [state.success, navigate, location, login]);
+  }, [state.success, navigate, location, login, supabase]);
 
   return (
     <>

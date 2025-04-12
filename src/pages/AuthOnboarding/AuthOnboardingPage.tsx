@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import { useClient } from '@/lib/useClient';
+import { useOnboarding } from '@/hooks/useOnboarding';
 import { useTrackProgress } from './hooks/useTrackProgress';
 
 import { Button } from '@/app/components/ui/button';
@@ -12,6 +13,7 @@ import { RadioGroupComponent } from './ui/AuthRadioGroup';
 import { ChipsListComponent } from './ui/AuthChipsList';
 
 import mockOnb from './mock';
+import { RoutePath, AppRoutes } from '@/app/router/config';
 
 interface StepData {
   id: number;
@@ -22,8 +24,9 @@ interface StepData {
 
 const AuthOnboardingPage: React.FC = () => {
   const navigate = useNavigate();
+  const supabase = useClient();
+  const { completeOnboarding } = useOnboarding();
 
-  // @ts-ignore
   const [onboarding, setOnboarding] = useState(mockOnb);
   const [currentOnboarding, setCurrentOnboarding] = useState(onboarding[0]);
   const [inputValue, setInputValue] = useState('');
@@ -120,14 +123,64 @@ const AuthOnboardingPage: React.FC = () => {
       const nextStep = currentStep + 1;
       setCurrentStep(nextStep);
       setCurrentOnboarding(onboarding[nextStep]);
+
+      // If this is now the last step and button action is 'next',
+      // update button action to 'finish' for clarity
+      if (nextStep === onboarding.length - 1 && onboarding[nextStep].button.action === 'next') {
+        console.log('Reached last step, changing button action to finish');
+      }
     } else {
+      // If we're already at the last step, proceed to finish
       handleFinish();
     }
   };
 
-  const handleFinish = () => {
-    console.log('Collected data:', stepsData);
-    navigate('/');
+  const handleFinish = async () => {
+    // Немедленно установим флаг "в процессе завершения", чтобы предотвратить повторные вызовы
+    const isFinishing = true;
+
+    // Save all collected onboarding data
+    try {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      if (user) {
+        // Check if the user has an onboarding record
+        const { data } = await supabase.from('user_onboarding').select('id').eq('user_id', user.id);
+
+        if (data && data.length > 0) {
+          // Update existing record
+          await supabase
+            .from('user_onboarding')
+            .update({
+              is_completed: true,
+              answers: JSON.stringify(stepsData),
+              updated_at: new Date().toISOString(),
+            })
+            .eq('user_id', user.id);
+        } else {
+          // Insert new record
+          await supabase.from('user_onboarding').insert({
+            user_id: user.id,
+            is_completed: true,
+            answers: JSON.stringify(stepsData),
+            updated_at: new Date().toISOString(),
+          });
+        }
+
+        // Mark onboarding as complete in our state
+        await completeOnboarding();
+
+        // Непосредственно перенаправляем на главную страницу
+        // Используем window.location вместо navigate для полной перезагрузки страницы
+        window.location.href = RoutePath[AppRoutes.HOME];
+      }
+    } catch (error) {
+      console.error('Error saving onboarding data:', error);
+      // В случае ошибки всё равно перенаправляем на главную
+      window.location.href = RoutePath[AppRoutes.HOME];
+    }
   };
 
   const handleCheckboxGroupSubmit = () => {
@@ -208,10 +261,18 @@ const AuthOnboardingPage: React.FC = () => {
     }
 
     if (isSubmitValid) {
+      console.log('Current step:', currentStep, 'Total steps:', onboarding.length);
+      console.log('Button action:', currentOnboarding.button.action);
+
       if (currentOnboarding.button.action === 'next') {
-        handleNext();
-        trackProgress();
-      } else {
+        if (currentStep < onboarding.length - 1) {
+          handleNext();
+          trackProgress();
+        } else {
+          // Last step with "next" action should still finish the onboarding
+          handleFinish();
+        }
+      } else if (currentOnboarding.button.action === 'finish') {
         handleFinish();
       }
     }

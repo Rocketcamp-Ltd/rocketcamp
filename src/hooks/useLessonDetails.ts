@@ -120,8 +120,6 @@ export function useLessonDetails(lessonId: string | number, courseId: string | n
         },
         updatedData
       });
-      // Check if progress record exists
-      // Используем upsert с явным указанием колонок для проверки конфликта
       const { data, error } = await supabase
         .from('user_lesson_progress')
         .upsert({
