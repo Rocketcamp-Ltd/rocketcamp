@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useClient } from '@/lib/useClient';
 import { useOnboarding } from '@/hooks/useOnboarding';
 import { useTrackProgress } from './hooks/useTrackProgress';
@@ -23,10 +22,10 @@ interface StepData {
 }
 
 const AuthOnboardingPage: React.FC = () => {
-  const navigate = useNavigate();
   const supabase = useClient();
   const { completeOnboarding } = useOnboarding();
 
+  // @ts-ignore
   const [onboarding, setOnboarding] = useState(mockOnb);
   const [currentOnboarding, setCurrentOnboarding] = useState(onboarding[0]);
   const [inputValue, setInputValue] = useState('');
@@ -136,9 +135,6 @@ const AuthOnboardingPage: React.FC = () => {
   };
 
   const handleFinish = async () => {
-    // Немедленно установим флаг "в процессе завершения", чтобы предотвратить повторные вызовы
-    const isFinishing = true;
-
     // Save all collected onboarding data
     try {
       const {

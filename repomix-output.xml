@@ -49,6 +49,7 @@ The content is organized as follows:
 .husky/pre-push
 .prettierrc.json
 components.json
+docs/data_schema.md
 eslint.config.js
 index.html
 package.json
@@ -105,6 +106,10 @@ src/app/router/index.tsx
 src/app/router/ProtectedRoute.tsx
 src/app/utils/auth.ts
 src/assets/index.css
+src/hooks/useCourseDetails.ts
+src/hooks/useCourses.ts
+src/hooks/useLessonDetails.ts
+src/hooks/useOnboarding.ts
 src/lib/getQueryParams.ts
 src/lib/useClient.ts
 src/lib/utils.ts
@@ -187,6 +192,7 @@ src/vite-env.d.ts
 tsconfig.app.json
 tsconfig.json
 tsconfig.node.json
+vercel.json
 vite.config.ts
 </directory_structure>
 
@@ -233,6 +239,232 @@ npm run lint:error
   "singleAttributePerLine": true,
   "plugins": ["prettier-plugin-tailwindcss"]
 }
+</file>
+
+<file path="docs/data_schema.md">
+-- 1. Create tables
+CREATE TABLE users (
+id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+email TEXT UNIQUE NOT NULL,
+created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+name TEXT,
+surname TEXT,
+settings JSONB DEFAULT '{}'::JSONB
+);
+
+CREATE TABLE courses (
+id SERIAL PRIMARY KEY,
+title TEXT NOT NULL,
+subtitle TEXT,
+description TEXT,
+cover TEXT NOT NULL,
+created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+CREATE TABLE lessons (
+id SERIAL PRIMARY KEY,
+course_id INTEGER REFERENCES courses(id) ON DELETE CASCADE,
+title TEXT NOT NULL,
+description TEXT,
+cover TEXT NOT NULL,
+steps JSONB DEFAULT '[]'::JSONB,
+order_index INTEGER NOT NULL,
+created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+CREATE TABLE course_categories (
+id SERIAL PRIMARY KEY,
+name TEXT NOT NULL,
+alias TEXT UNIQUE NOT NULL,
+created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+CREATE TABLE course_categories_relation (
+id SERIAL PRIMARY KEY,
+course_id INTEGER REFERENCES courses(id) ON DELETE CASCADE,
+category_id INTEGER REFERENCES course_categories(id) ON DELETE CASCADE,
+UNIQUE(course_id, category_id)
+);
+
+CREATE TABLE user_course_progress (
+id SERIAL PRIMARY KEY,
+user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+course_id INTEGER REFERENCES courses(id) ON DELETE CASCADE,
+progress INTEGER DEFAULT 0,
+is_bookmarked BOOLEAN DEFAULT FALSE,
+is_completed BOOLEAN DEFAULT FALSE,
+last_accessed TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+UNIQUE(user_id, course_id)
+);
+
+CREATE TABLE user_lesson_progress (
+id SERIAL PRIMARY KEY,
+user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+lesson_id INTEGER REFERENCES lessons(id) ON DELETE CASCADE,
+progress INTEGER DEFAULT 0,
+is_done BOOLEAN DEFAULT FALSE,
+current_step INTEGER DEFAULT -1,
+visible_steps INTEGER[] DEFAULT '{}',
+completed_steps INTEGER[] DEFAULT '{}',
+last_accessed TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+UNIQUE(user_id, lesson_id)
+);
+
+CREATE TABLE user_onboarding (
+id SERIAL PRIMARY KEY,
+user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+is_completed BOOLEAN DEFAULT FALSE,
+answers JSONB DEFAULT '{}'::JSONB,
+created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- 2. Insert sample data
+-- Categories
+INSERT INTO course_categories (name, alias) VALUES
+('Management', 'management'),
+('Programming', 'programming'),
+('Data Science', 'data-science'),
+('Digital Marketing', 'digital-marketing'),
+('Design', 'design'),
+('Business', 'business'),
+('Personal Development', 'personal-development'),
+('Finance', 'finance'),
+('Language Learning', 'language-learning'),
+('Health & Wellness', 'health-wellness');
+
+-- Courses
+INSERT INTO courses (title, subtitle, description, cover) VALUES
+('Course 1', 'Subtitle 1', 'Body text for your whole article or post. We''ll put in some lorem ipsum to show how a filled-out page might look: Excepteur efficient emerging, minim veniam anim aute carefully curated Ginza conversation exquisite perfect nostrud nisi intricate Content.', 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400'),
+('Course 2', 'Subtitle 2', 'Body text for your whole article or post. We''ll put in some lorem ipsum to show how a filled-out page might look: Excepteur efficient emerging, minim veniam anim aute carefully curated Ginza conversation exquisite perfect nostrud nisi intricate Content.', 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400'),
+('Course 3', 'Subtitle 3', 'Body text for your whole article or post. We''ll put in some lorem ipsum to show how a filled-out page might look: Excepteur efficient emerging, minim veniam anim aute carefully curated Ginza conversation exquisite perfect nostrud nisi intricate Content.', 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400'),
+('Course 4', 'Subtitle 4', 'Body text for your whole article or post. We''ll put in some lorem ipsum to show how a filled-out page might look: Excepteur efficient emerging, minim veniam anim aute carefully curated Ginza conversation exquisite perfect nostrud nisi intricate Content.', 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400'),
+('Course 5', 'Subtitle 5', 'Body text for your whole article or post. We''ll put in some lorem ipsum to show how a filled-out page might look: Excepteur efficient emerging, minim veniam anim aute carefully curated Ginza conversation exquisite perfect nostrud nisi intricate Content.', 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400'),
+('Course 6', 'Subtitle 6', 'Body text for your whole article or post. We''ll put in some lorem ipsum to show how a filled-out page might look: Excepteur efficient emerging, minim veniam anim aute carefully curated Ginza conversation exquisite perfect nostrud nisi intricate Content.', 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400'),
+('Course 7', 'Subtitle 7', 'Body text for your whole article or post. We''ll put in some lorem ipsum to show how a filled-out page might look: Excepteur efficient emerging, minim veniam anim aute carefully curated Ginza conversation exquisite perfect nostrud nisi intricate Content.', 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400'),
+('Course 8', 'Subtitle 8', 'Body text for your whole article or post. We''ll put in some lorem ipsum to show how a filled-out page might look: Excepteur efficient emerging, minim veniam anim aute carefully curated Ginza conversation exquisite perfect nostrud nisi intricate Content.', 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400'),
+('Course 9', 'Subtitle 9', 'Body text for your whole article or post. We''ll put in some lorem ipsum to show how a filled-out page might look: Excepteur efficient emerging, minim veniam anim aute carefully curated Ginza conversation exquisite perfect nostrud nisi intricate Content.', 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400'),
+('Course 10', 'Subtitle 10', 'Body text for your whole article or post. We''ll put in some lorem ipsum to show how a filled-out page might look: Excepteur efficient emerging, minim veniam anim aute carefully curated Ginza conversation exquisite perfect nostrud nisi intricate Content.', 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400');
+
+-- Lessons
+INSERT INTO lessons (course_id, title, description, cover, order_index, steps) VALUES
+(1, 'Lesson 1', 'The staff in a chain of three busy coffee shops feel stressed and overworked. We''ll use transaction data to help them keep up with customer demand.', 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400', 1,
+'[
+{
+"id": 1,
+"cover": "https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400",
+"coverAnnotation": "cover annotation",
+"text": "It looks like Store 11 has the most need. But demand for coffee is not constant throughout the day, so it would be helpful to see how this varies over time. Which visualization would you choose for this?",
+"isDone": false,
+"component": null
+},
+{
+"id": 2,
+"cover": "https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400",
+"coverAnnotation": "cover annotation",
+"text": "Which visualization would you choose for this?",
+"isDone": false,
+"component": {
+"type": "selectedButtons",
+"items": [
+{ "id": 1, "label": "item 1" },
+{ "id": 2, "label": "item 2" }
+]
+}
+},
+{
+"id": 3,
+"cover": "https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400",
+"coverAnnotation": "cover annotation",
+"text": "text 224gwrgwrg lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.",
+"isDone": false,
+"component": {
+"type": "radioButtons",
+"items": [
+{ "id": 1, "label": "item 1" },
+{ "id": 2, "label": "item 2" }
+]
+}
+}
+]'),
+(1, 'Lesson 2', 'descr 2', 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400', 2, '[]'),
+(1, 'Lesson 3', 'descr 3', 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400', 3, '[]'),
+(1, 'Lesson 4', 'descr 4', 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400', 4, '[]'),
+(1, 'Lesson 5', 'descr 5', 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400', 5, '[]'),
+(2, 'Lesson 1', 'descr 1', 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400', 1, '[]'),
+(2, 'Lesson 2', 'descr 2', 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400', 2, '[]');
+
+-- Course-Category Relations
+INSERT INTO course_categories_relation (course_id, category_id) VALUES
+(1, 1), -- Course 1 is in Management
+(1, 6), -- Course 1 is in Business
+(2, 2), -- Course 2 is in Programming
+(3, 3), -- Course 3 is in Data Science
+(4, 4), -- Course 4 is in Digital Marketing
+(5, 5), -- Course 5 is in Design
+(6, 6), -- Course 6 is in Business
+(7, 7), -- Course 7 is in Personal Development
+(8, 8), -- Course 8 is in Finance
+(9, 9), -- Course 9 is in Language Learning
+(10, 10); -- Course 10 is in Health & Wellness
+
+-- 3. Configure Row-Level Security (RLS)
+-- Enable RLS on all tables
+ALTER TABLE users ENABLE ROW LEVEL SECURITY;
+ALTER TABLE courses ENABLE ROW LEVEL SECURITY;
+ALTER TABLE lessons ENABLE ROW LEVEL SECURITY;
+ALTER TABLE course_categories ENABLE ROW LEVEL SECURITY;
+ALTER TABLE course_categories_relation ENABLE ROW LEVEL SECURITY;
+ALTER TABLE user_course_progress ENABLE ROW LEVEL SECURITY;
+ALTER TABLE user_lesson_progress ENABLE ROW LEVEL SECURITY;
+ALTER TABLE user_onboarding ENABLE ROW LEVEL SECURITY;
+
+-- Create policies
+-- Users can read all courses and categories
+CREATE POLICY "Courses are viewable by everyone" ON courses FOR SELECT USING (true);
+CREATE POLICY "Lessons are viewable by everyone" ON lessons FOR SELECT USING (true);
+CREATE POLICY "Categories are viewable by everyone" ON course_categories FOR SELECT USING (true);
+CREATE POLICY "Category relations are viewable by everyone" ON course_categories_relation FOR SELECT USING (true);
+
+-- Users can only read, update their own progress
+CREATE POLICY "Users can view their own progress" ON user_course_progress
+FOR SELECT USING (auth.uid() = user_id);
+
+CREATE POLICY "Users can update their own progress" ON user_course_progress
+FOR UPDATE USING (auth.uid() = user_id);
+
+CREATE POLICY "Users can insert their own progress" ON user_course_progress
+FOR INSERT WITH CHECK (auth.uid() = user_id);
+
+-- Similar policies for lesson progress
+CREATE POLICY "Users can view their own lesson progress" ON user_lesson_progress
+FOR SELECT USING (auth.uid() = user_id);
+
+CREATE POLICY "Users can update their own lesson progress" ON user_lesson_progress
+FOR UPDATE USING (auth.uid() = user_id);
+
+CREATE POLICY "Users can insert their own lesson progress" ON user_lesson_progress
+FOR INSERT WITH CHECK (auth.uid() = user_id);
+
+-- Users can view and update their own profile
+CREATE POLICY "Users can view their own profile" ON users
+FOR SELECT USING (auth.uid() = id);
+
+CREATE POLICY "Users can update their own profile" ON users
+FOR UPDATE USING (auth.uid() = id);
+
+-- Users can manage their own onboarding data
+CREATE POLICY "Users can view their own onboarding" ON user_onboarding
+FOR SELECT USING (auth.uid() = user_id);
+
+CREATE POLICY "Users can update their own onboarding" ON user_onboarding
+FOR UPDATE USING (auth.uid() = user_id);
+
+CREATE POLICY "Users can insert their own onboarding" ON user_onboarding
+FOR INSERT WITH CHECK (auth.uid() = user_id);
 </file>
 
 <file path="eslint.config.js">
@@ -1015,34 +1247,6 @@ function AppRouter() {
 export default AppRouter;
 </file>
 
-<file path="src/app/router/ProtectedRoute.tsx">
-import React from 'react';
-import { Navigate, useLocation } from 'react-router-dom';
-import { useAuth } from '@/app/hooks/useAuth';
-import { RoutePath, AppRoutes } from './config';
-
-interface ProtectedRouteProps {
-  children: React.ReactNode;
-}
-
-export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
-  const location = useLocation();
-  const { isAuthenticated } = useAuth();
-
-  if (!isAuthenticated) {
-    return (
-      <Navigate
-        to={RoutePath[AppRoutes.LOGIN]}
-        state={{ from: location }}
-        replace
-      />
-    );
-  }
-
-  return <>{children}</>;
-};
-</file>
-
 <file path="src/app/utils/auth.ts">
 export const isAuthenticated = (): boolean => {
   const token = localStorage.getItem('Authorization');
@@ -1050,12 +1254,342 @@ export const isAuthenticated = (): boolean => {
 };
 </file>
 
-<file path="src/lib/useClient.ts">
-import { createClient } from "@supabase/supabase-js";
+<file path="src/hooks/useCourseDetails.ts">
+import { useEffect, useState } from 'react';
+import { useClient } from '@/lib/useClient';
+import type { CourseDetails, CourseCategory } from '@/types/courses';
+import type { Lesson } from '@/types/lessons';
 
-export const useClient = () => {
-  return createClient(import.meta.env.VITE_SUPABASE_URL, import.meta.env.VITE_SUPABASE_ANON_KEY);
-};
+export function useCourseDetails(courseId: string | number) {
+  const [courseDetails, setCourseDetails] = useState<CourseDetails | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const supabase = useClient();
+
+  useEffect(() => {
+    const fetchCourseDetails = async () => {
+      if (!courseId) return;
+      
+      setIsLoading(true);
+      try {
+        // Получаем информацию о курсе
+        const { data: courseData, error: courseError } = await supabase
+          .from('courses')
+          .select('*')
+          .eq('id', courseId)
+          .single();
+
+        if (courseError) throw courseError;
+        
+        // Получаем уроки курса
+        const { data: lessonsData, error: lessonsError } = await supabase
+          .from('lessons')
+          .select('*')
+          .eq('course_id', courseId)
+          .order('order_index', { ascending: true });
+          
+        if (lessonsError) throw lessonsError;
+        
+        // Получаем категории курса
+        const { data: categoriesRelation, error: categoriesRelationError } = await supabase
+          .from('course_categories_relation')
+          .select('category_id')
+          .eq('course_id', courseId);
+          
+        if (categoriesRelationError) throw categoriesRelationError;
+        
+        let categories: CourseCategory[] = [];
+        
+        if (categoriesRelation.length > 0) {
+          const categoryIds = categoriesRelation.map(rel => rel.category_id);
+          
+          const { data: categoriesData, error: categoriesError } = await supabase
+            .from('course_categories')
+            .select('*')
+            .in('id', categoryIds);
+            
+          if (categoriesError) throw categoriesError;
+          
+          categories = categoriesData.map(cat => ({
+            id: cat.id,
+            name: cat.name,
+            alias: cat.alias
+          }));
+        }
+        
+        // Получаем прогресс пользователя, если он авторизован
+        const { data: { user } } = await supabase.auth.getUser();
+        let progress = 0;
+        
+        if (user) {
+          const { data: progressData, error: progressError } = await supabase
+            .from('user_course_progress')
+            .select('progress')
+            .eq('user_id', user.id)
+            .eq('course_id', courseId)
+            .single();
+            
+          if (!progressError && progressData) {
+            progress = progressData.progress;
+          }
+          
+          // Получаем статус уроков
+          const { data: lessonProgressData, error: lessonProgressError } = await supabase
+            .from('user_lesson_progress')
+            .select('*')
+            .eq('user_id', user.id)
+            .in('lesson_id', lessonsData.map(lesson => lesson.id));
+          
+          if (!lessonProgressError && lessonProgressData) {
+            // Обновляем статус уроков
+            lessonsData.forEach(lesson => {
+              const lessonProgress = lessonProgressData.find(
+                progress => progress.lesson_id === lesson.id
+              );
+              
+              if (lessonProgress) {
+                lesson.progress = lessonProgress.progress;
+                lesson.isDone = lessonProgress.is_done;
+              }
+            });
+          }
+        }
+        
+        // Форматируем уроки для фронтенда
+        const formattedLessons: Lesson[] = lessonsData.map((lesson, index) => ({
+          id: lesson.id,
+          title: lesson.title,
+          description: lesson.description,
+          cover: lesson.cover,
+          isDone: lesson.isDone || false,
+          isBlocked: index > 0 && !lessonsData[index - 1]?.isDone, // Блокируем урок, если предыдущий не завершен
+          progress: lesson.progress || 0
+        }));
+        
+        // Собираем все данные в CourseDetails
+        const courseDetails: CourseDetails = {
+          id: courseData.id,
+          title: courseData.title,
+          subtitle: courseData.subtitle,
+          description: courseData.description,
+          cover: courseData.cover,
+          progress: progress,
+          category: categories,
+          lessons: formattedLessons
+        };
+        
+        setCourseDetails(courseDetails);
+      } catch (err) {
+        console.error('Ошибка при получении деталей курса:', err);
+        setError(err instanceof Error ? err.message : 'Произошла ошибка при загрузке курса');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchCourseDetails();
+  }, [courseId, supabase]);
+
+  return { courseDetails, isLoading, error };
+}
+</file>
+
+<file path="src/hooks/useCourses.ts">
+import { useEffect, useState } from 'react';
+import { useClient } from '@/lib/useClient';
+import type { Course } from '@/types/courses';
+
+export function useCourses() {
+  const [courses, setCourses] = useState<Course[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const supabase = useClient();
+
+  useEffect(() => {
+    const fetchCourses = async () => {
+      setIsLoading(true);
+      try {
+        // Получаем все курсы
+        const { data: coursesData, error: coursesError } = await supabase
+          .from('courses')
+          .select('*');
+
+        if (coursesError) throw coursesError;
+
+        // Получаем прогресс пользователя, если он авторизован
+        const { data: { user } } = await supabase.auth.getUser();
+        
+        let formattedCourses: Course[] = [];
+        
+        if (user) {
+          // Если пользователь авторизован, получаем его прогресс
+          const { data: progressData, error: progressError } = await supabase
+            .from('user_course_progress')
+            .select('*')
+            .eq('user_id', user.id);
+            
+          if (progressError) throw progressError;
+          
+          // Объединяем данные о курсах с прогрессом
+          formattedCourses = coursesData.map(course => {
+            const userProgress = progressData?.find(p => p.course_id === course.id);
+            return {
+              id: course.id,
+              title: course.title,
+              subtitle: course.subtitle,
+              cover: course.cover,
+              progress: userProgress?.progress || 0
+            };
+          });
+        } else {
+          // Если пользователь не авторизован, просто возвращаем курсы
+          formattedCourses = coursesData.map(course => ({
+            id: course.id,
+            title: course.title,
+            subtitle: course.subtitle,
+            cover: course.cover,
+            progress: 0
+          }));
+        }
+        
+        setCourses(formattedCourses);
+      } catch (err) {
+        console.error('Ошибка при получении курсов:', err);
+        setError(err instanceof Error ? err.message : 'Произошла ошибка при загрузке курсов');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchCourses();
+  }, [supabase]);
+
+  return { courses, isLoading, error };
+}
+</file>
+
+<file path="src/hooks/useOnboarding.ts">
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useClient } from '@/lib/useClient';
+import { RoutePath, AppRoutes } from '@/app/router/config';
+
+export function useOnboarding() {
+  const [isOnboardingComplete, setIsOnboardingComplete] = useState<boolean | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const navigate = useNavigate();
+  const supabase = useClient();
+  const hasCheckedRef = React.useRef(false);
+
+  useEffect(() => {
+    // Проверяем только один раз за сеанс
+    if (hasCheckedRef.current) return;
+    
+    const checkOnboardingStatus = async () => {
+      setIsLoading(true);
+
+      // Get current user
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      if (!user) {
+        setIsOnboardingComplete(false);
+        setIsLoading(false);
+        return;
+      }
+
+      // Check if user has completed onboarding
+      try {
+        // Don't use .single() to avoid PGRST116 error
+        const { data, error } = await supabase
+          .from('user_onboarding')
+          .select('*')
+          .eq('user_id', user.id);
+
+        if (error) {
+          console.error('Error checking onboarding status:', error);
+          setIsOnboardingComplete(false);
+        } else if (data && data.length > 0) {
+          // User has an onboarding record
+          setIsOnboardingComplete(data[0].is_completed || false);
+        } else {
+          // No onboarding record, create one
+          const { error: insertError } = await supabase
+            .from('user_onboarding')
+            .insert({ 
+              user_id: user.id, 
+              is_completed: false,
+              answers: '{}' 
+            });
+            
+          if (insertError) {
+            console.error('Error creating onboarding record:', insertError);
+          }
+            
+          setIsOnboardingComplete(false);
+        }
+      } catch (err) {
+        console.error('Error in onboarding check:', err);
+        setIsOnboardingComplete(false);
+      } finally {
+        hasCheckedRef.current = true;
+        setIsLoading(false);
+      }
+    };
+
+    checkOnboardingStatus();
+  }, [supabase]);
+  const redirectToOnboarding = () => {
+    navigate(RoutePath[AppRoutes.AUTH_ONBOARDING]);
+  };
+
+  const completeOnboarding = async () => {
+    const { data: { user } } = await supabase.auth.getUser();
+    
+    if (!user) return;
+
+    try {
+      // Check if the record exists first
+      const { data } = await supabase
+        .from('user_onboarding')
+        .select('id')
+        .eq('user_id', user.id);
+        
+      if (data && data.length > 0) {
+        // Update existing record
+        await supabase
+          .from('user_onboarding')
+          .update({ 
+            is_completed: true,
+            updated_at: new Date().toISOString()
+          })
+          .eq('user_id', user.id);
+      } else {
+        // Insert new record
+        await supabase
+          .from('user_onboarding')
+          .insert({ 
+            user_id: user.id, 
+            is_completed: true,
+            updated_at: new Date().toISOString(),
+            answers: '{}'
+          });
+      }
+
+      setIsOnboardingComplete(true);
+    } catch (error) {
+      console.error('Error updating onboarding status:', error);
+    }
+  };
+
+  return { 
+    isOnboardingComplete, 
+    isLoading, 
+    redirectToOnboarding, 
+    completeOnboarding 
+  };
+}
 </file>
 
 <file path="src/pages/AuthOnboarding/AuthOnboardingPageAsync.tsx">
@@ -1539,44 +2073,6 @@ export const HomePageAsync = lazy(() => import('./HomePage'));
 export { HomePageAsync as HomePage } from './HomePageAsync';
 </file>
 
-<file path="src/pages/Lesson/components/LessonIntro.tsx">
-import React from 'react';
-import { cn } from '@/lib/utils';
-import type { LessonDetails } from '@/types/lessons';
-import { Button } from '@/app/components/ui/button';
-
-interface LessonIntroProps {
-  lesson: LessonDetails;
-  startedLesson: boolean;
-  handleContinue: () => void;
-}
-
-export const LessonIntro: React.FC<LessonIntroProps> = ({ lesson, startedLesson, handleContinue }) => {
-  return (
-    <div
-      className={cn(`transition-opacity duration-500`, {
-        'mb-16': startedLesson,
-      })}
-    >
-      <img
-        src={lesson.cover}
-        alt=""
-        className="mb-9 h-[384px] w-full object-cover"
-      />
-
-      <h1 className="mb-6 text-4xl font-medium text-black">{lesson.title}</h1>
-
-      <div
-        className="mb-8"
-        dangerouslySetInnerHTML={{ __html: lesson.description }}
-      ></div>
-
-      {!startedLesson && <Button onClick={handleContinue}>Continue</Button>}
-    </div>
-  );
-};
-</file>
-
 <file path="src/pages/Lesson/components/SelectedButtons.tsx">
 import React, { useState } from 'react';
 import { cn } from '@/lib/utils';
@@ -1868,6 +2364,12 @@ export interface User {
 }
 </file>
 
+<file path="vercel.json">
+{
+    "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+}
+</file>
+
 <file path="components.json">
 {
   "$schema": "https://ui.shadcn.com/schema.json",
@@ -2032,12 +2534,6 @@ export const NavLink: React.FC<Props> = ({ to, icon, children }) => {
       </div>
     </div>
   );
-};
-</file>
-
-<file path="src/app/components/PageLoader.tsx">
-export const PageLoader = () => {
-  return <div>loader...</div>;
 };
 </file>
 
@@ -2465,35 +2961,6 @@ export const useProgressStore = create<ProgressState>(set => ({
 }));
 </file>
 
-<file path="src/app/layouts/OnboardingLayout/ui/OnboardingLayout.tsx">
-import React from 'react';
-import { ProgressHeader } from '@/app/components/layouts/ProgressHeader';
-import { useProgressStore } from '../model/store';
-
-interface Props {
-  children: React.ReactNode;
-}
-
-export const OnboardingLayout: React.FC<Props> = ({ children }) => {
-  const { progress } = useProgressStore();
-
-  const onBack = () => {
-    // @todo: Ансарыч с query-параметрами поработай тут по брацки и прогресс в минус заведи
-  };
-
-  return (
-    <div>
-      <ProgressHeader
-        progress={progress}
-        onBack={onBack}
-      />
-
-      <main>{children}</main>
-    </div>
-  );
-};
-</file>
-
 <file path="src/app/layouts/withLayout.tsx">
 import { ComponentType, ReactElement } from 'react';
 
@@ -2511,6 +2978,302 @@ export function withLayout<P extends object>(
 }
 </file>
 
+<file path="src/app/router/ProtectedRoute.tsx">
+import React, { useEffect } from 'react';
+import { Navigate, useLocation } from 'react-router-dom';
+import { useAuth } from '@/app/hooks/useAuth';
+import { useOnboarding } from '@/hooks/useOnboarding';
+import { RoutePath, AppRoutes } from './config';
+import { PageLoader } from '@/app/components/PageLoader';
+
+interface ProtectedRouteProps {
+  children: React.ReactNode;
+  requireOnboarding?: boolean;
+}
+
+export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, requireOnboarding = true }) => {
+  const location = useLocation();
+  const { isAuthenticated } = useAuth();
+  const { isOnboardingComplete, isLoading, redirectToOnboarding } = useOnboarding();
+
+  // If not authenticated, redirect to login
+  if (!isAuthenticated) {
+    return (
+      <Navigate
+        to={RoutePath[AppRoutes.LOGIN]}
+        state={{ from: location }}
+        replace
+      />
+    );
+  }
+
+  // Используем ref для отслеживания, было ли уже выполнено перенаправление
+  const redirectedRef = React.useRef(false);
+
+  useEffect(() => {
+    // Проверяем, не было ли уже перенаправление, чтобы избежать повторных перенаправлений
+    if (redirectedRef.current) return;
+
+    // Only check if authenticated and not already on the onboarding page
+    if (
+      isAuthenticated &&
+      requireOnboarding &&
+      !isLoading &&
+      location.pathname !== RoutePath[AppRoutes.AUTH_ONBOARDING]
+    ) {
+      // Only redirect if we're sure onboarding is not complete
+      if (isOnboardingComplete === false) {
+        redirectedRef.current = true;
+        redirectToOnboarding();
+      }
+    }
+
+    // Сбрасываем флаг, если изменился маршрут
+    return () => {
+      redirectedRef.current = false;
+    };
+  }, [isAuthenticated, isOnboardingComplete, isLoading, requireOnboarding, location.pathname, redirectToOnboarding]);
+
+  // Show loader while checking onboarding status
+  if (isLoading) {
+    return <PageLoader />;
+  }
+
+  // Special case: if we're on a page that requires onboarding and onboarding is not complete
+  if (
+    requireOnboarding &&
+    isOnboardingComplete === false &&
+    !isLoading &&
+    location.pathname !== RoutePath[AppRoutes.AUTH_ONBOARDING]
+  ) {
+    console.log('Redirecting to onboarding from protected route');
+    return (
+      <Navigate
+        to={RoutePath[AppRoutes.AUTH_ONBOARDING]}
+        state={{ from: location }}
+        replace
+      />
+    );
+  }
+
+  return <>{children}</>;
+};
+</file>
+
+<file path="src/hooks/useLessonDetails.ts">
+import { useEffect, useState } from 'react';
+import { useClient } from '@/lib/useClient';
+import type { LessonDetails } from '@/types/lessons';
+
+export function useLessonDetails(lessonId: string | number, courseId: string | number) {
+  const [lessonDetails, setLessonDetails] = useState<LessonDetails | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const supabase = useClient();
+
+  useEffect(() => {
+    const fetchLessonDetails = async () => {
+      if (!lessonId || !courseId) return;
+      
+      setIsLoading(true);
+      try {
+        // Get lesson data
+        const { data: lessonData, error: lessonError } = await supabase
+          .from('lessons')
+          .select('*')
+          .eq('id', lessonId)
+          .eq('course_id', courseId)
+          .single();
+
+        if (lessonError) throw lessonError;
+        
+        // Get user progress if authenticated
+        const { data: { user } } = await supabase.auth.getUser();
+        
+        let progress = 0;
+        let isDone = false;
+        let currentStepIndex = -1;
+        let visibleSteps: number[] = [];
+        let completedSteps: number[] = [];
+        
+        if (user) {
+          const { data: progressData, error: progressError } = await supabase
+            .from('user_lesson_progress')
+            .select('*')
+            .eq('user_id', user.id)
+            .eq('lesson_id', lessonId)
+            .single();
+            
+          if (!progressError && progressData) {
+            progress = progressData.progress;
+            isDone = progressData.is_done;
+            currentStepIndex = progressData.current_step;
+            visibleSteps = progressData.visible_steps || [];
+            completedSteps = progressData.completed_steps || [];
+          }
+        }
+        
+        // Parse steps from JSON
+        let steps = [];
+        try {
+          // If steps is a string, try to parse it as JSON
+          if (typeof lessonData.steps === 'string') {
+            steps = JSON.parse(lessonData.steps);
+          } else {
+            // Otherwise, assume it's already an array or object
+            steps = lessonData.steps || [];
+          }
+        } catch (e) {
+          console.error('Error parsing lesson steps:', e);
+          steps = [];
+        }
+        
+        // Format lesson details
+        const formattedLessonDetails: LessonDetails = {
+          id: lessonData.id,
+          title: lessonData.title,
+          description: lessonData.description,
+          cover: lessonData.cover,
+          isDone: isDone,
+          isBlocked: false, // This would be determined based on course progression
+          progress: progress,
+          steps: Array.isArray(steps) ? steps : [],
+          currentStepIndex: currentStepIndex,
+          visibleSteps: visibleSteps,
+          completedSteps: completedSteps
+        };
+        
+        setLessonDetails(formattedLessonDetails);
+      } catch (err) {
+        console.error('Error fetching lesson details:', err);
+        setError(err instanceof Error ? err.message : 'An error occurred while loading the lesson');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchLessonDetails();
+  }, [lessonId, courseId, supabase]);
+  
+  const updateLessonProgress = async (updatedData: {
+    progress?: number;
+    isDone?: boolean;
+    currentStepIndex?: number;
+    visibleSteps?: number[];
+    completedSteps?: number[];
+  }) => {
+    if (!lessonDetails) return null;
+    
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      if (!user) {
+        throw new Error('User not authenticated');
+      }
+      
+      console.log('Updating lesson progress with:', {
+        lessonId,
+        userId: user.id,
+        currentData: {
+          progress: lessonDetails.progress,
+          isDone: lessonDetails.isDone,
+          currentStepIndex: lessonDetails.currentStepIndex,
+          visibleSteps: lessonDetails.visibleSteps,
+        },
+        updatedData
+      });
+      const { data, error } = await supabase
+        .from('user_lesson_progress')
+        .upsert({
+          user_id: user.id,
+          lesson_id: Number(lessonId), // Преобразуем в число, если это строка
+          progress: updatedData.progress !== undefined ? updatedData.progress : lessonDetails.progress,
+          is_done: updatedData.isDone !== undefined ? updatedData.isDone : lessonDetails.isDone,
+          current_step: updatedData.currentStepIndex !== undefined ? updatedData.currentStepIndex : lessonDetails.currentStepIndex,
+          visible_steps: updatedData.visibleSteps || lessonDetails.visibleSteps,
+          completed_steps: updatedData.completedSteps || (lessonDetails.completedSteps || []),
+          last_accessed: new Date().toISOString()
+        }, {
+          onConflict: 'user_id,lesson_id'
+        })
+        .select()
+        .single();
+        
+      if (error) throw error;
+      
+      console.log('Progress updated successfully:', data);
+      
+      // Обновляем локальное состояние
+      setLessonDetails(prev => {
+        if (!prev) return null;
+        
+        // Создаем новый объект с обновленными данными
+        return {
+          ...prev,
+          progress: updatedData.progress !== undefined ? updatedData.progress : prev.progress,
+          isDone: updatedData.isDone !== undefined ? updatedData.isDone : prev.isDone,
+          currentStepIndex: updatedData.currentStepIndex !== undefined ? updatedData.currentStepIndex : prev.currentStepIndex,
+          visibleSteps: updatedData.visibleSteps || prev.visibleSteps,
+          completedSteps: updatedData.completedSteps || prev.completedSteps || []
+        };
+      });
+
+      if (updatedData.isDone) {
+        try {
+          // Get all lessons for this course
+          const { data: courseLessons, error: courseLessonsError } = await supabase
+            .from('lessons')
+            .select('id')
+            .eq('course_id', courseId);
+            
+          if (courseLessonsError) throw courseLessonsError;
+          
+          // Get completed lessons
+          const { data: completedLessons, error: completedLessonsError } = await supabase
+            .from('user_lesson_progress')
+            .select('lesson_id')
+            .eq('user_id', user.id)
+            .eq('is_done', true)
+            .in('lesson_id', courseLessons.map(lesson => lesson.id));
+            
+          if (completedLessonsError) throw completedLessonsError;
+          
+          // Calculate course progress
+          const courseProgress = Math.round((completedLessons.length / courseLessons.length) * 100);
+          const isCompletedCourse = courseProgress === 100;
+          
+          // Update course progress
+          const { error: updateCourseError } = await supabase
+            .from('user_course_progress')
+            .upsert({
+              user_id: user.id,
+              course_id: courseId,
+              progress: courseProgress,
+              is_completed: isCompletedCourse,
+              last_accessed: new Date().toISOString()
+            });
+            
+          if (updateCourseError) throw updateCourseError;
+          return data;
+        } catch (err) {
+          console.error('Error updating course progress:', err);
+          // Continue execution even if course progress update fails
+        }
+      }
+      
+      return data;
+    } catch (err) {
+      console.error('Error updating lesson progress:', err);
+      setError(err instanceof Error ? err.message : 'An error occurred while updating lesson progress');
+      return null;
+    }
+  };
+
+  return { lessonDetails, isLoading, error, updateLessonProgress };
+}
+</file>
+
 <file path="src/lib/getQueryParams.ts">
 import { IPaginationQuery, ISearchQuery } from '@/types/query';
 
@@ -2525,6 +3288,16 @@ export function getQueryParams<T extends IPaginationQuery | ISearchQuery>(data: 
     .map(([key, value]) => `${key}=${Array.isArray(value) ? getStringByArray(value) : value}`)
     .join('&');
 }
+</file>
+
+<file path="src/lib/useClient.ts">
+import { createClient } from '@supabase/supabase-js';
+
+const client = createClient(import.meta.env.VITE_SUPABASE_URL, import.meta.env.VITE_SUPABASE_ANON_KEY);
+
+const useClient = () => client;
+
+export {useClient};
 </file>
 
 <file path="src/lib/utils.ts">
@@ -3243,6 +4016,46 @@ export const other: { [key: string]: Course[] } = {
 };
 </file>
 
+<file path="src/pages/Lesson/components/LessonIntro.tsx">
+import React from 'react';
+import { cn } from '@/lib/utils';
+import type { LessonDetails } from '@/types/lessons';
+import { Button } from '@/app/components/ui/button';
+
+interface LessonIntroProps {
+  lesson: LessonDetails;
+  startedLesson: boolean;
+  handleContinue: () => void;
+}
+
+export const LessonIntro: React.FC<LessonIntroProps> = ({ lesson, startedLesson, handleContinue }) => {
+  return (
+    <div
+      className={cn(`transition-opacity duration-500`, {
+        'mb-16': startedLesson,
+      })}
+    >
+      <img
+        src={lesson.cover}
+        alt={lesson.title}
+        className="mb-9 h-[384px] w-full rounded-lg object-cover"
+      />
+
+      <h1 className="mb-6 text-4xl font-medium text-black">{lesson.title}</h1>
+
+      <div
+        className="mb-8"
+        dangerouslySetInnerHTML={{ __html: lesson.description }}
+      ></div>
+
+      {!startedLesson && (
+        <Button onClick={handleContinue}>{lesson.progress > 0 ? 'Continue Learning' : 'Start Learning'}</Button>
+      )}
+    </div>
+  );
+};
+</file>
+
 <file path="src/pages/Lesson/hooks/useLessonProgress.ts">
 import { useCallback } from 'react';
 
@@ -3842,6 +4655,16 @@ export const CourseCard: React.FC<Props> = ({ course }) => {
 };
 </file>
 
+<file path="src/app/components/PageLoader.tsx">
+export const PageLoader = () => {
+  return (
+    <div className="flex min-h-[200px] items-center justify-center">
+      <div className="border-primary h-12 w-12 animate-spin rounded-full border-t-2 border-b-2"></div>
+    </div>
+  );
+};
+</file>
+
 <file path="src/app/components/ui/circle-progress.tsx">
 import * as React from 'react';
 import * as ProgressPrimitive from '@radix-ui/react-progress';
@@ -3899,101 +4722,45 @@ CircleProgress.displayName = 'CircleProgress';
 export { CircleProgress };
 </file>
 
-<file path="src/pages/Lesson/components/CompleteCourseFlow.tsx">
-import React, { useState } from 'react';
-import { CircleCheckBig, Star } from 'lucide-react';
-import { Button } from '@/app/components/ui/button';
-import { Textarea } from '@/app/components/ui/textarea';
-import { cn } from '@/lib/utils';
+<file path="src/app/layouts/OnboardingLayout/ui/OnboardingLayout.tsx">
+import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { ProgressHeader } from '@/app/components/layouts/ProgressHeader';
+// import { useProgressStore } from './model/store';
+import { useOnboarding } from '@/hooks/useOnboarding';
+import { RoutePath, AppRoutes } from '@/app/router/config';
+import { useProgressStore } from '../model/store';
 
 interface Props {
-  lessonId: number;
-  courseAlias: string | null;
+  children: React.ReactNode;
 }
-// @ts-ignore
-export const CompleteCourseFlow: React.FC<Props> = ({ lessonId, courseAlias }) => {
-  const [rating, setRating] = useState<number>(0);
-  const [showFeedback, setShowFeedback] = useState<boolean>(false);
-  const [animatingStarIndex, setAnimatingStarIndex] = useState<number | null>(null);
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
-  const handleStarClick = (index: number) => {
-    setAnimatingStarIndex(index);
-    setTimeout(() => {
-      setAnimatingStarIndex(null);
-    }, 300);
-    setRating(index + 1);
-    setShowFeedback(true);
-  };
+export const OnboardingLayout: React.FC<Props> = ({ children }) => {
+  const { progress } = useProgressStore();
+  const { isOnboardingComplete } = useOnboarding();
+  const navigate = useNavigate();
 
-  const handleTagClick = (tag: string) => {
-    setSelectedTags(prev => (prev.includes(tag) ? prev.filter(t => t !== tag) : [...prev, tag]));
-  };
+  // If onboarding is already complete, redirect to home
+  useEffect(() => {
+    if (isOnboardingComplete === true) {
+      console.log('Onboarding already complete, redirecting to home from layout');
+      navigate(RoutePath[AppRoutes.HOME], { replace: true });
+    }
+  }, [isOnboardingComplete, navigate]);
 
-  const submitRating = () => {
-    console.log('Rating submitted:', {
-      rating,
-      selectedTags,
-      // здесь можно добавить чтение значения из textarea
-    });
+  const onBack = () => {
+    // Если это первый шаг, вернуться можно только на странцу авторизации
+    // @todo: доработать навигацию по шагам
   };
 
   return (
-    <div className="flex h-[calc(100vh-80px)] flex-col items-center justify-center">
-      <div className="flex flex-col items-center justify-center">
-        <CircleCheckBig className="mb-6 size-32" />
-        <h2 className="text-2xl text-black">Lesson complete!</h2>
-      </div>
+    <div>
+      <ProgressHeader
+        progress={progress}
+        onBack={onBack}
+      />
 
-      <div className="mt-16 flex max-w-[360px] flex-col items-center justify-center gap-6 rounded-[8px] border border-[#D9D9D9] p-6">
-        <div className="flex items-center justify-center gap-2">
-          {[0, 1, 2, 3, 4].map(index => (
-            <Star
-              key={index}
-              className={`size-6 cursor-pointer transition-transform duration-300 ${
-                index < rating ? 'fill-black' : ''
-              } ${animatingStarIndex === index ? 'scale-125' : ''}`}
-              onClick={() => handleStarClick(index)}
-            />
-          ))}
-        </div>
-
-        <div>
-          <h3 className="text-center text-2xl font-semibold text-black">Rate the lesson</h3>
-          <p className="text-center text-base text-[#1E1E1E]">Your feedback helps us get better</p>
-        </div>
-
-        {showFeedback && (
-          <div className="mt-4 w-full">
-            <div className="mb-4 flex flex-wrap justify-center gap-2">
-              {['Useful', 'Fun', 'Engaging', 'Easy to follow', 'Interactive'].map(item => (
-                <button
-                  key={item}
-                  className={cn(
-                    'cursor-pointer rounded-lg border-2 border-[#2C2C2C] px-3 py-1.5 text-base text-[#1E1E1E] transition-all duration-200',
-                    {
-                      'opacity-80 hover:opacity-100': !selectedTags.includes(item),
-                      'bg-[#2C2C2C] font-medium text-white': selectedTags.includes(item),
-                    },
-                  )}
-                  onClick={() => handleTagClick(item)}
-                >
-                  {item}
-                </button>
-              ))}
-            </div>
-
-            <Textarea
-              placeholder="Write your feedback here"
-              className="min-h-24 w-full max-w-[300px]"
-            />
-          </div>
-        )}
-
-        <div className="mt-4">
-          <Button onClick={submitRating}>Submit</Button>
-        </div>
-      </div>
+      <main>{children}</main>
     </div>
   );
 };
@@ -4416,30 +5183,6 @@ export function validateLogin(data: unknown): Promise<ValidationResult> {
 }
 </file>
 
-<file path="src/types/courses.ts">
-import { Lesson } from './lessons';
-
-export interface Course {
-  id: number;
-  cover: string;
-  title: string;
-  subtitle: string;
-  progress: number;
-  category?: CourseCategory[];
-}
-
-export interface CourseDetails extends Course {
-  description: string;
-  lessons: Lesson[];
-}
-
-export interface CourseCategory {
-  id: number;
-  alias: string;
-  name: string;
-}
-</file>
-
 <file path="src/app/api/modules/auth.ts">
 import type { AxiosInstance } from 'axios';
 import type { User } from '@/types/user';
@@ -4504,7 +5247,7 @@ export const CourseCarousel: React.FC<Props> = ({ title, seeAllLink, courses }) 
             </CarouselItem>
           ))}
 
-          {seeAllLink && courses.length > 2 && (
+          {seeAllLink && (
             <CarouselItem className="flex max-w-24 items-center justify-center">
               <Link
                 to={seeAllLink}
@@ -4784,6 +5527,167 @@ export const LessonLayout: React.FC<Props> = ({ children }) => {
 }
 </file>
 
+<file path="src/pages/Lesson/components/CompleteCourseFlow.tsx">
+import React, { useState } from 'react';
+import { CircleCheckBig, Star } from 'lucide-react';
+import { Button } from '@/app/components/ui/button';
+import { Textarea } from '@/app/components/ui/textarea';
+import { cn } from '@/lib/utils';
+import { useClient } from '@/lib/useClient';
+import { useNavigate } from 'react-router-dom';
+import { RoutePath } from '@/app/router/config';
+import { toast } from 'sonner';
+
+interface Props {
+  lessonId: number;
+  courseId: string | null;
+}
+
+export const CompleteCourseFlow: React.FC<Props> = ({ lessonId, courseId }) => {
+  const [rating, setRating] = useState<number>(0);
+  const [showFeedback, setShowFeedback] = useState<boolean>(false);
+  const [animatingStarIndex, setAnimatingStarIndex] = useState<number | null>(null);
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [feedback, setFeedback] = useState<string>('');
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+
+  const supabase = useClient();
+  const navigate = useNavigate();
+
+  const handleStarClick = (index: number) => {
+    setAnimatingStarIndex(index);
+    setTimeout(() => {
+      setAnimatingStarIndex(null);
+    }, 300);
+    setRating(index + 1);
+    setShowFeedback(true);
+  };
+
+  const handleTagClick = (tag: string) => {
+    setSelectedTags(prev => (prev.includes(tag) ? prev.filter(t => t !== tag) : [...prev, tag]));
+  };
+
+  const submitRating = async () => {
+    if (rating === 0) {
+      toast.error('Please select a rating before submitting');
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      if (!user) {
+        toast.error('You must be logged in to submit feedback');
+        return;
+      }
+
+      // Create feedback record in a new table (you would need to create this table)
+      const { error } = await supabase.from('lesson_feedback').insert({
+        user_id: user.id,
+        lesson_id: lessonId,
+        rating: rating,
+        tags: selectedTags,
+        feedback: feedback,
+        created_at: new Date().toISOString(),
+      });
+
+      if (error) throw error;
+
+      toast.success('Thank you for your feedback!');
+
+      // Navigate back to course page
+      if (courseId) {
+        navigate(RoutePath.course.replace(':id', courseId));
+      } else {
+        navigate(RoutePath.home);
+      }
+    } catch (err) {
+      console.error('Error submitting feedback:', err);
+      toast.error('Error submitting feedback. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  return (
+    <div className="flex h-[calc(100vh-80px)] flex-col items-center justify-center">
+      <div className="flex flex-col items-center justify-center">
+        <CircleCheckBig className="mb-6 size-32 text-green-600" />
+        <h2 className="text-2xl text-black">Lesson complete!</h2>
+      </div>
+
+      <div className="mt-16 flex max-w-[360px] flex-col items-center justify-center gap-6 rounded-[8px] border border-[#D9D9D9] p-6">
+        <div className="flex items-center justify-center gap-2">
+          {[0, 1, 2, 3, 4].map(index => (
+            <Star
+              key={index}
+              className={`size-6 cursor-pointer transition-transform duration-300 ${
+                index < rating ? 'fill-yellow-500 text-yellow-500' : ''
+              } ${animatingStarIndex === index ? 'scale-125' : ''}`}
+              onClick={() => handleStarClick(index)}
+            />
+          ))}
+        </div>
+
+        <div>
+          <h3 className="text-center text-2xl font-semibold text-black">Rate the lesson</h3>
+          <p className="text-center text-base text-[#1E1E1E]">Your feedback helps us get better</p>
+        </div>
+
+        {showFeedback && (
+          <div className="mt-4 w-full">
+            <div className="mb-4 flex flex-wrap justify-center gap-2">
+              {['Useful', 'Fun', 'Engaging', 'Easy to follow', 'Interactive'].map(item => (
+                <button
+                  key={item}
+                  className={cn(
+                    'cursor-pointer rounded-lg border-2 border-[#2C2C2C] px-3 py-1.5 text-base text-[#1E1E1E] transition-all duration-200',
+                    {
+                      'opacity-80 hover:opacity-100': !selectedTags.includes(item),
+                      'bg-[#2C2C2C] font-medium text-white': selectedTags.includes(item),
+                    },
+                  )}
+                  onClick={() => handleTagClick(item)}
+                >
+                  {item}
+                </button>
+              ))}
+            </div>
+
+            <Textarea
+              placeholder="Write your feedback here"
+              className="min-h-24 w-full max-w-[300px]"
+              value={feedback}
+              onChange={e => setFeedback(e.target.value)}
+            />
+          </div>
+        )}
+
+        <div className="mt-4">
+          <Button
+            onClick={submitRating}
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? (
+              <div className="flex items-center gap-2">
+                <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
+                Submitting...
+              </div>
+            ) : (
+              'Submit'
+            )}
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
+};
+</file>
+
 <file path="src/pages/Lesson/hooks/useLessonNavigation.ts">
 import { useState, useCallback, useEffect } from 'react';
 
@@ -4936,116 +5840,6 @@ export function useLessonNavigation({ totalSteps, onProgressChange, lessonId }: 
 }
 </file>
 
-<file path="src/pages/Lesson/mock.ts">
-import { LessonDetails } from '@/types/lessons';
-
-export const mock: LessonDetails = {
-  id: 1,
-  title: 'lesson 1',
-  description:
-    "<p>The staff in a chain of three busy coffee shops feel stressed and overworked. We'll use transaction data to help them keep up with customer demand.</p>",
-  cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
-  isDone: true,
-  isBlocked: false,
-  progress: 0,
-  steps: [
-    {
-      id: 1,
-      cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
-      coverAnnotation: 'cover annotation',
-      text: 'It looks like Store 11 has the most need. But demand for coffee is not constant throughout the day, so it would be helpful to see how this varies over time. Which visualization would you choose for this?',
-      isDone: false,
-      component: null,
-    },
-    {
-      id: 2,
-      cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
-      coverAnnotation: 'cover annotation',
-      text: 'Which visualization would you choose for this? Which visualization would you choose for this? Which visualization would you choose for this? Which visualization would you choose for this? Which visualization would you choose for this? Which visualization would you choose for this? Which visualization would you choose for this? Which visualization would you choose for this? Which visualization would you choose for this? Which visualization would you choose for this?Which visualization would you choose for this?Which visualization would you choose for this?Which visualization would you choose for this?Which visualization would you choose for this?Which visualization would you choose for this?Which visualization would you choose for this?Which visualization would you choose for this?Which visualization would you choose for this?Which visualization would you choose for this?',
-      isDone: false,
-      component: {
-        type: 'selectedButtons',
-        items: [
-          { id: 1, label: 'item 1' },
-          { id: 2, label: 'item 2' },
-        ],
-      },
-    },
-    {
-      id: 236,
-      cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
-      coverAnnotation: 'cover annotation',
-      text: 'Which visualization would you choose for this? Which visualization would you choose for this? Which visualization would you choose for this? Which visualization would you choose for this? Which visualization would you choose for this? Which visualization would you choose for this? Which visualization would you choose for this? Which visualization would you choose for this? Which visualization would you choose for this? Which visualization would you choose for this?Which visualization would you choose for this?Which visualization would you choose for this?Which visualization would you choose for this?Which visualization would you choose for this?Which visualization would you choose for this?Which visualization would you choose for this?Which visualization would you choose for this?Which visualization would you choose for this?Which visualization would you choose for this?',
-      isDone: false,
-      component: {
-        type: 'slider',
-        items: [
-          {
-            id: 1,
-            componentType: 'text',
-            text: 'text text texttexttexttexttexttexttext text text text',
-          },
-          {
-            id: 2,
-            componentType: 'image',
-            src: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
-            annotation: 'annotation',
-          },
-          {
-            id: 3,
-            componentType: 'image',
-            src: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
-            annotation: 'annotation',
-          },
-        ],
-      },
-    },
-    {
-      id: 3,
-      cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
-      coverAnnotation: 'cover annotation',
-      text: 'text 224gwrgwrg lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. ',
-      isDone: false,
-      component: {
-        type: 'radioButtons',
-        items: [
-          { id: 1, label: 'item 1' },
-          { id: 2, label: 'item 2' },
-        ],
-      },
-    },
-    {
-      id: 4,
-      cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
-      coverAnnotation: 'cover annotation',
-      text: 'text ghehehehehhae getahah hetheh t wrgethet  wgwggh  tgwgwg 224gwrgwrg lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. ',
-      isDone: false,
-      component: {
-        type: 'radioButtons',
-        items: [
-          { id: 1, label: 'item 1' },
-          { id: 2, label: 'item 2' },
-        ],
-      },
-    },
-    {
-      id: 5,
-      cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
-      coverAnnotation: 'cover annotation',
-      text: 'text пропущен',
-      isDone: false,
-      component: {
-        type: 'selectedButtons',
-        items: [
-          { id: 1, label: 'item 1' },
-          { id: 2, label: 'item 2' },
-        ],
-      },
-    },
-  ],
-};
-</file>
-
 <file path="src/pages/Login/types.ts">
 export enum FormFieldNames {
   EMAIL = 'email',
@@ -5077,6 +5871,32 @@ const ProfileSettingsPage: React.FC = () => {
 export default ProfileSettingsPage;
 </file>
 
+<file path="src/types/courses.ts">
+import { Lesson } from './lessons';
+
+export interface Course {
+  id: number;
+  cover: string;
+  title: string;
+  subtitle: string;
+  progress: number;
+  category?: CourseCategory[];
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface CourseDetails extends Course {
+  description: string;
+  lessons: Lesson[];
+}
+
+export interface CourseCategory {
+  id: number;
+  alias: string;
+  name: string;
+}
+</file>
+
 <file path="src/app/layouts/MainLayout/ui/MainHeader.tsx">
 import React from 'react';
 import { Logo } from '@/app/components/layouts/Logo';
@@ -5096,319 +5916,6 @@ export const MainHeader: React.FC = () => {
     </header>
   );
 };
-</file>
-
-<file path="src/pages/AuthOnboarding/AuthOnboardingPage.tsx">
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-
-import { useTrackProgress } from './hooks/useTrackProgress';
-
-import { Button } from '@/app/components/ui/button';
-
-import { InputComponent } from './ui/AuthInput';
-import { SelectComponent } from './ui/AuthSelect';
-import { CheckboxGroupComponent } from './ui/AuthChecboxGroup';
-import { RadioGroupComponent } from './ui/AuthRadioGroup';
-import { ChipsListComponent } from './ui/AuthChipsList';
-
-import mockOnb from './mock';
-
-interface StepData {
-  id: number;
-  data: {
-    value: string | number | string[] | number[] | (string | number)[];
-  };
-}
-
-const AuthOnboardingPage: React.FC = () => {
-  const navigate = useNavigate();
-
-  // @ts-ignore
-  const [onboarding, setOnboarding] = useState(mockOnb);
-  const [currentOnboarding, setCurrentOnboarding] = useState(onboarding[0]);
-  const [inputValue, setInputValue] = useState('');
-  const [multipleValues, setMultipleValues] = useState<string[]>([]);
-  const [chipsValues, setChipsValues] = useState<(string | number)[]>([]);
-  const [isValid, setIsValid] = useState(false);
-  const [stepsData, setStepsData] = useState<StepData[]>([]);
-  const [error, setError] = useState('');
-
-  const { currentStep, setCurrentStep, trackProgress } = useTrackProgress({ onboarding });
-
-  useEffect(() => {
-    const savedData = stepsData.find(item => item.id === currentOnboarding.id);
-
-    if (savedData) {
-      if (Array.isArray(savedData.data.value)) {
-        if (currentOnboarding.components[0]?.type === 'chips') {
-          setChipsValues(savedData.data.value as (string | number)[]);
-        } else {
-          setMultipleValues(savedData.data.value as string[]);
-        }
-        setIsValid(true);
-      } else {
-        setInputValue(savedData.data.value as string);
-        validateInput(savedData.data.value as string);
-      }
-    } else {
-      setInputValue('');
-      setMultipleValues([]);
-      setChipsValues([]);
-      setIsValid(currentOnboarding.components.length === 0);
-    }
-    setError('');
-  }, [currentStep, currentOnboarding.id]);
-
-  const validateInput = (value: string) => {
-    if (!currentOnboarding.components.length) {
-      setIsValid(true);
-      return true;
-    }
-
-    const component = currentOnboarding.components[0];
-
-    if (component.type === 'input' || component.type === 'select' || component.type === 'radioGroup') {
-      if (!value.trim()) {
-        setError('This field is required');
-        setIsValid(false);
-        return false;
-      }
-
-      if (component.type === 'input' && component.pattern && !new RegExp(component.pattern).test(value)) {
-        setError('Invalid format');
-        setIsValid(false);
-        return false;
-      }
-
-      setError('');
-      setIsValid(true);
-      return true;
-    }
-
-    setIsValid(true);
-    return true;
-  };
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setInputValue(value);
-    validateInput(value);
-  };
-
-  const handleSelectChange = (value: string) => {
-    setInputValue(value);
-    validateInput(value);
-  };
-
-  const handleRadioChange = (value: string) => {
-    setInputValue(value);
-    validateInput(value);
-  };
-
-  const handleCheckboxGroupChange = (selectedOptions: string[]) => {
-    setMultipleValues(selectedOptions);
-    setIsValid(selectedOptions.length > 0);
-  };
-
-  const handleChipsChange = (selectedChips: (string | number)[]) => {
-    setChipsValues(selectedChips);
-    setIsValid(selectedChips.length > 0);
-  };
-
-  const handleNext = () => {
-    if (currentStep < onboarding.length - 1) {
-      const nextStep = currentStep + 1;
-      setCurrentStep(nextStep);
-      setCurrentOnboarding(onboarding[nextStep]);
-    } else {
-      handleFinish();
-    }
-  };
-
-  const handleFinish = () => {
-    console.log('Collected data:', stepsData);
-    navigate('/');
-  };
-
-  const handleCheckboxGroupSubmit = () => {
-    if (multipleValues.length === 0) {
-      setError('Please select at least one option');
-      return false;
-    }
-
-    const newStepData: StepData = {
-      id: currentOnboarding.id,
-      data: {
-        value: multipleValues,
-      },
-    };
-
-    updateStepData(newStepData);
-    return true;
-  };
-
-  const handleChipsSubmit = () => {
-    if (chipsValues.length === 0) {
-      setError('Please select at least one option');
-      return false;
-    }
-
-    const newStepData: StepData = {
-      id: currentOnboarding.id,
-      data: {
-        value: chipsValues,
-      },
-    };
-
-    updateStepData(newStepData);
-    return true;
-  };
-
-  const handleInputOrSelectSubmit = () => {
-    if (!validateInput(inputValue)) {
-      return false;
-    }
-
-    const newStepData: StepData = {
-      id: currentOnboarding.id,
-      data: {
-        value: inputValue,
-      },
-    };
-
-    updateStepData(newStepData);
-    return true;
-  };
-
-  const updateStepData = (newStepData: StepData) => {
-    setStepsData(prevData => {
-      const existingIndex = prevData.findIndex(item => item.id === currentOnboarding.id);
-      if (existingIndex >= 0) {
-        const updatedData = [...prevData];
-        updatedData[existingIndex] = newStepData;
-        return updatedData;
-      } else {
-        return [...prevData, newStepData];
-      }
-    });
-  };
-
-  const handleSubmit = () => {
-    const component = currentOnboarding.components.length > 0 ? currentOnboarding.components[0] : null;
-    let isSubmitValid = true;
-
-    if (component) {
-      if (component.type === 'checkboxGroup') {
-        isSubmitValid = handleCheckboxGroupSubmit();
-      } else if (component.type === 'chips') {
-        isSubmitValid = handleChipsSubmit();
-      } else if (component.type === 'input' || component.type === 'select' || component.type === 'radioGroup') {
-        isSubmitValid = handleInputOrSelectSubmit();
-      }
-    }
-
-    if (isSubmitValid) {
-      if (currentOnboarding.button.action === 'next') {
-        handleNext();
-        trackProgress();
-      } else {
-        handleFinish();
-      }
-    }
-  };
-
-  const renderComponent = () => {
-    if (!currentOnboarding.components.length) return null;
-
-    const component = currentOnboarding.components[0];
-
-    if (component.type === 'input') {
-      return (
-        <InputComponent
-          component={component}
-          value={inputValue}
-          onChange={handleInputChange}
-          error={error}
-        />
-      );
-    }
-
-    if (component.type === 'select' && component.items) {
-      return (
-        <SelectComponent
-          component={component}
-          value={inputValue}
-          onValueChange={handleSelectChange}
-          error={error}
-        />
-      );
-    }
-
-    if (component.type === 'radioGroup' && component.items) {
-      return (
-        <RadioGroupComponent
-          component={component}
-          value={inputValue}
-          onValueChange={handleRadioChange}
-          error={error}
-        />
-      );
-    }
-
-    if (component.type === 'checkboxGroup' && component.items) {
-      return (
-        <CheckboxGroupComponent
-          component={component}
-          onSelectionChange={handleCheckboxGroupChange}
-          error={error}
-        />
-      );
-    }
-
-    if (component.type === 'chips' && component.items) {
-      return (
-        <ChipsListComponent
-          component={component}
-          selectedValues={chipsValues}
-          onSelectionChange={handleChipsChange}
-          error={error}
-        />
-      );
-    }
-
-    return null;
-  };
-
-  return (
-    <div className="flex min-h-screen flex-col items-center justify-center p-6">
-      <div className="mx-auto flex w-full max-w-[800px] flex-col items-start space-y-6">
-        <h1 className="text-2xl font-bold">{currentOnboarding.title}</h1>
-
-        {currentOnboarding.text && (
-          <div
-            className="text-left text-base"
-            dangerouslySetInnerHTML={{ __html: currentOnboarding.text }}
-          />
-        )}
-
-        {renderComponent()}
-
-        {currentOnboarding.button && (
-          <Button
-            variant={currentOnboarding.button?.type}
-            onClick={handleSubmit}
-            disabled={!isValid}
-          >
-            {currentOnboarding.button.label}
-          </Button>
-        )}
-      </div>
-    </div>
-  );
-};
-
-export default AuthOnboardingPage;
 </file>
 
 <file path="src/pages/Courses/CoursesPage.tsx">
@@ -5552,67 +6059,579 @@ const FAQPage: React.FC = () => {
 export default FAQPage;
 </file>
 
+<file path="src/pages/AuthOnboarding/AuthOnboardingPage.tsx">
+import React, { useState, useEffect } from 'react';
+import { useClient } from '@/lib/useClient';
+import { useOnboarding } from '@/hooks/useOnboarding';
+import { useTrackProgress } from './hooks/useTrackProgress';
+
+import { Button } from '@/app/components/ui/button';
+
+import { InputComponent } from './ui/AuthInput';
+import { SelectComponent } from './ui/AuthSelect';
+import { CheckboxGroupComponent } from './ui/AuthChecboxGroup';
+import { RadioGroupComponent } from './ui/AuthRadioGroup';
+import { ChipsListComponent } from './ui/AuthChipsList';
+
+import mockOnb from './mock';
+import { RoutePath, AppRoutes } from '@/app/router/config';
+
+interface StepData {
+  id: number;
+  data: {
+    value: string | number | string[] | number[] | (string | number)[];
+  };
+}
+
+const AuthOnboardingPage: React.FC = () => {
+  const supabase = useClient();
+  const { completeOnboarding } = useOnboarding();
+
+  // @ts-ignore
+  const [onboarding, setOnboarding] = useState(mockOnb);
+  const [currentOnboarding, setCurrentOnboarding] = useState(onboarding[0]);
+  const [inputValue, setInputValue] = useState('');
+  const [multipleValues, setMultipleValues] = useState<string[]>([]);
+  const [chipsValues, setChipsValues] = useState<(string | number)[]>([]);
+  const [isValid, setIsValid] = useState(false);
+  const [stepsData, setStepsData] = useState<StepData[]>([]);
+  const [error, setError] = useState('');
+
+  const { currentStep, setCurrentStep, trackProgress } = useTrackProgress({ onboarding });
+
+  useEffect(() => {
+    const savedData = stepsData.find(item => item.id === currentOnboarding.id);
+
+    if (savedData) {
+      if (Array.isArray(savedData.data.value)) {
+        if (currentOnboarding.components[0]?.type === 'chips') {
+          setChipsValues(savedData.data.value as (string | number)[]);
+        } else {
+          setMultipleValues(savedData.data.value as string[]);
+        }
+        setIsValid(true);
+      } else {
+        setInputValue(savedData.data.value as string);
+        validateInput(savedData.data.value as string);
+      }
+    } else {
+      setInputValue('');
+      setMultipleValues([]);
+      setChipsValues([]);
+      setIsValid(currentOnboarding.components.length === 0);
+    }
+    setError('');
+  }, [currentStep, currentOnboarding.id]);
+
+  const validateInput = (value: string) => {
+    if (!currentOnboarding.components.length) {
+      setIsValid(true);
+      return true;
+    }
+
+    const component = currentOnboarding.components[0];
+
+    if (component.type === 'input' || component.type === 'select' || component.type === 'radioGroup') {
+      if (!value.trim()) {
+        setError('This field is required');
+        setIsValid(false);
+        return false;
+      }
+
+      if (component.type === 'input' && component.pattern && !new RegExp(component.pattern).test(value)) {
+        setError('Invalid format');
+        setIsValid(false);
+        return false;
+      }
+
+      setError('');
+      setIsValid(true);
+      return true;
+    }
+
+    setIsValid(true);
+    return true;
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setInputValue(value);
+    validateInput(value);
+  };
+
+  const handleSelectChange = (value: string) => {
+    setInputValue(value);
+    validateInput(value);
+  };
+
+  const handleRadioChange = (value: string) => {
+    setInputValue(value);
+    validateInput(value);
+  };
+
+  const handleCheckboxGroupChange = (selectedOptions: string[]) => {
+    setMultipleValues(selectedOptions);
+    setIsValid(selectedOptions.length > 0);
+  };
+
+  const handleChipsChange = (selectedChips: (string | number)[]) => {
+    setChipsValues(selectedChips);
+    setIsValid(selectedChips.length > 0);
+  };
+
+  const handleNext = () => {
+    if (currentStep < onboarding.length - 1) {
+      const nextStep = currentStep + 1;
+      setCurrentStep(nextStep);
+      setCurrentOnboarding(onboarding[nextStep]);
+
+      // If this is now the last step and button action is 'next',
+      // update button action to 'finish' for clarity
+      if (nextStep === onboarding.length - 1 && onboarding[nextStep].button.action === 'next') {
+        console.log('Reached last step, changing button action to finish');
+      }
+    } else {
+      // If we're already at the last step, proceed to finish
+      handleFinish();
+    }
+  };
+
+  const handleFinish = async () => {
+    // Save all collected onboarding data
+    try {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      if (user) {
+        // Check if the user has an onboarding record
+        const { data } = await supabase.from('user_onboarding').select('id').eq('user_id', user.id);
+
+        if (data && data.length > 0) {
+          // Update existing record
+          await supabase
+            .from('user_onboarding')
+            .update({
+              is_completed: true,
+              answers: JSON.stringify(stepsData),
+              updated_at: new Date().toISOString(),
+            })
+            .eq('user_id', user.id);
+        } else {
+          // Insert new record
+          await supabase.from('user_onboarding').insert({
+            user_id: user.id,
+            is_completed: true,
+            answers: JSON.stringify(stepsData),
+            updated_at: new Date().toISOString(),
+          });
+        }
+
+        // Mark onboarding as complete in our state
+        await completeOnboarding();
+
+        // Непосредственно перенаправляем на главную страницу
+        // Используем window.location вместо navigate для полной перезагрузки страницы
+        window.location.href = RoutePath[AppRoutes.HOME];
+      }
+    } catch (error) {
+      console.error('Error saving onboarding data:', error);
+      // В случае ошибки всё равно перенаправляем на главную
+      window.location.href = RoutePath[AppRoutes.HOME];
+    }
+  };
+
+  const handleCheckboxGroupSubmit = () => {
+    if (multipleValues.length === 0) {
+      setError('Please select at least one option');
+      return false;
+    }
+
+    const newStepData: StepData = {
+      id: currentOnboarding.id,
+      data: {
+        value: multipleValues,
+      },
+    };
+
+    updateStepData(newStepData);
+    return true;
+  };
+
+  const handleChipsSubmit = () => {
+    if (chipsValues.length === 0) {
+      setError('Please select at least one option');
+      return false;
+    }
+
+    const newStepData: StepData = {
+      id: currentOnboarding.id,
+      data: {
+        value: chipsValues,
+      },
+    };
+
+    updateStepData(newStepData);
+    return true;
+  };
+
+  const handleInputOrSelectSubmit = () => {
+    if (!validateInput(inputValue)) {
+      return false;
+    }
+
+    const newStepData: StepData = {
+      id: currentOnboarding.id,
+      data: {
+        value: inputValue,
+      },
+    };
+
+    updateStepData(newStepData);
+    return true;
+  };
+
+  const updateStepData = (newStepData: StepData) => {
+    setStepsData(prevData => {
+      const existingIndex = prevData.findIndex(item => item.id === currentOnboarding.id);
+      if (existingIndex >= 0) {
+        const updatedData = [...prevData];
+        updatedData[existingIndex] = newStepData;
+        return updatedData;
+      } else {
+        return [...prevData, newStepData];
+      }
+    });
+  };
+
+  const handleSubmit = () => {
+    const component = currentOnboarding.components.length > 0 ? currentOnboarding.components[0] : null;
+    let isSubmitValid = true;
+
+    if (component) {
+      if (component.type === 'checkboxGroup') {
+        isSubmitValid = handleCheckboxGroupSubmit();
+      } else if (component.type === 'chips') {
+        isSubmitValid = handleChipsSubmit();
+      } else if (component.type === 'input' || component.type === 'select' || component.type === 'radioGroup') {
+        isSubmitValid = handleInputOrSelectSubmit();
+      }
+    }
+
+    if (isSubmitValid) {
+      console.log('Current step:', currentStep, 'Total steps:', onboarding.length);
+      console.log('Button action:', currentOnboarding.button.action);
+
+      if (currentOnboarding.button.action === 'next') {
+        if (currentStep < onboarding.length - 1) {
+          handleNext();
+          trackProgress();
+        } else {
+          // Last step with "next" action should still finish the onboarding
+          handleFinish();
+        }
+      } else if (currentOnboarding.button.action === 'finish') {
+        handleFinish();
+      }
+    }
+  };
+
+  const renderComponent = () => {
+    if (!currentOnboarding.components.length) return null;
+
+    const component = currentOnboarding.components[0];
+
+    if (component.type === 'input') {
+      return (
+        <InputComponent
+          component={component}
+          value={inputValue}
+          onChange={handleInputChange}
+          error={error}
+        />
+      );
+    }
+
+    if (component.type === 'select' && component.items) {
+      return (
+        <SelectComponent
+          component={component}
+          value={inputValue}
+          onValueChange={handleSelectChange}
+          error={error}
+        />
+      );
+    }
+
+    if (component.type === 'radioGroup' && component.items) {
+      return (
+        <RadioGroupComponent
+          component={component}
+          value={inputValue}
+          onValueChange={handleRadioChange}
+          error={error}
+        />
+      );
+    }
+
+    if (component.type === 'checkboxGroup' && component.items) {
+      return (
+        <CheckboxGroupComponent
+          component={component}
+          onSelectionChange={handleCheckboxGroupChange}
+          error={error}
+        />
+      );
+    }
+
+    if (component.type === 'chips' && component.items) {
+      return (
+        <ChipsListComponent
+          component={component}
+          selectedValues={chipsValues}
+          onSelectionChange={handleChipsChange}
+          error={error}
+        />
+      );
+    }
+
+    return null;
+  };
+
+  return (
+    <div className="flex min-h-screen flex-col items-center justify-center p-6">
+      <div className="mx-auto flex w-full max-w-[800px] flex-col items-start space-y-6">
+        <h1 className="text-2xl font-bold">{currentOnboarding.title}</h1>
+
+        {currentOnboarding.text && (
+          <div
+            className="text-left text-base"
+            dangerouslySetInnerHTML={{ __html: currentOnboarding.text }}
+          />
+        )}
+
+        {renderComponent()}
+
+        {currentOnboarding.button && (
+          <Button
+            variant={currentOnboarding.button?.type}
+            onClick={handleSubmit}
+            disabled={!isValid}
+          >
+            {currentOnboarding.button.label}
+          </Button>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default AuthOnboardingPage;
+</file>
+
 <file path="src/pages/Home/HomePage.tsx">
 import { useEffect, useState } from 'react';
 import type { Course } from '@/types/courses';
 
-import { continueCourses as cont, recommended as rec, other } from './mock';
 import { RoutePath } from '@/app/router/config';
 import { CourseCarousel } from '@/app/components/business/CourseCarousel';
-import { useClient } from '@/lib/useClient';
-
-interface CourseMap {
-  [key: string]: Course[];
-}
+import { PageLoader } from '@/app/components/PageLoader';
+import { useCourses } from '@/hooks/useCourses';
 
 const HomePage = () => {
-  const [continueCourses, setContinueCourses] = useState<Course[]>();
-  // @ts-ignore
-  const [recommended, setRecommended] = useState<Course[]>(rec);
-  // @ts-ignore
-  const [courses, setCourses] = useState<CourseMap>(other);
-
-  const supabase = useClient();
+  const { courses, isLoading, error } = useCourses();
+  const [recommendedCourses, setRecommendedCourses] = useState<Course[]>([]);
+  const [continueLearningCourses, setContinueLearningCourses] = useState<Course[]>([]);
 
   useEffect(() => {
-    const fetchCourses = async () => {
-      const { data, error } = await supabase.from('courses').select('*');
-      if (error) {
-        console.error(error);
-      } else {
-        setContinueCourses(data);
-      }
-    };
-    fetchCourses();
-  }, []);
+    if (courses.length > 0) {
+      // Фильтруем курсы с прогрессом для "Continue Learning"
+      const inProgressCourses = courses.filter(course => course.progress > 0);
+      setContinueLearningCourses(inProgressCourses);
+
+      // Для "Recommended for you" можно использовать курсы без прогресса
+      // или применить другую логику рекомендаций
+      const notStartedCourses = courses.filter(course => course.progress === 0);
+      setRecommendedCourses(notStartedCourses);
+    }
+  }, [courses]);
 
   return (
     <div className="container mx-auto py-12">
-      <CourseCarousel
-        title="Continue learning"
-        courses={continueCourses || []}
-        seeAllLink={RoutePath['courses-by-alias'].replace(':alias', 'continue-learning')}
-      />
+      {isLoading ? (
+        <PageLoader />
+      ) : error ? (
+        <div className="rounded border border-red-400 bg-red-100 px-4 py-3 text-red-700">
+          <p>{error}</p>
+        </div>
+      ) : (
+        <>
+          {continueLearningCourses.length > 0 && (
+            <CourseCarousel
+              title="Continue Learning"
+              courses={continueLearningCourses}
+              seeAllLink={RoutePath['courses-by-alias'].replace(':alias', 'continue-learning')}
+            />
+          )}
 
-      <CourseCarousel
-        title="Recommended for you"
-        courses={recommended}
-        seeAllLink={RoutePath['courses-by-alias'].replace(':alias', 'recommended')}
-      />
-
-      {/* {Object.entries(courses).map(([category, courseList]) => (
-        <CourseCarousel
-          key={category}
-          title={category}
-          courses={courseList}
-          seeAllLink={RoutePath['courses-by-alias'].replace(':alias', category)}
-        />
-      ))} */}
+          <CourseCarousel
+            title="Recommended for you"
+            courses={recommendedCourses.length > 0 ? recommendedCourses : courses}
+            seeAllLink={RoutePath['courses-by-alias'].replace(':alias', 'recommended')}
+          />
+        </>
+      )}
     </div>
   );
 };
 
 export default HomePage;
+</file>
+
+<file path="src/pages/Lesson/mock.ts">
+import { LessonDetails } from '@/types/lessons';
+
+// @ts-ignore
+export const mock: LessonDetails = {
+  id: 1,
+  title: 'lesson 1',
+  description:
+    "<p>The staff in a chain of three busy coffee shops feel stressed and overworked. We'll use transaction data to help them keep up with customer demand.</p>",
+  cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+  isDone: true,
+  isBlocked: false,
+  progress: 0,
+  steps: [
+    {
+      id: 1,
+      cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+      coverAnnotation: 'cover annotation',
+      text: 'It looks like Store 11 has the most need. But demand for coffee is not constant throughout the day, so it would be helpful to see how this varies over time. Which visualization would you choose for this?',
+      isDone: false,
+      component: null,
+    },
+    {
+      id: 2,
+      cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+      coverAnnotation: 'cover annotation',
+      text: 'Which visualization would you choose for this? Which visualization would you choose for this? Which visualization would you choose for this? Which visualization would you choose for this? Which visualization would you choose for this? Which visualization would you choose for this? Which visualization would you choose for this? Which visualization would you choose for this? Which visualization would you choose for this? Which visualization would you choose for this?Which visualization would you choose for this?Which visualization would you choose for this?Which visualization would you choose for this?Which visualization would you choose for this?Which visualization would you choose for this?Which visualization would you choose for this?Which visualization would you choose for this?Which visualization would you choose for this?Which visualization would you choose for this?',
+      isDone: false,
+      component: {
+        type: 'selectedButtons',
+        items: [
+          { id: 1, label: 'item 1' },
+          { id: 2, label: 'item 2' },
+        ],
+      },
+    },
+    {
+      id: 3,
+      cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+      coverAnnotation: 'cover annotation',
+      text: 'text 224gwrgwrg lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. ',
+      isDone: false,
+      component: {
+        type: 'radioButtons',
+        items: [
+          { id: 1, label: 'item 1' },
+          { id: 2, label: 'item 2' },
+        ],
+      },
+    },
+    {
+      id: 4,
+      cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+      coverAnnotation: 'cover annotation',
+      text: 'text ghehehehehhae getahah hetheh t wrgethet  wgwggh  tgwgwg 224gwrgwrg lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. ',
+      isDone: false,
+      component: {
+        type: 'radioButtons',
+        items: [
+          { id: 1, label: 'item 1' },
+          { id: 2, label: 'item 2' },
+        ],
+      },
+    },
+    {
+      id: 5,
+      cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+      coverAnnotation: 'cover annotation',
+      text: 'text пропущен',
+      isDone: false,
+      component: {
+        type: 'selectedButtons',
+        items: [
+          { id: 1, label: 'item 1' },
+          { id: 2, label: 'item 2' },
+        ],
+      },
+    },
+        {
+      id: 6,
+      cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+      coverAnnotation: 'cover annotation',
+      text: 'Which visualization would you choose for this? Which visualization would you choose for this? Which visualization would you choose for this? Which visualization would you choose for this? Which visualization would you choose for this? Which visualization would you choose for this? Which visualization would you choose for this? Which visualization would you choose for this? Which visualization would you choose for this? Which visualization would you choose for this?Which visualization would you choose for this?Which visualization would you choose for this?Which visualization would you choose for this?Which visualization would you choose for this?Which visualization would you choose for this?Which visualization would you choose for this?Which visualization would you choose for this?Which visualization would you choose for this?Which visualization would you choose for this?',
+      isDone: false,
+      component: {
+        type: 'slider',
+        items: [
+          {
+            id: 1,
+            componentType: 'text',
+            text: 'text text texttexttexttexttexttexttext text text text',
+          },
+          {
+            id: 2,
+            componentType: 'image',
+            src: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+            annotation: 'annotation',
+          },
+          {
+            id: 3,
+            componentType: 'image',
+            src: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+            annotation: 'annotation',
+          },
+        ],
+      },
+    },
+  ],
+};
+</file>
+
+<file path="src/pages/Library/LibraryPage.tsx">
+import React, { useState } from 'react';
+import type { Course } from '@/types/courses';
+
+import { RoutePath } from '@/app/router/config';
+import { CourseCarousel } from '@/app/components/business/CourseCarousel';
+
+import { bookmarked, completed } from './mock';
+
+const LibraryPage: React.FC = () => {
+  // @ts-ignore
+  const [bookmarkedCourses, setBookmarkedCourses] = useState<Course[]>(bookmarked);
+  // @ts-ignore
+  const [completedCourses, setCompletedCourses] = useState<Course[]>(completed);
+
+  return (
+    <div className="container mx-auto py-12">
+      <CourseCarousel
+        title="Bookmarked courses"
+        courses={bookmarkedCourses}
+        seeAllLink={RoutePath['courses-by-alias'].replace(':alias', 'bookmarked-courses')}
+      />
+
+      <CourseCarousel
+        title="Completed courses"
+        courses={completedCourses}
+        seeAllLink={RoutePath['courses-by-alias'].replace(':alias', 'completed-courses')}
+      />
+    </div>
+  );
+};
+
+export default LibraryPage;
 </file>
 
 <file path="src/types/lessons.ts">
@@ -5635,6 +6654,10 @@ export interface LessonDetails {
   isBlocked: boolean;
   progress: number;
   steps: LessonStep[];
+  // New fields for Supabase integration
+  currentStepIndex: number; // Changed from optional to required with default -1
+  visibleSteps: number[];
+  completedSteps?: number[];
 }
 
 export interface LessonStep {
@@ -5681,163 +6704,6 @@ interface SliderComponent {
   type: 'slider';
   items: (SliderTextItem | SliderImageItem)[];
 }
-</file>
-
-<file path="src/pages/Library/LibraryPage.tsx">
-import React, { useState } from 'react';
-import type { Course } from '@/types/courses';
-
-import { RoutePath } from '@/app/router/config';
-import { CourseCarousel } from '@/app/components/business/CourseCarousel';
-
-import { bookmarked, completed } from './mock';
-
-const LibraryPage: React.FC = () => {
-  // @ts-ignore
-  const [bookmarkedCourses, setBookmarkedCourses] = useState<Course[]>(bookmarked);
-  // @ts-ignore
-  const [completedCourses, setCompletedCourses] = useState<Course[]>(completed);
-
-  return (
-    <div className="container mx-auto py-12">
-      <CourseCarousel
-        title="Bookmarked courses"
-        courses={bookmarkedCourses}
-        seeAllLink={RoutePath['courses-by-alias'].replace(':alias', 'bookmarked-courses')}
-      />
-
-      <CourseCarousel
-        title="Completed courses"
-        courses={completedCourses}
-        seeAllLink={RoutePath['courses-by-alias'].replace(':alias', 'completed-courses')}
-      />
-    </div>
-  );
-};
-
-export default LibraryPage;
-</file>
-
-<file path="src/pages/Register/RegisterPage.tsx">
-import React, { useActionState } from 'react';
-
-import { Input } from '@/app/components/ui/input';
-import { Button } from '@/app/components/ui/button';
-import { toast, Toaster } from 'sonner';
-
-import { useClient } from '@/lib/useClient';
-import { validateLogin } from './utils/validation';
-import { getErrorMessage } from './utils/getErrorMessage';
-import { FormFieldNames, type RegisterData } from './types';
-import { Link } from 'react-router-dom';
-
-const initialState: RegisterData = {
-  email: '',
-  password: '',
-  errors: {},
-};
-
-const formAction = async (_: RegisterData, formData: FormData) => {
-  const email = formData.get(FormFieldNames.EMAIL) as string;
-  const password = formData.get(FormFieldNames.PASSWORD) as string;
-  const supabase = useClient();
-
-  const validationResult = await validateLogin({ email, password });
-
-  if (validationResult.success) {
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-    });
-
-    if (error) {
-      return { email, password, errors: { general: error.message } };
-    }
-
-    toast.success('Check email for verification ');
-
-    // @todo: переделать на что-то нормальное
-    setTimeout(() => {
-      window.location.href = '/login';
-    }, 1500);
-
-    return { email, password };
-  } else {
-    const errorMessages: { [key: string]: string } = {};
-
-    validationResult.errors?.forEach(error => {
-      errorMessages[error.fieldName] = getErrorMessage(error.code);
-    });
-
-    toast.error('Registration failed');
-
-    return {
-      email,
-      password,
-      errors: errorMessages,
-    };
-  }
-};
-
-const LoginPage: React.FC = () => {
-  const [state, action, pending] = useActionState<RegisterData, FormData>(formAction, initialState);
-
-  return (
-    <>
-      <Toaster
-        richColors
-        position="top-center"
-      />
-      <form
-        action={action}
-        className="w-80 rounded-[2px] border border-[#D9D9D9] p-6 shadow-md"
-      >
-        <label className="mb-1 flex flex-col gap-2">
-          <p className="text-base text-[#1E1E1E]">Email</p>
-          <Input
-            type="email"
-            placeholder="Email"
-            name={FormFieldNames.EMAIL}
-            className="w-full"
-            defaultValue={state.email}
-          />
-        </label>
-        {state.errors?.[FormFieldNames.EMAIL] && (
-          <p className="mb-3 text-sm text-red-500">{state.errors[FormFieldNames.EMAIL]}</p>
-        )}
-
-        <label className="mt-4 mb-1 flex flex-col gap-2">
-          <p className="text-base text-[#1E1E1E]">Password</p>
-          <Input
-            type="password"
-            placeholder="Password"
-            name={FormFieldNames.PASSWORD}
-            className="w-full"
-            defaultValue={state.password}
-          />
-        </label>
-        {state.errors?.[FormFieldNames.PASSWORD] && (
-          <p className="mb-3 text-sm text-red-500">{state.errors[FormFieldNames.PASSWORD]}</p>
-        )}
-
-        {state.errors?.general && <p className="mt-2 mb-3 text-sm text-red-500">{state.errors.general}</p>}
-
-        <Link to="/login">
-          <p className="text-sm text-[#1E1E1E]">Already have an account? Sign in</p>
-        </Link>
-        <Button
-          className="mt-4 w-full"
-          type="submit"
-          disabled={pending}
-        >
-          Register
-        </Button>
-      </form>
-    </>
-  );
-};
-
-export default LoginPage;
 </file>
 
 <file path="src/app/components/layouts/ProgressHeader/ProgressHeader.tsx">
@@ -5897,6 +6763,7 @@ import { validateLogin } from './utils/validation';
 import { useClient } from '@/lib/useClient';
 import { getErrorMessage } from './utils/getErrorMessage';
 import { FormFieldNames, type LoginData } from './types';
+import { RoutePath, AppRoutes } from '@/app/router/config';
 
 const initialState: LoginData = {
   email: '',
@@ -5905,19 +6772,22 @@ const initialState: LoginData = {
   success: false,
 };
 
-const supabase = useClient();
-
 const formAction = async (_: LoginData, formData: FormData) => {
   const email = formData.get(FormFieldNames.EMAIL) as string;
   const password = formData.get(FormFieldNames.PASSWORD) as string;
+  const supabase = useClient();
 
   const validationResult = await validateLogin({ email, password });
 
   if (validationResult.success) {
-    const { data } = await supabase.auth.signInWithPassword({
+    const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
+
+    if (error) {
+      return { email, password, errors: { general: error.message } };
+    }
 
     if (data?.session?.access_token) {
       localStorage.setItem('Authorization', data.session.access_token);
@@ -5951,17 +6821,42 @@ const LoginPage: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { login } = useAuth();
+  const supabase = useClient();
 
   React.useEffect(() => {
     if (state.success) {
       const token = localStorage.getItem('Authorization');
       if (token) {
         login(token);
-        const from = location.state?.from?.pathname || '/';
-        navigate(from, { replace: true });
+
+        // Check if the user needs to complete onboarding
+        const checkOnboardingStatus = async () => {
+          const {
+            data: { user },
+          } = await supabase.auth.getUser();
+
+          if (user) {
+            const { data, error } = await supabase
+              .from('user_onboarding')
+              .select('is_completed')
+              .eq('user_id', user.id)
+              .single();
+
+            // If no onboarding record or onboarding not completed, redirect to onboarding
+            if (error || !data?.is_completed) {
+              navigate(RoutePath[AppRoutes.AUTH_ONBOARDING], { replace: true });
+            } else {
+              // Otherwise, navigate to originally requested page or home
+              const from = location.state?.from?.pathname || '/';
+              navigate(from, { replace: true });
+            }
+          }
+        };
+
+        checkOnboardingStatus();
       }
     }
-  }, [state.success, navigate, location, login]);
+  }, [state.success, navigate, location, login, supabase]);
 
   return (
     <>
@@ -6045,6 +6940,192 @@ const LoginPage: React.FC = () => {
 };
 
 export default LoginPage;
+</file>
+
+<file path="src/pages/Register/RegisterPage.tsx">
+import React, { useActionState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+
+import { Input } from '@/app/components/ui/input';
+import { Button } from '@/app/components/ui/button';
+import { toast, Toaster } from 'sonner';
+
+import { useClient } from '@/lib/useClient';
+import { validateLogin } from './utils/validation';
+import { getErrorMessage } from './utils/getErrorMessage';
+import { FormFieldNames, type RegisterData } from './types';
+import { RoutePath, AppRoutes } from '@/app/router/config';
+import { useAuth } from '@/app/hooks/useAuth';
+
+const initialState: RegisterData = {
+  email: '',
+  password: '',
+  errors: {},
+};
+
+const RegisterPage: React.FC = () => {
+  const navigate = useNavigate();
+  const { login } = useAuth();
+  const supabase = useClient();
+
+  const formAction = async (_: RegisterData, formData: FormData) => {
+    const email = formData.get(FormFieldNames.EMAIL) as string;
+    const password = formData.get(FormFieldNames.PASSWORD) as string;
+
+    const validationResult = await validateLogin({ email, password });
+
+    if (validationResult.success) {
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+      });
+
+      if (error) {
+        return { email, password, errors: { general: error.message } };
+      }
+
+      // If Supabase email confirmation is disabled, we can sign in immediately
+      if (data?.user && !data.user.email_confirmed_at) {
+        // Sign in with the newly created credentials
+        const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
+          email,
+          password,
+        });
+
+        if (signInError) {
+          return { email, password, errors: { general: signInError.message } };
+        }
+
+        if (signInData?.session?.access_token) {
+          // Set token and login
+          localStorage.setItem('Authorization', signInData.session.access_token);
+          login(signInData.session.access_token);
+
+          // Create onboarding record
+          if (signInData.user) {
+            await supabase.from('user_onboarding').insert({
+              user_id: signInData.user.id,
+              is_completed: false,
+            });
+          }
+
+          toast.success('Account created successfully');
+
+          // Redirect to onboarding
+          setTimeout(() => {
+            navigate(RoutePath[AppRoutes.AUTH_ONBOARDING]);
+          }, 500);
+        }
+      } else {
+        // If email confirmation is enabled
+        toast.success('Check email for verification');
+
+        setTimeout(() => {
+          navigate(RoutePath[AppRoutes.LOGIN]);
+        }, 1500);
+      }
+
+      return { email, password, success: true };
+    } else {
+      const errorMessages: { [key: string]: string } = {};
+
+      validationResult.errors?.forEach(error => {
+        errorMessages[error.fieldName] = getErrorMessage(error.code);
+      });
+
+      toast.error('Registration failed');
+
+      return {
+        email,
+        password,
+        errors: errorMessages,
+      };
+    }
+  };
+
+  const [state, action, pending] = useActionState<RegisterData, FormData>(formAction, initialState);
+
+  return (
+    <>
+      <Toaster
+        richColors
+        position="top-center"
+      />
+      <form
+        action={action}
+        className="w-80 rounded-[2px] border border-[#D9D9D9] p-6 shadow-md"
+      >
+        <label className="mb-1 flex flex-col gap-2">
+          <p className="text-base text-[#1E1E1E]">Email</p>
+          <Input
+            type="email"
+            placeholder="Email"
+            name={FormFieldNames.EMAIL}
+            className="w-full"
+            defaultValue={state.email}
+          />
+        </label>
+        {state.errors?.[FormFieldNames.EMAIL] && (
+          <p className="mb-3 text-sm text-red-500">{state.errors[FormFieldNames.EMAIL]}</p>
+        )}
+
+        <label className="mt-4 mb-1 flex flex-col gap-2">
+          <p className="text-base text-[#1E1E1E]">Password</p>
+          <Input
+            type="password"
+            placeholder="Password"
+            name={FormFieldNames.PASSWORD}
+            className="w-full"
+            defaultValue={state.password}
+          />
+        </label>
+        {state.errors?.[FormFieldNames.PASSWORD] && (
+          <p className="mb-3 text-sm text-red-500">{state.errors[FormFieldNames.PASSWORD]}</p>
+        )}
+
+        {state.errors?.general && <p className="mt-2 mb-3 text-sm text-red-500">{state.errors.general}</p>}
+
+        <Link to="/login">
+          <p className="text-sm text-[#1E1E1E]">Already have an account? Sign in</p>
+        </Link>
+        <Button
+          className="mt-4 w-full"
+          type="submit"
+          disabled={pending}
+        >
+          {pending ? (
+            <div className="flex items-center justify-center">
+              <svg
+                className="mr-2 h-4 w-4 animate-spin"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                  fill="none"
+                />
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+                />
+              </svg>
+              Loading...
+            </div>
+          ) : (
+            'Register'
+          )}
+        </Button>
+      </form>
+    </>
+  );
+};
+
+export default RegisterPage;
 </file>
 
 <file path="package.json">
@@ -6193,7 +7274,7 @@ export const routeConfig: Record<AppRoutes, RouteObject> = {
   [AppRoutes.AUTH_ONBOARDING]: {
     path: RoutePath[AppRoutes.AUTH_ONBOARDING],
     element: (
-      <ProtectedRoute>
+      <ProtectedRoute requireOnboarding={false}>
         <AuthOnboardingPageWithLayout />
       </ProtectedRoute>
     ),
@@ -6258,40 +7339,46 @@ export const routeConfig: Record<AppRoutes, RouteObject> = {
 </file>
 
 <file path="src/pages/Course/CoursePage.tsx">
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React from 'react';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
 import { Button } from '@/app/components/ui/button';
 import { CircleProgress } from '@/app/components/ui/circle-progress';
+import { PageLoader } from '@/app/components/PageLoader';
 
 import { LessonCard } from './components/LessonCard';
 
 import { RoutePath } from '@/app/router/config';
-
-import { mock } from './mock';
+import { useCourseDetails } from '@/hooks/useCourseDetails';
 
 const CoursePage: React.FC = () => {
-  // @ts-ignore
-  const [course, setCourse] = useState(mock);
-
+  const { id } = useParams<{ id: string }>();
+  const { courseDetails, isLoading, error } = useCourseDetails(id || '');
   const navigate = useNavigate();
 
   const handleStartLearning = () => {
-    const firstNotDoneLesson = course.lessons.find(lesson => !lesson.isDone);
+    if (!courseDetails) return;
+
+    const firstNotDoneLesson = courseDetails.lessons.find(lesson => !lesson.isDone);
 
     if (firstNotDoneLesson) {
       navigate(
         RoutePath.lesson
-          .replace(':courseId', course.id.toString())
+          .replace(':courseId', courseDetails.id.toString())
           .replace(':lessonId', firstNotDoneLesson.id.toString()),
       );
     }
   };
 
-  const handleGetNotified = () => {};
+  const handleGetNotified = () => {
+    // Функционал для уведомлений
+    console.log('Запрос на уведомление отправлен');
+  };
 
   const renderAction = () => {
-    if (course.progress === 0) {
+    if (!courseDetails) return null;
+
+    if (courseDetails.progress === 0) {
       return (
         <Button
           onClick={handleStartLearning}
@@ -6302,40 +7389,63 @@ const CoursePage: React.FC = () => {
       );
     }
 
-    if (course.progress === 100) {
+    if (courseDetails.progress === 100) {
       return (
         <Button
           onClick={handleStartLearning}
           className="mt-2 cursor-pointer"
         >
-          Start Learning
+          Review Course
         </Button>
       );
     }
 
     return (
-      <button
-        onClick={handleGetNotified}
-        className="text-base text-[#050038]"
-      >
-        Get notified when course is available
-      </button>
+      <div className="flex space-x-4">
+        <Button
+          onClick={handleStartLearning}
+          className="mt-2 cursor-pointer"
+        >
+          Continue Learning
+        </Button>
+        <button
+          onClick={handleGetNotified}
+          className="mt-2 text-base text-[#050038]"
+        >
+          Get notified when updates are available
+        </button>
+      </div>
     );
   };
 
+  if (isLoading) {
+    return <PageLoader />;
+  }
+
+  if (error || !courseDetails) {
+    return (
+      <div className="mx-auto max-w-[1200px] py-5">
+        <div className="rounded border border-red-400 bg-red-100 px-4 py-3 text-red-700">
+          <p>{error || 'Курс не найден'}</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="mx-auto max-w-[1200px] py-5">
-      <h1 className="mb-6 text-3xl font-medium text-black">{course.title}</h1>
+      <h1 className="mb-6 text-3xl font-medium text-black">{courseDetails.title}</h1>
 
       <div className="flex items-start gap-8">
         <div className="relative max-w-[484px]">
           <img
-            src={course.cover}
-            alt=""
+            src={courseDetails.cover}
+            alt={courseDetails.title}
+            className="rounded-lg object-cover"
           />
 
           <CircleProgress
-            value={course.progress}
+            value={courseDetails.progress}
             className="absolute top-2 right-2"
           />
         </div>
@@ -6344,7 +7454,7 @@ const CoursePage: React.FC = () => {
           <h2 className="mb-6 text-2xl font-semibold text-[#1E1E1E]">About the course</h2>
           <div
             className="text-base text-[#1E1E1E]"
-            dangerouslySetInnerHTML={{ __html: course.description }}
+            dangerouslySetInnerHTML={{ __html: courseDetails.description }}
           ></div>
 
           {renderAction()}
@@ -6354,14 +7464,20 @@ const CoursePage: React.FC = () => {
       <div className="my-7 h-px w-full bg-[#CAC4D0]"></div>
 
       <section className="flex flex-col gap-4">
-        {course.lessons.map(lesson => {
+        {courseDetails.lessons.map(lesson => {
           if (lesson.isBlocked) {
-            return <LessonCard lesson={lesson} />;
+            return (
+              <LessonCard
+                key={lesson.id}
+                lesson={lesson}
+              />
+            );
           } else {
             return (
               <Link
+                key={lesson.id}
                 to={RoutePath.lesson
-                  .replace(':courseId', course.id.toString())
+                  .replace(':courseId', courseDetails.id.toString())
                   .replace(':lessonId', lesson.id.toString())}
               >
                 <LessonCard lesson={lesson} />
@@ -6378,12 +7494,12 @@ export default CoursePage;
 </file>
 
 <file path="src/pages/Lesson/LessonPage.tsx">
-import React, { useRef, useCallback, useState, useEffect } from 'react';
-import type { LessonComponent } from '@/types/lessons';
-import { useLocation } from 'react-router-dom';
+import React, { useRef, useCallback, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 
 import { useProgressStore } from '@/app/layouts/LessonLayout';
 import { Button } from '@/app/components/ui/button';
+import { PageLoader } from '@/app/components/PageLoader';
 
 import { SelectedButtons } from './components/SelectedButtons';
 import { RadioButtons } from './components/RadioButtons';
@@ -6391,51 +7507,128 @@ import { LessonIntro } from './components/LessonIntro';
 import { CompleteCourseFlow } from './components/CompleteCourseFlow';
 import { Slider } from './components/Slider';
 
-import { useLessonState } from './hooks/useLessonState';
-import { useLessonNavigation } from './hooks/useLessonNavigation';
+import { useLessonDetails } from '@/hooks/useLessonDetails';
 import { useScrollAnimation } from './hooks/useScrollAnimation';
 
-import { mock } from './mock';
-
 const LessonPage: React.FC = () => {
+  const { lessonId, courseId } = useParams<{ lessonId: string; courseId: string }>();
   const { setProgress } = useProgressStore();
-
-  const { lesson, startedLesson, startLesson } = useLessonState(mock);
-
-  const [courseAlias, setCourseAlias] = useState<string | null>(null);
-
   const lessonContentRef = useRef<HTMLDivElement>(null);
   const stepsRefs = useRef<{ [key: number]: HTMLDivElement | null }>({});
 
-  const location = useLocation();
+  // Fetch lesson details from Supabase
+  const { lessonDetails, isLoading, error, updateLessonProgress } = useLessonDetails(lessonId || '', courseId || '');
 
-  const {
-    currentStepIndex,
-    visibleSteps,
-    stepOpacity,
-    goToNextStep,
-    setStepVisible,
-    isLastStep,
-    isCourseCompleted,
-    completeCourse,
-  } = useLessonNavigation({
-    totalSteps: lesson.steps.length,
-    onProgressChange: setProgress,
-    lessonId: lesson.id.toString(),
-  });
+  const [startedLesson, setStartedLesson] = React.useState(false);
 
   const { scrollToStep, registerStepRef } = useScrollAnimation({
     stepsRefs,
     containerRef: lessonContentRef,
-    onScrollComplete: setStepVisible,
+    onScrollComplete: stepIndex => {
+      if (lessonDetails) {
+        setStepVisible(stepIndex);
+      }
+    },
   });
 
+  // Check if lesson is started based on currentStepIndex
+  useEffect(() => {
+    if (lessonDetails && lessonDetails.currentStepIndex !== undefined && lessonDetails.currentStepIndex >= 0) {
+      setStartedLesson(true);
+    }
+  }, [lessonDetails]);
+
+  // Update progress in the UI
+  useEffect(() => {
+    if (lessonDetails) {
+      setProgress(lessonDetails.progress);
+    }
+  }, [lessonDetails, setProgress]);
+
+  // Scroll to current step when first loading
+  useEffect(() => {
+    if (
+      lessonDetails &&
+      startedLesson &&
+      lessonDetails.currentStepIndex !== undefined &&
+      lessonDetails.currentStepIndex > 0 &&
+      lessonDetails.visibleSteps.length > 0
+    ) {
+      setTimeout(() => {
+        scrollToStep(lessonDetails.currentStepIndex);
+      }, 300);
+    }
+  }, [lessonDetails, scrollToStep, startedLesson]);
+
+  const setStepVisible = useCallback(
+    (stepIndex: number) => {
+      if (!lessonDetails) return;
+
+      // Add step to visible steps if not already there
+      if (!lessonDetails.visibleSteps.includes(stepIndex)) {
+        const updatedVisibleSteps = [...lessonDetails.visibleSteps, stepIndex];
+
+        updateLessonProgress({
+          visibleSteps: updatedVisibleSteps,
+        });
+      }
+    },
+    [lessonDetails, updateLessonProgress],
+  );
+
+  const startLesson = useCallback(() => {
+    setStartedLesson(true);
+
+    // Update lesson progress in database
+    updateLessonProgress({
+      currentStepIndex: 0,
+      visibleSteps: [0],
+      progress: lessonDetails?.steps ? Math.round((1 / (lessonDetails.steps.length + 1)) * 100) : 0,
+    });
+  }, [updateLessonProgress, lessonDetails]);
+
+  const goToNextStep = useCallback(() => {
+    if (!lessonDetails || lessonDetails.currentStepIndex === undefined) return -1;
+
+    if (lessonDetails.currentStepIndex === -1) {
+      // Starting the lesson
+      const newIndex = 0;
+      updateLessonProgress({
+        currentStepIndex: newIndex,
+        visibleSteps: [...(lessonDetails.visibleSteps || []), newIndex],
+        progress: lessonDetails.steps ? Math.round(((newIndex + 1) / (lessonDetails.steps.length + 1)) * 100) : 0,
+      });
+      return newIndex;
+    } else if (lessonDetails.currentStepIndex < lessonDetails.steps.length - 1) {
+      // Going to next step
+      const newIndex = lessonDetails.currentStepIndex + 1;
+      updateLessonProgress({
+        currentStepIndex: newIndex,
+        visibleSteps: [...(lessonDetails.visibleSteps || []), newIndex],
+        progress: Math.round(((newIndex + 1) / (lessonDetails.steps.length + 1)) * 100),
+      });
+      return newIndex;
+    }
+    return -1;
+  }, [lessonDetails, updateLessonProgress]);
+
+  const completeCourse = useCallback(() => {
+    if (!lessonDetails) return;
+
+    updateLessonProgress({
+      progress: 100,
+      isDone: true,
+    });
+  }, [updateLessonProgress, lessonDetails]);
+
   const handleContinue = useCallback(() => {
-    if (currentStepIndex === -1) {
+    if (!lessonDetails || lessonDetails.currentStepIndex === undefined) return;
+
+    if (lessonDetails.currentStepIndex === -1) {
       startLesson();
     }
 
-    if (isLastStep) {
+    if (lessonDetails.currentStepIndex === lessonDetails.steps.length - 1) {
       completeCourse();
       return;
     }
@@ -6446,14 +7639,14 @@ const LessonPage: React.FC = () => {
         scrollToStep(newIndex);
       }, 100);
     }
-  }, [currentStepIndex, goToNextStep, scrollToStep, startLesson, isLastStep, completeCourse]);
+  }, [lessonDetails, goToNextStep, scrollToStep, startLesson, completeCourse]);
 
   const handleOptionSelect = useCallback(() => {
     handleContinue();
   }, [handleContinue]);
 
   const renderActionComponent = useCallback(
-    (component: LessonComponent | null) => {
+    (component: any) => {
       if (!component) return null;
 
       switch (component.type) {
@@ -6480,21 +7673,23 @@ const LessonPage: React.FC = () => {
     [handleOptionSelect],
   );
 
-  useEffect(() => {
-    const alias = location.pathname.split('/')[2];
+  if (isLoading) {
+    return <PageLoader />;
+  }
 
-    if (alias) {
-      setCourseAlias(alias);
-    }
-  }, [location.pathname, completeCourse]);
+  if (error || !lessonDetails) {
+    return (
+      <div className="mx-auto max-w-[640px] pt-24 pb-24">
+        <div className="rounded border border-red-400 bg-red-100 px-4 py-3 text-red-700">
+          <p>{error || 'Lesson not found'}</p>
+        </div>
+      </div>
+    );
+  }
 
-  useEffect(() => {
-    if (startedLesson && currentStepIndex > 0 && visibleSteps.length > 0) {
-      setTimeout(() => {
-        scrollToStep(currentStepIndex);
-      }, 300);
-    }
-  }, [currentStepIndex, scrollToStep, startedLesson, visibleSteps.length]);
+  const isCourseCompleted = lessonDetails.isDone;
+  const isLastStep =
+    lessonDetails.currentStepIndex !== undefined && lessonDetails.currentStepIndex === lessonDetails.steps.length - 1;
 
   return (
     <div
@@ -6503,52 +7698,55 @@ const LessonPage: React.FC = () => {
     >
       {isCourseCompleted ? (
         <CompleteCourseFlow
-          lessonId={lesson.id}
-          courseAlias={courseAlias}
+          lessonId={lessonDetails.id}
+          courseId={courseId || null}
         />
       ) : (
         <>
           <LessonIntro
-            lesson={lesson}
+            lesson={lessonDetails}
             startedLesson={startedLesson}
             handleContinue={handleContinue}
           />
 
           {startedLesson &&
-            visibleSteps.map(stepIndex => (
-              <div
-                key={`step-${stepIndex}`}
-                ref={ref => registerStepRef(stepIndex, ref)}
-                className="mb-16 transition-opacity duration-700"
-                style={{ opacity: stepOpacity[stepIndex] || 0 }}
-              >
-                <img
-                  src={lesson.steps[stepIndex].cover}
-                  alt=""
-                  className="mb-2 h-[384px] w-full object-cover"
-                />
+            lessonDetails.visibleSteps.map(stepIndex => {
+              if (stepIndex >= lessonDetails.steps.length) return null;
+              const step = lessonDetails.steps[stepIndex];
 
-                {lesson.steps[stepIndex].coverAnnotation && (
-                  <div className="mb-8 text-center text-sm text-gray-500">
-                    {lesson.steps[stepIndex].coverAnnotation}
-                  </div>
-                )}
-
+              return (
                 <div
-                  className="mb-8"
-                  dangerouslySetInnerHTML={{ __html: lesson.steps[stepIndex].text }}
-                ></div>
+                  key={`step-${stepIndex}`}
+                  ref={ref => registerStepRef(stepIndex, ref)}
+                  className="mb-16 transition-opacity duration-700"
+                  style={{ opacity: lessonDetails.visibleSteps.includes(stepIndex) ? 1 : 0 }}
+                >
+                  <img
+                    src={step.cover}
+                    alt=""
+                    className="mb-2 h-[384px] w-full object-cover"
+                  />
 
-                {lesson.steps[stepIndex].component && (
-                  <div className="mb-8">{renderActionComponent(lesson.steps[stepIndex].component)}</div>
-                )}
+                  {step.coverAnnotation && (
+                    <div className="mb-8 text-center text-sm text-gray-500">{step.coverAnnotation}</div>
+                  )}
 
-                {(stepIndex === currentStepIndex && !lesson.steps[stepIndex].component) ||
-                  (lesson.steps[stepIndex].component?.type === 'slider' && (
-                    <Button onClick={handleContinue}>Continue</Button>
-                  ))}
-              </div>
-            ))}
+                  <div
+                    className="mb-8"
+                    dangerouslySetInnerHTML={{ __html: step.text }}
+                  ></div>
+
+                  {step.component && <div className="mb-8">{renderActionComponent(step.component)}</div>}
+
+                  {((lessonDetails.currentStepIndex !== undefined &&
+                    stepIndex === lessonDetails.currentStepIndex &&
+                    !step.component) ||
+                    step.component?.type === 'slider') && (
+                    <Button onClick={handleContinue}>{isLastStep ? 'Complete Lesson' : 'Continue'}</Button>
+                  )}
+                </div>
+              );
+            })}
         </>
       )}
     </div>
