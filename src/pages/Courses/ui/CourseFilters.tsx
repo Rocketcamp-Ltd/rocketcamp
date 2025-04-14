@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Check } from 'lucide-react';
 import type { CourseCategory } from '@/types/courses';
 import { cn } from '@/lib/utils';
@@ -10,12 +10,25 @@ interface Props {
 }
 
 export const CourseFilters: React.FC<Props> = ({ categories, filters, changeFilters }) => {
+  // @ts-ignore
+  const [searchTerm, setSearchTerm] = useState('');
+  // @ts-ignore
+  const [showAllCategories, setShowAllCategories] = useState(false);
+
+  const filteredCategories = categories.filter(category =>
+    category.name.toLowerCase().includes(searchTerm.toLowerCase()),
+  );
+
+  const displayedCategories = showAllCategories ? filteredCategories : filteredCategories.slice(0, 10);
+
   return (
-    <div>
-      <p className="text-sm font-medium text-[#49454F]">Course topics</p>
+    <div className="w-full max-w-3xl">
+      <div className="mb-4 flex items-center justify-between">
+        <p className="text-sm font-medium text-[#49454F]">Course topics</p>
+      </div>
 
       <div className="mt-3 flex flex-wrap gap-2">
-        {categories.map(category => {
+        {displayedCategories.map(category => {
           const isSelected = !!filters.find(item => item.id === category.id);
 
           return (
@@ -32,7 +45,7 @@ export const CourseFilters: React.FC<Props> = ({ categories, filters, changeFilt
             >
               {isSelected && (
                 <span>
-                  <Check />
+                  <Check className="h-4 w-4" />
                 </span>
               )}
               {category.name}
