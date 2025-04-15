@@ -1,12 +1,7 @@
 import React from 'react';
 import { cn } from '@/lib/utils';
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from '@/app/components/ui/carousel';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/app/components/ui/carousel';
+import { TextContentRenderer } from './TextContentRenderer';
 
 interface SliderItem {
   id: number;
@@ -32,26 +27,33 @@ export const Slider: React.FC<SliderProps> = ({ items }) => {
         className="w-full"
       >
         <CarouselContent>
-          {items.map((item) => (
-            <CarouselItem key={item.id} className="w-full">
-              <div className={cn("flex flex-col items-center p-2", {
-                'h-full justify-center': item.componentType === 'text',
-              })}>
-                {item.componentType === 'text' && (
-                  <div className="mb-4 text-center text-base">{item.text}</div>
+          {items.map(item => (
+            <CarouselItem
+              key={item.id}
+              className="w-full"
+            >
+              <div
+                className={cn('flex flex-col items-center p-2', {
+                  'h-full justify-center': item.componentType === 'text',
+                })}
+              >
+                {item.componentType === 'text' && item.text && (
+                  <div className="mb-4 w-full">
+                    <TextContentRenderer
+                      content={item.text}
+                      allowHtml={true}
+                      className="prose mx-auto max-w-full text-base"
+                    />
+                  </div>
                 )}
                 {item.componentType === 'image' && item.src && (
                   <>
                     <img
                       src={item.src}
                       alt={item.annotation || ''}
-                      className="mb-2 h-64 w-full object-cover rounded"
+                      className="mb-2 h-64 w-full rounded object-cover"
                     />
-                    {item.annotation && (
-                      <div className="mt-2 text-center text-sm text-gray-500">
-                        {item.annotation}
-                      </div>
-                    )}
+                    {item.annotation && <div className="mt-2 text-center text-sm text-gray-500">{item.annotation}</div>}
                   </>
                 )}
               </div>

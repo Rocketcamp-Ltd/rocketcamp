@@ -2,6 +2,7 @@ import React from 'react';
 import { cn } from '@/lib/utils';
 import type { LessonDetails } from '@/types/lessons';
 import { Button } from '@/app/components/ui/button';
+import { TextContentRenderer } from './TextContentRenderer';
 
 interface LessonIntroProps {
   lesson: LessonDetails;
@@ -24,10 +25,12 @@ export const LessonIntro: React.FC<LessonIntroProps> = ({ lesson, startedLesson,
 
       <h1 className="mb-6 text-4xl font-medium text-black">{lesson.title}</h1>
 
-      <div
-        className="mb-8"
-        dangerouslySetInnerHTML={{ __html: lesson.description }}
-      ></div>
+      <div className="mb-8">
+        <TextContentRenderer
+          content={lesson.description}
+          allowHtml={true}
+        />
+      </div>
 
       {!startedLesson && (
         <Button onClick={handleContinue}>{lesson.progress > 0 ? 'Continue Learning' : 'Start Learning'}</Button>

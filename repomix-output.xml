@@ -108,6 +108,7 @@ src/app/utils/auth.ts
 src/assets/index.css
 src/hooks/useCourseDetails.ts
 src/hooks/useCourses.ts
+src/hooks/useFilteredCourses.ts
 src/hooks/useLessonDetails.ts
 src/hooks/useOnboarding.ts
 src/lib/getQueryParams.ts
@@ -151,6 +152,7 @@ src/pages/Lesson/components/LessonIntro.tsx
 src/pages/Lesson/components/RadioButtons.tsx
 src/pages/Lesson/components/SelectedButtons.tsx
 src/pages/Lesson/components/Slider.tsx
+src/pages/Lesson/components/TextContentRenderer.tsx
 src/pages/Lesson/hooks/useLessonNavigation.ts
 src/pages/Lesson/hooks/useLessonProgress.ts
 src/pages/Lesson/hooks/useLessonState.ts
@@ -159,6 +161,7 @@ src/pages/Lesson/index.ts
 src/pages/Lesson/LessonPage.tsx
 src/pages/Lesson/LessonPageAsync.tsx
 src/pages/Lesson/mock.ts
+src/pages/Lesson/services/lessonContentsUtils.ts
 src/pages/Library/index.ts
 src/pages/Library/LibraryPage.tsx
 src/pages/Library/LibraryPageAsync.tsx
@@ -198,6 +201,82 @@ vite.config.ts
 
 <files>
 This section contains the contents of the repository's files.
+
+<file path="src/pages/Lesson/components/TextContentRenderer.tsx">
+import React from 'react';
+import { cn } from '@/lib/utils';
+import { containsHtml, normalizeNewlines } from '../services/lessonContentsUtils';
+
+interface TextContentRendererProps {
+  content: string;
+  className?: string;
+  allowHtml?: boolean;
+}
+
+/**
+ * A component that renders text content with proper handling of newline characters (\n)
+ * and optionally allows HTML content.
+ */
+export const TextContentRenderer: React.FC<TextContentRendererProps> = ({ content, className, allowHtml = false }) => {
+  if (!content) {
+    return null;
+  }
+
+  // Normalize newlines to ensure consistent rendering
+  const normalizedContent = normalizeNewlines(content);
+
+  // Auto-detect HTML if allowHtml is true
+  const hasHtml = allowHtml && containsHtml(normalizedContent);
+
+  // If content has HTML and HTML is allowed, render with dangerouslySetInnerHTML
+  if (hasHtml) {
+    return (
+      <div
+        className={cn('text-base text-[#1E1E1E]', className)}
+        dangerouslySetInnerHTML={{ __html: normalizedContent }}
+      />
+    );
+  }
+
+  // Otherwise, handle newlines by splitting the text and adding <br /> elements
+  const textWithLineBreaks = normalizedContent.split('\n').map((line, index, array) => (
+    <React.Fragment key={index}>
+      {line}
+      {index < array.length - 1 && <br />}
+    </React.Fragment>
+  ));
+
+  return <div className={cn('text-base text-[#1E1E1E]', className)}>{textWithLineBreaks}</div>;
+};
+</file>
+
+<file path="src/pages/Lesson/services/lessonContentsUtils.ts">
+/**
+ * Utility functions for handling lesson content
+ */
+
+/**
+ * Normalizes newline characters in content
+ * This helps handle different newline formats (\n, \r\n, \r)
+ */
+export function normalizeNewlines(content: string): string {
+  if (!content) return '';
+  
+  // Replace \r\n and \r with \n
+  return content.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+}
+
+/**
+ * Detects if content contains HTML tags
+ */
+export function containsHtml(content: string): boolean {
+  if (!content) return false;
+  
+  // Simple regex to detect HTML tags
+  const htmlRegex = /<\/?[a-z][\s\S]*>/i;
+  return htmlRegex.test(content);
+}
+</file>
 
 <file path=".editorconfig">
 root = true
@@ -1470,6 +1549,190 @@ export function useCourses() {
 }
 </file>
 
+<file path="src/hooks/useFilteredCourses.ts">
+import { useState, useEffect } from 'react';
+import { useClient } from '@/lib/useClient';
+import type { Course, CourseCategory } from '@/types/courses';
+
+interface UseFilteredCoursesOptions {
+  limit?: number;
+  initialCategories?: number[];
+}
+
+interface UseFilteredCoursesResult {
+  courses: { [key: string]: Course[] };
+  categories: CourseCategory[];
+  selectedCategories: CourseCategory[];
+  setSelectedCategories: (categories: CourseCategory[]) => void;
+  isLoading: boolean;
+  error: string | null;
+  totalCount: number;
+  hasMore: boolean;
+  loadMore: () => void;
+}
+
+export function useFilteredCourses({
+  limit = 10,
+  initialCategories = []
+}: UseFilteredCoursesOptions = {}): UseFilteredCoursesResult {
+  const supabase = useClient();
+  
+  const [courses, setCourses] = useState<{ [key: string]: Course[] }>({});
+  const [categories, setCategories] = useState<CourseCategory[]>([]);
+  const [selectedCategories, setSelectedCategories] = useState<CourseCategory[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [displayLimit, setDisplayLimit] = useState(limit);
+  const [totalCount, setTotalCount] = useState(0);
+  
+  // Fetch categories on initial load
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('course_categories')
+          .select('*')
+          .order('name');
+          
+        if (error) throw error;
+        
+        setCategories(data);
+        
+        // If initial categories are provided, set them as selected
+        if (initialCategories.length > 0) {
+          const initialSelected = data.filter(cat => initialCategories.includes(cat.id));
+          setSelectedCategories(initialSelected);
+        }
+      } catch (err) {
+        console.error('Error fetching categories:', err);
+        setError(err instanceof Error ? err.message : 'Failed to fetch categories');
+      }
+    };
+    
+    fetchCategories();
+  }, [supabase, initialCategories.join(',')]);
+  
+  // Fetch courses when selected categories change or display limit changes
+  useEffect(() => {
+    const fetchCourses = async () => {
+      try {
+        setIsLoading(true);
+        setError(null);
+        
+        let query = supabase.from('courses').select('*', { count: 'exact' });
+        
+        // If categories are selected, filter by them
+        if (selectedCategories.length > 0) {
+          const categoryIds = selectedCategories.map(cat => cat.id);
+          
+          // Get course IDs for the selected categories
+          const { data: relationData, error: relationError } = await supabase
+            .from('course_categories_relation')
+            .select('course_id')
+            .in('category_id', categoryIds);
+            
+          if (relationError) throw relationError;
+          
+          if (relationData && relationData.length > 0) {
+            // Get unique course IDs (a course might be in multiple categories)
+            const courseIds = [...new Set(relationData.map(rel => rel.course_id))];
+            query = query.in('id', courseIds);
+          } else {
+            // No courses match these categories
+            setCourses({});
+            setTotalCount(0);
+            setIsLoading(false);
+            return;
+          }
+        }
+        
+        // Add pagination and sorting
+        query = query.order('title').limit(displayLimit);
+        
+        const { data: coursesData, error: coursesError, count } = await query;
+        
+        if (coursesError) throw coursesError;
+        if (count !== null) setTotalCount(count);
+        
+        // Get user progress if user is authenticated
+        const { data: { user } } = await supabase.auth.getUser();
+        
+        let formattedCourses: Course[] = [];
+        
+        if (user) {
+          // Fetch progress for authenticated user
+          const { data: progressData, error: progressError } = await supabase
+            .from('user_course_progress')
+            .select('*')
+            .eq('user_id', user.id);
+            
+          if (progressError) throw progressError;
+          
+          // Format courses with progress
+          formattedCourses = coursesData.map(course => {
+            const userProgress = progressData?.find(p => p.course_id === course.id);
+            return {
+              id: course.id,
+              title: course.title,
+              subtitle: course.subtitle,
+              cover: course.cover,
+              progress: userProgress?.progress || 0
+            };
+          });
+        } else {
+          // Format courses without progress
+          formattedCourses = coursesData.map(course => ({
+            id: course.id,
+            title: course.title,
+            subtitle: course.subtitle,
+            cover: course.cover,
+            progress: 0
+          }));
+        }
+        
+        // Group courses by first letter of title for display
+        const groupedCourses: { [key: string]: Course[] } = {};
+        
+        formattedCourses.forEach(course => {
+          const firstLetter = course.title.charAt(0).toUpperCase();
+          if (!groupedCourses[firstLetter]) {
+            groupedCourses[firstLetter] = [];
+          }
+          groupedCourses[firstLetter].push(course);
+        });
+        
+        setCourses(groupedCourses);
+      } catch (err) {
+        console.error('Error fetching courses:', err);
+        setError(err instanceof Error ? err.message : 'Failed to fetch courses');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    fetchCourses();
+  }, [supabase, selectedCategories, displayLimit]);
+  
+  const loadMore = () => {
+    setDisplayLimit(prevLimit => prevLimit + limit);
+  };
+  
+  const hasMore = totalCount > displayLimit;
+  
+  return {
+    courses,
+    categories,
+    selectedCategories,
+    setSelectedCategories,
+    isLoading,
+    error,
+    totalCount,
+    hasMore,
+    loadMore
+  };
+}
+</file>
+
 <file path="src/hooks/useOnboarding.ts">
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -1924,54 +2187,6 @@ export const CoursePageAsync = lazy(() => import('./CoursePage'));
 import { lazy } from 'react';
 
 export const CoursesPageAsync = lazy(() => import('./CoursesPage'));
-</file>
-
-<file path="src/pages/Courses/ui/CourseFilters.tsx">
-import React from 'react';
-import { Check } from 'lucide-react';
-import type { CourseCategory } from '@/types/courses';
-import { cn } from '@/lib/utils';
-
-interface Props {
-  categories: CourseCategory[];
-  filters: CourseCategory[];
-  changeFilters: (category: CourseCategory) => void;
-}
-
-export const CourseFilters: React.FC<Props> = ({ categories, filters, changeFilters }) => {
-  return (
-    <div>
-      <p className="text-sm font-medium text-[#49454F]">Course topics</p>
-
-      <div className="mt-3 flex flex-wrap gap-2">
-        {categories.map(category => {
-          const isSelected = !!filters.find(item => item.id === category.id);
-
-          return (
-            <button
-              key={category.id}
-              onClick={() => changeFilters(category)}
-              className={cn(
-                'flex cursor-pointer items-center gap-2 rounded-[8px] p-2 text-base transition-colors duration-200',
-                {
-                  'bg-[#F5F5F5] text-[#757575] hover:bg-[#EEEEEE] active:bg-[#E0E0E0]': !isSelected,
-                  'bg-[#050038] text-[#F5F5F5] hover:bg-[#1F1956] active:bg-[#000020]': isSelected,
-                },
-              )}
-            >
-              {isSelected && (
-                <span>
-                  <Check />
-                </span>
-              )}
-              {category.name}
-            </button>
-          );
-        })}
-      </div>
-    </div>
-  );
-};
 </file>
 
 <file path="src/pages/CoursesByAlias/CoursesByAliasPageAsync.tsx">
@@ -3064,6 +3279,8 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, requir
 import { useEffect, useState } from 'react';
 import { useClient } from '@/lib/useClient';
 import type { LessonDetails } from '@/types/lessons';
+import { normalizeNewlines } from '@/pages/Lesson/services/lessonContentsUtils';
+// import { normalizeNewlines } from '../pages/Lesson/utils/lessonContentUtils';
 
 export function useLessonDetails(lessonId: string | number, courseId: string | number) {
   const [lessonDetails, setLessonDetails] = useState<LessonDetails | null>(null);
@@ -3124,6 +3341,14 @@ export function useLessonDetails(lessonId: string | number, courseId: string | n
             // Otherwise, assume it's already an array or object
             steps = lessonData.steps || [];
           }
+          
+          // Process text content to handle newlines properly
+          if (Array.isArray(steps)) {
+            steps = steps.map(step => ({
+              ...step,
+              text: step.text ? normalizeNewlines(step.text) : '',
+            }));
+          }
         } catch (e) {
           console.error('Error parsing lesson steps:', e);
           steps = [];
@@ -3133,7 +3358,7 @@ export function useLessonDetails(lessonId: string | number, courseId: string | n
         const formattedLessonDetails: LessonDetails = {
           id: lessonData.id,
           title: lessonData.title,
-          description: lessonData.description,
+          description: lessonData.description ? normalizeNewlines(lessonData.description) : '',
           cover: lessonData.cover,
           isDone: isDone,
           isBlocked: false, // This would be determined based on course progression
@@ -3852,6 +4077,67 @@ export const courses: { [key: string]: Course[] } = {
 };
 </file>
 
+<file path="src/pages/Courses/ui/CourseFilters.tsx">
+import React, { useState } from 'react';
+import { Check } from 'lucide-react';
+import type { CourseCategory } from '@/types/courses';
+import { cn } from '@/lib/utils';
+
+interface Props {
+  categories: CourseCategory[];
+  filters: CourseCategory[];
+  changeFilters: (category: CourseCategory) => void;
+}
+
+export const CourseFilters: React.FC<Props> = ({ categories, filters, changeFilters }) => {
+  // @ts-ignore
+  const [searchTerm, setSearchTerm] = useState('');
+  // @ts-ignore
+  const [showAllCategories, setShowAllCategories] = useState(false);
+
+  const filteredCategories = categories.filter(category =>
+    category.name.toLowerCase().includes(searchTerm.toLowerCase()),
+  );
+
+  const displayedCategories = showAllCategories ? filteredCategories : filteredCategories.slice(0, 10);
+
+  return (
+    <div className="w-full max-w-3xl">
+      <div className="mb-4 flex items-center justify-between">
+        <p className="text-sm font-medium text-[#49454F]">Course topics</p>
+      </div>
+
+      <div className="mt-3 flex flex-wrap gap-2">
+        {displayedCategories.map(category => {
+          const isSelected = !!filters.find(item => item.id === category.id);
+
+          return (
+            <button
+              key={category.id}
+              onClick={() => changeFilters(category)}
+              className={cn(
+                'flex cursor-pointer items-center gap-2 rounded-[8px] p-2 text-base transition-colors duration-200',
+                {
+                  'bg-[#F5F5F5] text-[#757575] hover:bg-[#EEEEEE] active:bg-[#E0E0E0]': !isSelected,
+                  'bg-[#050038] text-[#F5F5F5] hover:bg-[#1F1956] active:bg-[#000020]': isSelected,
+                },
+              )}
+            >
+              {isSelected && (
+                <span>
+                  <Check className="h-4 w-4" />
+                </span>
+              )}
+              {category.name}
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+</file>
+
 <file path="src/pages/CoursesByAlias/index.ts">
 export { CoursesByAliasPageAsync as CoursesByAliasPage } from './CoursesByAliasPageAsync';
 </file>
@@ -4021,6 +4307,7 @@ import React from 'react';
 import { cn } from '@/lib/utils';
 import type { LessonDetails } from '@/types/lessons';
 import { Button } from '@/app/components/ui/button';
+import { TextContentRenderer } from './TextContentRenderer';
 
 interface LessonIntroProps {
   lesson: LessonDetails;
@@ -4043,10 +4330,12 @@ export const LessonIntro: React.FC<LessonIntroProps> = ({ lesson, startedLesson,
 
       <h1 className="mb-6 text-4xl font-medium text-black">{lesson.title}</h1>
 
-      <div
-        className="mb-8"
-        dangerouslySetInnerHTML={{ __html: lesson.description }}
-      ></div>
+      <div className="mb-8">
+        <TextContentRenderer
+          content={lesson.description}
+          allowHtml={true}
+        />
+      </div>
 
       {!startedLesson && (
         <Button onClick={handleContinue}>{lesson.progress > 0 ? 'Continue Learning' : 'Start Learning'}</Button>
@@ -5918,62 +6207,6 @@ export const MainHeader: React.FC = () => {
 };
 </file>
 
-<file path="src/pages/Courses/CoursesPage.tsx">
-import React, { useState } from 'react';
-import type { CourseCategory } from '@/types/courses';
-
-import { CourseCarousel } from '@/app/components/business/CourseCarousel';
-import { CourseFilters } from './ui/CourseFilters';
-
-import { RoutePath } from '@/app/router/config';
-
-import { categoriesMock, courses } from './mock';
-
-const CoursesPage: React.FC = () => {
-  // @ts-ignore
-  const [listCourses, setListCourses] = useState(courses);
-  // @ts-ignore
-  const [categories, setCategories] = useState<CourseCategory[]>([...categoriesMock]);
-  const [filters, setFilters] = useState<CourseCategory[]>([]);
-
-  const changeFilters = (category: CourseCategory) => {
-    const existingFilter = filters.find(item => item.id === category.id);
-
-    if (existingFilter) {
-      setFilters(filters.filter(item => item.id !== category.id));
-    } else {
-      setFilters([...filters, category]);
-    }
-  };
-
-  return (
-    <div className="container mx-auto py-12">
-      <h1 className="text-3xl font-medium text-black">Browse all courses</h1>
-      <div className="mt-3 mb-2 h-px w-full bg-[#CAC4D0]"></div>
-
-      <CourseFilters
-        categories={categories}
-        filters={filters}
-        changeFilters={changeFilters}
-      />
-
-      <div className="mt-4">
-        {Object.entries(listCourses).map(([category, courseList]) => (
-          <CourseCarousel
-            key={category}
-            title={category}
-            courses={courseList}
-            seeAllLink={RoutePath['courses-by-alias'].replace(':alias', category)}
-          />
-        ))}
-      </div>
-    </div>
-  );
-};
-
-export default CoursesPage;
-</file>
-
 <file path="src/pages/CoursesByAlias/CoursesByAliasPage.tsx">
 import React, { useState } from 'react';
 import type { Course, CourseCategory } from '@/types/courses';
@@ -6057,6 +6290,440 @@ const FAQPage: React.FC = () => {
 };
 
 export default FAQPage;
+</file>
+
+<file path="src/pages/Courses/CoursesPage.tsx">
+import React from 'react';
+import { useFilteredCourses } from '@/hooks/useFilteredCourses';
+import { CourseCarousel } from '@/app/components/business/CourseCarousel';
+import { CourseFilters } from './ui/CourseFilters';
+import { RoutePath } from '@/app/router/config';
+import { PageLoader } from '@/app/components/PageLoader';
+import { Button } from '@/app/components/ui/button';
+import type { CourseCategory } from '@/types/courses';
+
+const CoursesPage: React.FC = () => {
+  const {
+    courses,
+    categories,
+    selectedCategories,
+    setSelectedCategories,
+    isLoading,
+    error,
+    totalCount,
+    hasMore,
+    loadMore,
+  } = useFilteredCourses({ limit: 10 });
+
+  const handleFilterChange = (category: CourseCategory) => {
+    if (selectedCategories.find(cat => cat.id === category.id)) {
+      // Remove the category if it's already selected
+      setSelectedCategories(selectedCategories.filter(cat => cat.id !== category.id));
+    } else {
+      // Add the category if it's not selected
+      setSelectedCategories([...selectedCategories, category]);
+    }
+  };
+
+  const clearFilters = () => {
+    setSelectedCategories([]);
+  };
+
+  if (isLoading && Object.keys(courses).length === 0) {
+    return <PageLoader />;
+  }
+
+  return (
+    <div className="container mx-auto py-12">
+      <h1 className="text-3xl font-medium text-black">Browse all courses</h1>
+      <div className="mt-3 mb-4 h-px w-full bg-[#CAC4D0]"></div>
+
+      <div className="mb-6 flex items-center justify-between">
+        <CourseFilters
+          categories={categories}
+          filters={selectedCategories}
+          changeFilters={handleFilterChange}
+        />
+
+        {selectedCategories.length > 0 && (
+          <Button
+            variant="outline"
+            onClick={clearFilters}
+            className="ml-4"
+          >
+            Clear filters
+          </Button>
+        )}
+      </div>
+
+      {error && (
+        <div className="mb-6 rounded border border-red-400 bg-red-100 px-4 py-3 text-red-700">
+          <p>{error}</p>
+        </div>
+      )}
+
+      {isLoading ? (
+        <div className="py-8">
+          <PageLoader />
+        </div>
+      ) : (
+        <>
+          {Object.keys(courses).length === 0 ? (
+            <div className="flex flex-col items-center justify-center py-12">
+              <p className="mb-4 text-lg text-gray-500">No courses found with the selected filters.</p>
+              <Button onClick={clearFilters}>Clear filters</Button>
+            </div>
+          ) : (
+            <div className="mt-4">
+              {Object.entries(courses).map(([letter, courseList]) => (
+                <CourseCarousel
+                  key={letter}
+                  title={'Courses'}
+                  courses={courseList}
+                  seeAllLink={RoutePath['courses-by-alias'].replace(':alias', letter.toLowerCase())}
+                />
+              ))}
+
+              {hasMore && (
+                <div className="mt-8 flex justify-center">
+                  <Button
+                    onClick={loadMore}
+                    className="px-8"
+                  >
+                    Load more courses ({totalCount - Object.values(courses).flat().length} more)
+                  </Button>
+                </div>
+              )}
+            </div>
+          )}
+        </>
+      )}
+    </div>
+  );
+};
+
+export default CoursesPage;
+</file>
+
+<file path="src/pages/Home/HomePage.tsx">
+import { useEffect, useState } from 'react';
+import type { Course } from '@/types/courses';
+
+import { RoutePath } from '@/app/router/config';
+import { CourseCarousel } from '@/app/components/business/CourseCarousel';
+import { PageLoader } from '@/app/components/PageLoader';
+import { useCourses } from '@/hooks/useCourses';
+
+const HomePage = () => {
+  const { courses, isLoading, error } = useCourses();
+  const [recommendedCourses, setRecommendedCourses] = useState<Course[]>([]);
+  const [continueLearningCourses, setContinueLearningCourses] = useState<Course[]>([]);
+
+  useEffect(() => {
+    if (courses.length > 0) {
+      // Фильтруем курсы с прогрессом для "Continue Learning"
+      const inProgressCourses = courses.filter(course => course.progress > 0);
+      setContinueLearningCourses(inProgressCourses);
+
+      // Для "Recommended for you" можно использовать курсы без прогресса
+      // или применить другую логику рекомендаций
+      const notStartedCourses = courses.filter(course => course.progress === 0);
+      setRecommendedCourses(notStartedCourses);
+    }
+  }, [courses]);
+
+  return (
+    <div className="container mx-auto py-12">
+      {isLoading ? (
+        <PageLoader />
+      ) : error ? (
+        <div className="rounded border border-red-400 bg-red-100 px-4 py-3 text-red-700">
+          <p>{error}</p>
+        </div>
+      ) : (
+        <>
+          {continueLearningCourses.length > 0 && (
+            <CourseCarousel
+              title="Continue Learning"
+              courses={continueLearningCourses}
+              seeAllLink={RoutePath['courses-by-alias'].replace(':alias', 'continue-learning')}
+            />
+          )}
+
+          <CourseCarousel
+            title="Recommended for you"
+            courses={recommendedCourses.length > 0 ? recommendedCourses : courses}
+            seeAllLink={RoutePath['courses-by-alias'].replace(':alias', 'recommended')}
+          />
+        </>
+      )}
+    </div>
+  );
+};
+
+export default HomePage;
+</file>
+
+<file path="src/pages/Lesson/mock.ts">
+import { LessonDetails } from '@/types/lessons';
+
+// @ts-ignore
+export const mock: LessonDetails = {
+  id: 1,
+  title: 'lesson 1',
+  description:
+    "<p>The staff in a chain of three busy coffee shops feel stressed and overworked. We'll use transaction data to help them keep up with customer demand.</p>",
+  cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+  isDone: true,
+  isBlocked: false,
+  progress: 0,
+  steps: [
+    {
+      id: 1,
+      cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+      coverAnnotation: 'cover annotation',
+      text: 'It looks like Store 11 has the most need. But demand for coffee is not constant throughout the day, so it would be helpful to see how this varies over time. Which visualization would you choose for this?',
+      isDone: false,
+      component: null,
+    },
+    {
+      id: 2,
+      cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+      coverAnnotation: 'cover annotation',
+      text: 'Which visualization would you choose for this? Which visualization would you choose for this? Which visualization would you choose for this? Which visualization would you choose for this? Which visualization would you choose for this? Which visualization would you choose for this? Which visualization would you choose for this? Which visualization would you choose for this? Which visualization would you choose for this? Which visualization would you choose for this?Which visualization would you choose for this?Which visualization would you choose for this?Which visualization would you choose for this?Which visualization would you choose for this?Which visualization would you choose for this?Which visualization would you choose for this?Which visualization would you choose for this?Which visualization would you choose for this?Which visualization would you choose for this?',
+      isDone: false,
+      component: {
+        type: 'selectedButtons',
+        items: [
+          { id: 1, label: 'item 1' },
+          { id: 2, label: 'item 2' },
+        ],
+      },
+    },
+    {
+      id: 3,
+      cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+      coverAnnotation: 'cover annotation',
+      text: 'text 224gwrgwrg lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. ',
+      isDone: false,
+      component: {
+        type: 'radioButtons',
+        items: [
+          { id: 1, label: 'item 1' },
+          { id: 2, label: 'item 2' },
+        ],
+      },
+    },
+    {
+      id: 4,
+      cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+      coverAnnotation: 'cover annotation',
+      text: 'text ghehehehehhae getahah hetheh t wrgethet  wgwggh  tgwgwg 224gwrgwrg lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. ',
+      isDone: false,
+      component: {
+        type: 'radioButtons',
+        items: [
+          { id: 1, label: 'item 1' },
+          { id: 2, label: 'item 2' },
+        ],
+      },
+    },
+    {
+      id: 5,
+      cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+      coverAnnotation: 'cover annotation',
+      text: 'text пропущен',
+      isDone: false,
+      component: {
+        type: 'selectedButtons',
+        items: [
+          { id: 1, label: 'item 1' },
+          { id: 2, label: 'item 2' },
+        ],
+      },
+    },
+        {
+      id: 6,
+      cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+      coverAnnotation: 'cover annotation',
+      text: 'Which visualization would you choose for this? Which visualization would you choose for this? Which visualization would you choose for this? Which visualization would you choose for this? Which visualization would you choose for this? Which visualization would you choose for this? Which visualization would you choose for this? Which visualization would you choose for this? Which visualization would you choose for this? Which visualization would you choose for this?Which visualization would you choose for this?Which visualization would you choose for this?Which visualization would you choose for this?Which visualization would you choose for this?Which visualization would you choose for this?Which visualization would you choose for this?Which visualization would you choose for this?Which visualization would you choose for this?Which visualization would you choose for this?',
+      isDone: false,
+      component: {
+        type: 'slider',
+        items: [
+          {
+            id: 1,
+            componentType: 'text',
+            text: 'text text texttexttexttexttexttexttext text text text',
+          },
+          {
+            id: 2,
+            componentType: 'image',
+            src: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+            annotation: 'annotation',
+          },
+          {
+            id: 3,
+            componentType: 'image',
+            src: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
+            annotation: 'annotation',
+          },
+        ],
+      },
+    },
+  ],
+};
+</file>
+
+<file path="src/pages/Library/LibraryPage.tsx">
+import React, { useState } from 'react';
+import type { Course } from '@/types/courses';
+
+import { RoutePath } from '@/app/router/config';
+import { CourseCarousel } from '@/app/components/business/CourseCarousel';
+
+import { bookmarked, completed } from './mock';
+
+const LibraryPage: React.FC = () => {
+  // @ts-ignore
+  const [bookmarkedCourses, setBookmarkedCourses] = useState<Course[]>(bookmarked);
+  // @ts-ignore
+  const [completedCourses, setCompletedCourses] = useState<Course[]>(completed);
+
+  return (
+    <div className="container mx-auto py-12">
+      <CourseCarousel
+        title="Bookmarked courses"
+        courses={bookmarkedCourses}
+        seeAllLink={RoutePath['courses-by-alias'].replace(':alias', 'bookmarked-courses')}
+      />
+
+      <CourseCarousel
+        title="Completed courses"
+        courses={completedCourses}
+        seeAllLink={RoutePath['courses-by-alias'].replace(':alias', 'completed-courses')}
+      />
+    </div>
+  );
+};
+
+export default LibraryPage;
+</file>
+
+<file path="src/types/lessons.ts">
+export interface Lesson {
+  id: number;
+  title: string;
+  description: string;
+  cover: string;
+  isDone: boolean;
+  isBlocked: boolean;
+  progress: number;
+}
+
+export interface LessonDetails {
+  id: number;
+  title: string;
+  description: string;
+  cover: string;
+  isDone: boolean;
+  isBlocked: boolean;
+  progress: number;
+  steps: LessonStep[];
+  // New fields for Supabase integration
+  currentStepIndex: number; // Changed from optional to required with default -1
+  visibleSteps: number[];
+  completedSteps?: number[];
+}
+
+export interface LessonStep {
+  id: number;
+  cover: string;
+  coverAnnotation: string;
+  text: string;
+  isDone: boolean;
+  component: LessonComponent | null;
+}
+
+export type LessonComponent = SelectedButtonsComponent | RadioButtonsComponent | SliderComponent;
+
+interface SelectedButtonsComponent {
+  type: 'selectedButtons';
+  items: {
+    id: number;
+    label: string;
+  }[];
+}
+
+interface RadioButtonsComponent {
+  type: 'radioButtons';
+  items: {
+    id: number;
+    label: string;
+  }[];
+}
+
+interface SliderTextItem {
+  id: number;
+  componentType: 'text';
+  text: string;
+}
+
+interface SliderImageItem {
+  id: number;
+  componentType: 'image';
+  src: string;
+  annotation?: string;
+}
+
+interface SliderComponent {
+  type: 'slider';
+  items: (SliderTextItem | SliderImageItem)[];
+}
+</file>
+
+<file path="src/app/components/layouts/ProgressHeader/ProgressHeader.tsx">
+import React from 'react';
+import { ArrowLeft } from 'lucide-react';
+import { cn } from '@/lib/utils';
+
+import { UserButton } from '@/app/components/layouts/UserButton/UserButton';
+import { Progress } from '@/app/components/ui/progress';
+
+interface Props {
+  hasBack?: boolean;
+  hasProfile?: boolean;
+  onBack?: () => void;
+  progress: number;
+  className?: string;
+}
+
+export const ProgressHeader: React.FC<Props> = props => {
+  const { hasBack = true, onBack, hasProfile = true, progress, className } = props;
+
+  return (
+    <header className={cn('flex items-center justify-between bg-[#D9D9D9] px-8 py-3', className)}>
+      <div>
+        {hasBack && typeof onBack === 'function' && (
+          <button onClick={onBack}>
+            <ArrowLeft />
+          </button>
+        )}
+      </div>
+      <div className="w-[640px]">
+        <Progress
+          value={progress}
+          className="w-full"
+        />
+      </div>
+      <div>
+        {hasProfile && (
+          <UserButton />
+        )}
+      </div>
+    </header>
+  );
+};
 </file>
 
 <file path="src/pages/AuthOnboarding/AuthOnboardingPage.tsx">
@@ -6427,327 +7094,6 @@ const AuthOnboardingPage: React.FC = () => {
 };
 
 export default AuthOnboardingPage;
-</file>
-
-<file path="src/pages/Home/HomePage.tsx">
-import { useEffect, useState } from 'react';
-import type { Course } from '@/types/courses';
-
-import { RoutePath } from '@/app/router/config';
-import { CourseCarousel } from '@/app/components/business/CourseCarousel';
-import { PageLoader } from '@/app/components/PageLoader';
-import { useCourses } from '@/hooks/useCourses';
-
-const HomePage = () => {
-  const { courses, isLoading, error } = useCourses();
-  const [recommendedCourses, setRecommendedCourses] = useState<Course[]>([]);
-  const [continueLearningCourses, setContinueLearningCourses] = useState<Course[]>([]);
-
-  useEffect(() => {
-    if (courses.length > 0) {
-      // Фильтруем курсы с прогрессом для "Continue Learning"
-      const inProgressCourses = courses.filter(course => course.progress > 0);
-      setContinueLearningCourses(inProgressCourses);
-
-      // Для "Recommended for you" можно использовать курсы без прогресса
-      // или применить другую логику рекомендаций
-      const notStartedCourses = courses.filter(course => course.progress === 0);
-      setRecommendedCourses(notStartedCourses);
-    }
-  }, [courses]);
-
-  return (
-    <div className="container mx-auto py-12">
-      {isLoading ? (
-        <PageLoader />
-      ) : error ? (
-        <div className="rounded border border-red-400 bg-red-100 px-4 py-3 text-red-700">
-          <p>{error}</p>
-        </div>
-      ) : (
-        <>
-          {continueLearningCourses.length > 0 && (
-            <CourseCarousel
-              title="Continue Learning"
-              courses={continueLearningCourses}
-              seeAllLink={RoutePath['courses-by-alias'].replace(':alias', 'continue-learning')}
-            />
-          )}
-
-          <CourseCarousel
-            title="Recommended for you"
-            courses={recommendedCourses.length > 0 ? recommendedCourses : courses}
-            seeAllLink={RoutePath['courses-by-alias'].replace(':alias', 'recommended')}
-          />
-        </>
-      )}
-    </div>
-  );
-};
-
-export default HomePage;
-</file>
-
-<file path="src/pages/Lesson/mock.ts">
-import { LessonDetails } from '@/types/lessons';
-
-// @ts-ignore
-export const mock: LessonDetails = {
-  id: 1,
-  title: 'lesson 1',
-  description:
-    "<p>The staff in a chain of three busy coffee shops feel stressed and overworked. We'll use transaction data to help them keep up with customer demand.</p>",
-  cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
-  isDone: true,
-  isBlocked: false,
-  progress: 0,
-  steps: [
-    {
-      id: 1,
-      cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
-      coverAnnotation: 'cover annotation',
-      text: 'It looks like Store 11 has the most need. But demand for coffee is not constant throughout the day, so it would be helpful to see how this varies over time. Which visualization would you choose for this?',
-      isDone: false,
-      component: null,
-    },
-    {
-      id: 2,
-      cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
-      coverAnnotation: 'cover annotation',
-      text: 'Which visualization would you choose for this? Which visualization would you choose for this? Which visualization would you choose for this? Which visualization would you choose for this? Which visualization would you choose for this? Which visualization would you choose for this? Which visualization would you choose for this? Which visualization would you choose for this? Which visualization would you choose for this? Which visualization would you choose for this?Which visualization would you choose for this?Which visualization would you choose for this?Which visualization would you choose for this?Which visualization would you choose for this?Which visualization would you choose for this?Which visualization would you choose for this?Which visualization would you choose for this?Which visualization would you choose for this?Which visualization would you choose for this?',
-      isDone: false,
-      component: {
-        type: 'selectedButtons',
-        items: [
-          { id: 1, label: 'item 1' },
-          { id: 2, label: 'item 2' },
-        ],
-      },
-    },
-    {
-      id: 3,
-      cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
-      coverAnnotation: 'cover annotation',
-      text: 'text 224gwrgwrg lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. ',
-      isDone: false,
-      component: {
-        type: 'radioButtons',
-        items: [
-          { id: 1, label: 'item 1' },
-          { id: 2, label: 'item 2' },
-        ],
-      },
-    },
-    {
-      id: 4,
-      cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
-      coverAnnotation: 'cover annotation',
-      text: 'text ghehehehehhae getahah hetheh t wrgethet  wgwggh  tgwgwg 224gwrgwrg lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. ',
-      isDone: false,
-      component: {
-        type: 'radioButtons',
-        items: [
-          { id: 1, label: 'item 1' },
-          { id: 2, label: 'item 2' },
-        ],
-      },
-    },
-    {
-      id: 5,
-      cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
-      coverAnnotation: 'cover annotation',
-      text: 'text пропущен',
-      isDone: false,
-      component: {
-        type: 'selectedButtons',
-        items: [
-          { id: 1, label: 'item 1' },
-          { id: 2, label: 'item 2' },
-        ],
-      },
-    },
-        {
-      id: 6,
-      cover: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
-      coverAnnotation: 'cover annotation',
-      text: 'Which visualization would you choose for this? Which visualization would you choose for this? Which visualization would you choose for this? Which visualization would you choose for this? Which visualization would you choose for this? Which visualization would you choose for this? Which visualization would you choose for this? Which visualization would you choose for this? Which visualization would you choose for this? Which visualization would you choose for this?Which visualization would you choose for this?Which visualization would you choose for this?Which visualization would you choose for this?Which visualization would you choose for this?Which visualization would you choose for this?Which visualization would you choose for this?Which visualization would you choose for this?Which visualization would you choose for this?Which visualization would you choose for this?',
-      isDone: false,
-      component: {
-        type: 'slider',
-        items: [
-          {
-            id: 1,
-            componentType: 'text',
-            text: 'text text texttexttexttexttexttexttext text text text',
-          },
-          {
-            id: 2,
-            componentType: 'image',
-            src: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
-            annotation: 'annotation',
-          },
-          {
-            id: 3,
-            componentType: 'image',
-            src: 'https://assets-prd.ignimgs.com/2022/08/02/lord-of-the-rings-slideshow-1659474667014.jpg?width=1400',
-            annotation: 'annotation',
-          },
-        ],
-      },
-    },
-  ],
-};
-</file>
-
-<file path="src/pages/Library/LibraryPage.tsx">
-import React, { useState } from 'react';
-import type { Course } from '@/types/courses';
-
-import { RoutePath } from '@/app/router/config';
-import { CourseCarousel } from '@/app/components/business/CourseCarousel';
-
-import { bookmarked, completed } from './mock';
-
-const LibraryPage: React.FC = () => {
-  // @ts-ignore
-  const [bookmarkedCourses, setBookmarkedCourses] = useState<Course[]>(bookmarked);
-  // @ts-ignore
-  const [completedCourses, setCompletedCourses] = useState<Course[]>(completed);
-
-  return (
-    <div className="container mx-auto py-12">
-      <CourseCarousel
-        title="Bookmarked courses"
-        courses={bookmarkedCourses}
-        seeAllLink={RoutePath['courses-by-alias'].replace(':alias', 'bookmarked-courses')}
-      />
-
-      <CourseCarousel
-        title="Completed courses"
-        courses={completedCourses}
-        seeAllLink={RoutePath['courses-by-alias'].replace(':alias', 'completed-courses')}
-      />
-    </div>
-  );
-};
-
-export default LibraryPage;
-</file>
-
-<file path="src/types/lessons.ts">
-export interface Lesson {
-  id: number;
-  title: string;
-  description: string;
-  cover: string;
-  isDone: boolean;
-  isBlocked: boolean;
-  progress: number;
-}
-
-export interface LessonDetails {
-  id: number;
-  title: string;
-  description: string;
-  cover: string;
-  isDone: boolean;
-  isBlocked: boolean;
-  progress: number;
-  steps: LessonStep[];
-  // New fields for Supabase integration
-  currentStepIndex: number; // Changed from optional to required with default -1
-  visibleSteps: number[];
-  completedSteps?: number[];
-}
-
-export interface LessonStep {
-  id: number;
-  cover: string;
-  coverAnnotation: string;
-  text: string;
-  isDone: boolean;
-  component: LessonComponent | null;
-}
-
-export type LessonComponent = SelectedButtonsComponent | RadioButtonsComponent | SliderComponent;
-
-interface SelectedButtonsComponent {
-  type: 'selectedButtons';
-  items: {
-    id: number;
-    label: string;
-  }[];
-}
-
-interface RadioButtonsComponent {
-  type: 'radioButtons';
-  items: {
-    id: number;
-    label: string;
-  }[];
-}
-
-interface SliderTextItem {
-  id: number;
-  componentType: 'text';
-  text: string;
-}
-
-interface SliderImageItem {
-  id: number;
-  componentType: 'image';
-  src: string;
-  annotation?: string;
-}
-
-interface SliderComponent {
-  type: 'slider';
-  items: (SliderTextItem | SliderImageItem)[];
-}
-</file>
-
-<file path="src/app/components/layouts/ProgressHeader/ProgressHeader.tsx">
-import React from 'react';
-import { ArrowLeft } from 'lucide-react';
-import { cn } from '@/lib/utils';
-
-import { UserButton } from '@/app/components/layouts/UserButton/UserButton';
-import { Progress } from '@/app/components/ui/progress';
-
-interface Props {
-  hasBack?: boolean;
-  hasProfile?: boolean;
-  onBack?: () => void;
-  progress: number;
-  className?: string;
-}
-
-export const ProgressHeader: React.FC<Props> = props => {
-  const { hasBack = true, onBack, hasProfile = true, progress, className } = props;
-
-  return (
-    <header className={cn('flex items-center justify-between bg-[#D9D9D9] px-8 py-3', className)}>
-      <div>
-        {hasBack && typeof onBack === 'function' && (
-          <button onClick={onBack}>
-            <ArrowLeft />
-          </button>
-        )}
-      </div>
-      <div className="w-[640px]">
-        <Progress
-          value={progress}
-          className="w-full"
-        />
-      </div>
-      <div>
-        {hasProfile && (
-          <UserButton />
-        )}
-      </div>
-    </header>
-  );
-};
 </file>
 
 <file path="src/pages/Login/LoginPage.tsx">
@@ -7506,6 +7852,7 @@ import { RadioButtons } from './components/RadioButtons';
 import { LessonIntro } from './components/LessonIntro';
 import { CompleteCourseFlow } from './components/CompleteCourseFlow';
 import { Slider } from './components/Slider';
+import { TextContentRenderer } from './components/TextContentRenderer';
 
 import { useLessonDetails } from '@/hooks/useLessonDetails';
 import { useScrollAnimation } from './hooks/useScrollAnimation';
@@ -7731,10 +8078,12 @@ const LessonPage: React.FC = () => {
                     <div className="mb-8 text-center text-sm text-gray-500">{step.coverAnnotation}</div>
                   )}
 
-                  <div
-                    className="mb-8"
-                    dangerouslySetInnerHTML={{ __html: step.text }}
-                  ></div>
+                  <div className="mb-8">
+                    <TextContentRenderer
+                      content={step.text}
+                      allowHtml={true}
+                    />
+                  </div>
 
                   {step.component && <div className="mb-8">{renderActionComponent(step.component)}</div>}
 

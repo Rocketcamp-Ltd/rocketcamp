@@ -10,6 +10,7 @@ import { RadioButtons } from './components/RadioButtons';
 import { LessonIntro } from './components/LessonIntro';
 import { CompleteCourseFlow } from './components/CompleteCourseFlow';
 import { Slider } from './components/Slider';
+import { TextContentRenderer } from './components/TextContentRenderer';
 
 import { useLessonDetails } from '@/hooks/useLessonDetails';
 import { useScrollAnimation } from './hooks/useScrollAnimation';
@@ -235,10 +236,12 @@ const LessonPage: React.FC = () => {
                     <div className="mb-8 text-center text-sm text-gray-500">{step.coverAnnotation}</div>
                   )}
 
-                  <div
-                    className="mb-8"
-                    dangerouslySetInnerHTML={{ __html: step.text }}
-                  ></div>
+                  <div className="mb-8">
+                    <TextContentRenderer
+                      content={step.text}
+                      allowHtml={true}
+                    />
+                  </div>
 
                   {step.component && <div className="mb-8">{renderActionComponent(step.component)}</div>}
 

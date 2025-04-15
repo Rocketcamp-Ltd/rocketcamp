@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useClient } from '@/lib/useClient';
 import type { LessonDetails } from '@/types/lessons';
+import { normalizeNewlines } from '@/pages/Lesson/services/lessonContentsUtils';
+// import { normalizeNewlines } from '../pages/Lesson/utils/lessonContentUtils';
 
 export function useLessonDetails(lessonId: string | number, courseId: string | number) {
   const [lessonDetails, setLessonDetails] = useState<LessonDetails | null>(null);
@@ -61,6 +63,14 @@ export function useLessonDetails(lessonId: string | number, courseId: string | n
             // Otherwise, assume it's already an array or object
             steps = lessonData.steps || [];
           }
+          
+          // Process text content to handle newlines properly
+          if (Array.isArray(steps)) {
+            steps = steps.map(step => ({
+              ...step,
+              text: step.text ? normalizeNewlines(step.text) : '',
+            }));
+          }
         } catch (e) {
           console.error('Error parsing lesson steps:', e);
           steps = [];
@@ -70,7 +80,7 @@ export function useLessonDetails(lessonId: string | number, courseId: string | n
         const formattedLessonDetails: LessonDetails = {
           id: lessonData.id,
           title: lessonData.title,
-          description: lessonData.description,
+          description: lessonData.description ? normalizeNewlines(lessonData.description) : '',
           cover: lessonData.cover,
           isDone: isDone,
           isBlocked: false, // This would be determined based on course progression

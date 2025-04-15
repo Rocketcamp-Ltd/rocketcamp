@@ -9,6 +9,7 @@ export default defineConfig({
   plugins: [
     react(),
     tailwindcss(),
+    require('@tailwindcss/typography'),
   ],
   resolve: {
     alias: {
