@@ -109,10 +109,10 @@ const CoursePage: React.FC = () => {
           />
         </div>
 
-        <div>
+        <div className="max-w-[500px]">
           <h2 className="mb-6 text-2xl font-semibold text-[#1E1E1E]">About the course</h2>
           <div
-            className="text-base text-[#1E1E1E]"
+            className="w-[650px] text-base text-[#1E1E1E]"
             dangerouslySetInnerHTML={{ __html: courseDetails.description }}
           ></div>
 

@@ -2,6 +2,7 @@ export interface Lesson {
   id: number;
   title: string;
   description: string;
+  card_description: string;
   cover: string;
   isDone: boolean;
   isBlocked: boolean;

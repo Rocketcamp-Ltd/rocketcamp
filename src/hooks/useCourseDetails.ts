@@ -107,7 +107,8 @@ export function useCourseDetails(courseId: string | number) {
           cover: lesson.cover,
           isDone: lesson.isDone || false,
           isBlocked: index > 0 && !lessonsData[index - 1]?.isDone, // Блокируем урок, если предыдущий не завершен
-          progress: lesson.progress || 0
+          progress: lesson.progress || 0,
+          card_description: lesson.card_description
         }));
         
         // Собираем все данные в CourseDetails

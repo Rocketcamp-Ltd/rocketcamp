@@ -18,7 +18,7 @@ export const LessonCard: React.FC<{ lesson: Lesson }> = ({ lesson }) => {
         </div>
         <div>
           <h3 className="mb-3 text-2xl font-medium text-[#1E1E1E]">{lesson.title}</h3>
-          <p className="text-sm text-[#757575]">{lesson.description}</p>
+          <p className="text-sm text-[#757575]">{lesson.card_description}</p>
         </div>
       </div>
 
