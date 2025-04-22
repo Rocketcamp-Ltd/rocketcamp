@@ -11,7 +11,7 @@ export const LessonCard: React.FC<{ lesson: Lesson }> = ({ lesson }) => {
       <div className="flex items-start">
         <div className="mr-8 max-w-[308px]">
           <img
-            className="object-cover"
+            className="rounded-lg object-cover"
             src={lesson.cover}
             alt=""
           />
@@ -28,7 +28,7 @@ export const LessonCard: React.FC<{ lesson: Lesson }> = ({ lesson }) => {
         </div>
       )}
 
-      {(lesson.isDone || !lesson.isBlocked) && (
+      {lesson.isDone && (
         <div className="absolute top-5 right-5">
           <CircleCheck />
         </div>

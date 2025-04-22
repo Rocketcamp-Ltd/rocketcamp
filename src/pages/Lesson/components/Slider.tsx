@@ -28,17 +28,14 @@ export const Slider: React.FC<SliderProps> = ({ items }) => {
       >
         <CarouselContent>
           {items.map(item => (
-            <CarouselItem
-              key={item.id}
-              className="w-full"
-            >
+            <CarouselItem key={item.id}>
               <div
                 className={cn('flex flex-col items-center p-2', {
                   'h-full justify-center': item.componentType === 'text',
                 })}
               >
                 {item.componentType === 'text' && item.text && (
-                  <div className="mb-4 w-full">
+                  <div className="mb-4 w-[550px]">
                     <TextContentRenderer
                       content={item.text}
                       allowHtml={true}
@@ -60,8 +57,8 @@ export const Slider: React.FC<SliderProps> = ({ items }) => {
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious className="left-2 bg-white" />
-        <CarouselNext className="right-2 bg-white" />
+        <CarouselPrevious className="left-0.6 bg-white" />
+        <CarouselNext className="right-0 bg-white" />
       </Carousel>
     </div>
   );
