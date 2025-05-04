@@ -17,7 +17,7 @@ interface SliderProps {
 
 export const Slider: React.FC<SliderProps> = ({ items }) => {
   return (
-    <div className="mt-4 rounded-lg bg-gray-100 p-4">
+    <div className="mt-4 rounded-lg bg-gray-100 p-2 sm:p-4">
       <Carousel
         opts={{
           align: 'center',
@@ -30,16 +30,16 @@ export const Slider: React.FC<SliderProps> = ({ items }) => {
           {items.map(item => (
             <CarouselItem key={item.id}>
               <div
-                className={cn('flex flex-col items-center p-2', {
+                className={cn('flex flex-col items-center p-1 sm:p-2', {
                   'h-full justify-center': item.componentType === 'text',
                 })}
               >
                 {item.componentType === 'text' && item.text && (
-                  <div className="mb-4 w-[550px]">
+                  <div className="mb-2 w-full max-w-full px-2 sm:mb-4 sm:px-0 md:w-[550px]">
                     <TextContentRenderer
                       content={item.text}
                       allowHtml={true}
-                      className="prose mx-auto max-w-full text-base"
+                      className="prose mx-auto max-w-full text-sm sm:text-base"
                     />
                   </div>
                 )}
@@ -48,17 +48,19 @@ export const Slider: React.FC<SliderProps> = ({ items }) => {
                     <img
                       src={item.src}
                       alt={item.annotation || ''}
-                      className="mb-2 h-64 w-full rounded object-cover"
+                      className="mb-2 h-40 w-full rounded object-cover sm:h-52 md:h-64"
                     />
-                    {item.annotation && <div className="mt-2 text-center text-sm text-gray-500">{item.annotation}</div>}
+                    {item.annotation && (
+                      <div className="mt-1 text-center text-xs text-gray-500 sm:mt-2 sm:text-sm">{item.annotation}</div>
+                    )}
                   </>
                 )}
               </div>
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious className="left-0.6 bg-white" />
-        <CarouselNext className="right-0 bg-white" />
+        <CarouselPrevious className="md:left-0.6 left-0 h-8 w-8 bg-white sm:h-10 sm:w-10" />
+        <CarouselNext className="right-0 h-8 w-8 bg-white sm:h-10 sm:w-10" />
       </Carousel>
     </div>
   );

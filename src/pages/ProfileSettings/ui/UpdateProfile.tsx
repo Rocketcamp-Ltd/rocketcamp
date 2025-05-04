@@ -61,9 +61,9 @@ export const UpdateProfile: React.FC = () => {
   return (
     <form
       action={action}
-      className="w-80 rounded-[2px] border border-[#D9D9D9] p-6 shadow-md"
+      className="w-full max-w-[90%] rounded-[2px] border border-[#D9D9D9] p-4 shadow-md sm:w-80 sm:max-w-none sm:p-6"
     >
-      <label className="mb-1 flex flex-col gap-2">
+      <label className="mb-3 flex flex-col gap-1 sm:mb-1 sm:gap-2">
         <p className="text-base text-[#1E1E1E]">Name</p>
         <Input
           name={FormFieldNames.NAME}
@@ -76,7 +76,7 @@ export const UpdateProfile: React.FC = () => {
         {state.errors?.name && <p className="text-sm text-red-500">{state.errors.name}</p>}
       </label>
 
-      <label className="mb-1 flex flex-col gap-2">
+      <label className="mb-3 flex flex-col gap-1 sm:mb-1 sm:gap-2">
         <p className="text-base text-[#1E1E1E]">Surname</p>
         <Input
           name={FormFieldNames.SURNAME}
@@ -89,7 +89,7 @@ export const UpdateProfile: React.FC = () => {
         {state.errors?.surname && <p className="text-sm text-red-500">{state.errors.surname}</p>}
       </label>
 
-      <label className="mb-1 flex flex-col gap-2">
+      <label className="mb-3 flex flex-col gap-1 sm:mb-1 sm:gap-2">
         <p className="text-base text-[#1E1E1E]">Email</p>
         <Input
           name={FormFieldNames.EMAIL}
@@ -102,7 +102,7 @@ export const UpdateProfile: React.FC = () => {
         {state.errors?.email && <p className="text-sm text-red-500">{state.errors.email}</p>}
       </label>
 
-      <label className="mb-1 flex flex-col gap-2">
+      <label className="mb-3 flex flex-col gap-1 sm:mb-1 sm:gap-2">
         <p className="text-base text-[#1E1E1E]">Message</p>
         <div className="relative">
           <Textarea

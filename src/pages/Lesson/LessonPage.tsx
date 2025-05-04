@@ -14,12 +14,14 @@ import { TextContentRenderer } from './components/TextContentRenderer';
 
 import { useLessonDetails } from '@/hooks/useLessonDetails';
 import { useScrollAnimation } from './hooks/useScrollAnimation';
+import { useIsMobile } from '@/hooks/useIsMobile';
 
 const LessonPage: React.FC = () => {
   const { lessonId, courseId } = useParams<{ lessonId: string; courseId: string }>();
   const { setProgress } = useProgressStore();
   const lessonContentRef = useRef<HTMLDivElement>(null);
   const stepsRefs = useRef<{ [key: number]: HTMLDivElement | null }>({});
+  const isMobile = useIsMobile();
 
   // Fetch lesson details from Supabase
   const { lessonDetails, isLoading, error, updateLessonProgress } = useLessonDetails(lessonId || '', courseId || '');
@@ -184,7 +186,7 @@ const LessonPage: React.FC = () => {
 
   if (error || !lessonDetails) {
     return (
-      <div className="mx-auto max-w-[640px] pt-24 pb-24">
+      <div className="mx-auto w-full max-w-[640px] px-4 py-6 sm:py-12 md:pt-24 md:pb-24">
         <div className="rounded border border-red-400 bg-red-100 px-4 py-3 text-red-700">
           <p>{error || 'Lesson not found'}</p>
         </div>
@@ -198,14 +200,24 @@ const LessonPage: React.FC = () => {
 
   return (
     <div
-      className="mx-auto max-w-[640px] pt-24 pb-24"
+      className="mx-auto w-full max-w-[640px] px-4 py-6 sm:py-12 md:pt-24 md:pb-24"
       ref={lessonContentRef}
     >
       {isCourseCompleted ? (
-        <CompleteCourseFlow
-          lessonId={lessonDetails.id}
-          courseId={courseId || null}
-        />
+        <div>
+          <CompleteCourseFlow
+            lessonId={lessonDetails.id}
+            courseId={courseId || null}
+          />
+          <div className="mt-6 flex justify-center sm:mt-8">
+            <Button
+              onClick={() => updateLessonProgress({ isDone: false })}
+              className="w-full sm:w-auto"
+            >
+              Просмотреть содержимое урока
+            </Button>
+          </div>
+        </div>
       ) : (
         <>
           <LessonIntro
@@ -223,34 +235,43 @@ const LessonPage: React.FC = () => {
                 <div
                   key={`step-${stepIndex}`}
                   ref={ref => registerStepRef(stepIndex, ref)}
-                  className="mb-16 transition-opacity duration-700"
+                  className="mb-8 transition-opacity duration-700 sm:mb-12 md:mb-16"
                   style={{ opacity: lessonDetails.visibleSteps.includes(stepIndex) ? 1 : 0 }}
                 >
                   <img
                     src={step.cover}
                     alt=""
-                    className="mb-2 h-[384px] w-full object-cover"
+                    className="mb-2 h-auto max-h-[250px] w-full object-cover sm:max-h-[300px] md:max-h-[384px]"
                   />
 
                   {step.coverAnnotation && (
-                    <div className="mb-8 text-center text-sm text-gray-500">{step.coverAnnotation}</div>
+                    <div className="mb-4 text-center text-xs text-gray-500 sm:mb-6 sm:text-sm md:mb-8">
+                      {step.coverAnnotation}
+                    </div>
                   )}
 
-                  <div className="mb-8">
+                  <div className="mb-6 sm:mb-6 md:mb-8">
                     <TextContentRenderer
                       content={step.text}
                       allowHtml={true}
                     />
                   </div>
 
-                  {step.component && <div className="mb-8">{renderActionComponent(step.component)}</div>}
-
-                  {((lessonDetails.currentStepIndex !== undefined &&
-                    stepIndex === lessonDetails.currentStepIndex &&
-                    !step.component) ||
-                    step.component?.type === 'slider') && (
-                    <Button onClick={handleContinue}>{isLastStep ? 'Complete Lesson' : 'Continue'}</Button>
+                  {step.component && (
+                    <div className="mb-6 sm:mb-6 md:mb-8">{renderActionComponent(step.component)}</div>
                   )}
+
+                  {stepIndex === lessonDetails.currentStepIndex &&
+                    (!step.component || step.component?.type === 'slider') && (
+                      <div className="mt-6 sm:mt-8">
+                        <Button
+                          onClick={handleContinue}
+                          className="w-full cursor-pointer sm:w-auto"
+                        >
+                          {isLastStep ? 'Complete lesson' : 'Continue'}
+                        </Button>
+                      </div>
+                    )}
                 </div>
               );
             })}
