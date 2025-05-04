@@ -1,10 +1,14 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { User } from 'lucide-react';
+import { User, Settings, HelpCircle, LogOut } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { RoutePath, AppRoutes } from '@/app/router/config';
 import { useAuth } from '@/app/hooks/useAuth';
 
-export const UserButton: React.FC = () => {
+interface Props {
+  isMobile?: boolean;
+}
+
+export const UserButton: React.FC<Props> = ({ isMobile = false }) => {
   const { isAuthenticated, logout } = useAuth();
 
   const [isOpen, setIsOpen] = useState(false);
@@ -25,13 +29,34 @@ export const UserButton: React.FC = () => {
       }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
+    if (!isMobile) {
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+      };
+    }
+  }, [isMobile]);
 
   if (!isAuthenticated) {
+    if (isMobile) {
+      return (
+        <div className="flex flex-col space-y-3">
+          <Link
+            to={RoutePath[AppRoutes.LOGIN]}
+            className="text-base font-medium text-gray-700 hover:text-gray-900"
+          >
+            Sign in
+          </Link>
+          <Link
+            to={RoutePath[AppRoutes.REGISTER]}
+            className="rounded-md bg-blue-600 px-4 py-2 text-center text-base font-medium text-white hover:bg-blue-700"
+          >
+            Sign up
+          </Link>
+        </div>
+      );
+    }
+
     return (
       <div className="flex items-center space-x-4">
         <Link
@@ -46,6 +71,31 @@ export const UserButton: React.FC = () => {
         >
           Sign up
         </Link>
+      </div>
+    );
+  }
+
+  if (isMobile) {
+    return (
+      <div className="flex flex-col space-y-3">
+        <Link
+          to={RoutePath[AppRoutes.PROFILE_SETTINGS]}
+          className="flex items-center gap-2 text-base font-normal text-[#1E1E1E]"
+        >
+          <Settings className="size-5" /> Settings
+        </Link>
+        <Link
+          to={RoutePath[AppRoutes.FAQ]}
+          className="flex items-center gap-2 text-base font-normal text-[#1E1E1E]"
+        >
+          <HelpCircle className="size-5" /> Help
+        </Link>
+        <button
+          className="flex items-center gap-2 text-base font-normal text-[#1E1E1E]"
+          onClick={handleLogout}
+        >
+          <LogOut className="size-5" /> Log out
+        </button>
       </div>
     );
   }
