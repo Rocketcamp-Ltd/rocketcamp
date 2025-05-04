@@ -17,7 +17,7 @@ import { withLayout } from '../layouts/withLayout';
 import { MainLayout } from '../layouts/MainLayout';
 import { AuthLayout } from '../layouts/AuthLayout';
 import { OnboardingLayout } from '../layouts/OnboardingLayout';
-import { CourseLayout } from '../layouts/CourseLayout';
+// import { CourseLayout } from '../layouts/CourseLayout';
 import { LessonLayout } from '../layouts/LessonLayout';
 import { ProtectedRoute } from './ProtectedRoute';
 
@@ -44,7 +44,7 @@ const LibraryPageWithLayout = withLayout(LibraryPage, MainLayout);
 const ProfileSettingsPageWithLayout = withLayout(ProfileSettingsPage, MainLayout);
 const FAQPageWithLayout = withLayout(FAQPage, MainLayout);
 const CourseByAliasWithLayout = withLayout(CoursesByAliasPage, MainLayout);
-const CourseWithLayout = withLayout(CoursePage, CourseLayout);
+const CourseWithLayout = withLayout(CoursePage, MainLayout);
 const LessonWithLayout = withLayout(LessonPage, LessonLayout);
 
 export const RoutePath: Record<AppRoutes, string> = {

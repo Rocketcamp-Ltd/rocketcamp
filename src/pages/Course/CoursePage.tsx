@@ -9,11 +9,13 @@ import { LessonCard } from './components/LessonCard';
 
 import { RoutePath } from '@/app/router/config';
 import { useCourseDetails } from '@/hooks/useCourseDetails';
+import { useIsMobile } from '@/hooks/useIsMobile';
 
 const CoursePage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const { courseDetails, isLoading, error } = useCourseDetails(id || '');
   const navigate = useNavigate();
+  const isMobile = useIsMobile();
 
   const handleStartLearning = () => {
     if (!courseDetails) return;
@@ -41,7 +43,7 @@ const CoursePage: React.FC = () => {
       return (
         <Button
           onClick={handleStartLearning}
-          className="mt-2 cursor-pointer"
+          className="mt-2 w-full cursor-pointer sm:w-auto"
         >
           Start Learning
         </Button>
@@ -52,7 +54,7 @@ const CoursePage: React.FC = () => {
       return (
         <Button
           onClick={handleStartLearning}
-          className="mt-2 cursor-pointer"
+          className="mt-2 w-full cursor-pointer sm:w-auto"
         >
           Review Course
         </Button>
@@ -60,16 +62,16 @@ const CoursePage: React.FC = () => {
     }
 
     return (
-      <div className="flex space-x-4">
+      <div className="flex flex-col space-y-3 sm:flex-row sm:space-y-0 sm:space-x-4">
         <Button
           onClick={handleStartLearning}
-          className="mt-2 cursor-pointer"
+          className="mt-2 w-full cursor-pointer sm:w-auto"
         >
           Continue Learning
         </Button>
         <button
           onClick={handleGetNotified}
-          className="mt-2 text-base text-[#050038]"
+          className="mt-2 text-sm text-[#050038] sm:text-base"
         >
           Get notified when updates are available
         </button>
@@ -83,7 +85,7 @@ const CoursePage: React.FC = () => {
 
   if (error || !courseDetails) {
     return (
-      <div className="mx-auto max-w-[1200px] py-5">
+      <div className="mx-auto max-w-[1200px] px-4 py-4 sm:py-5">
         <div className="rounded border border-red-400 bg-red-100 px-4 py-3 text-red-700">
           <p>{error || 'Курс не найден'}</p>
         </div>
@@ -92,15 +94,13 @@ const CoursePage: React.FC = () => {
   }
 
   return (
-    <div className="mx-auto max-w-[1200px] py-5">
-      <h1 className="mb-6 text-3xl font-medium text-black">{courseDetails.title}</h1>
-
-      <div className="flex items-start gap-8">
-        <div className="relative max-w-[484px]">
+    <div className="mx-auto max-w-[1200px] px-4 py-6 sm:py-8 md:py-12">
+      <div className="flex flex-col gap-6 md:flex-row md:items-start md:gap-8">
+        <div className="relative w-full max-w-full md:max-w-[484px]">
           <img
             src={courseDetails.cover}
             alt={courseDetails.title}
-            className="rounded-lg object-cover"
+            className="w-full rounded-lg object-cover"
           />
 
           <CircleProgress
@@ -109,10 +109,12 @@ const CoursePage: React.FC = () => {
           />
         </div>
 
-        <div className="max-w-[500px]">
-          <h2 className="mb-6 text-2xl font-semibold text-[#1E1E1E]">About the course</h2>
+        <div className="w-full md:max-w-[500px]">
+          <h2 className="mb-3 text-xl font-semibold text-[#1E1E1E] sm:mb-4 sm:text-2xl md:mb-6">
+            {courseDetails.title}
+          </h2>
           <div
-            className="w-[650px] text-base text-[#1E1E1E]"
+            className="w-full text-sm text-[#1E1E1E] sm:text-base md:w-[650px]"
             dangerouslySetInnerHTML={{ __html: courseDetails.description }}
           ></div>
 
@@ -120,9 +122,9 @@ const CoursePage: React.FC = () => {
         </div>
       </div>
 
-      <div className="my-7 h-px w-full bg-[#CAC4D0]"></div>
+      <div className="my-5 h-px w-full bg-[#CAC4D0] sm:my-6 md:my-7"></div>
 
-      <section className="flex flex-col gap-4">
+      <section className="flex flex-col gap-3 sm:gap-4">
         {courseDetails.lessons.map(lesson => {
           if (lesson.isBlocked) {
             return (
